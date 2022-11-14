@@ -548,28 +548,45 @@ if (isset($start_data_fields['custom_fields']) && $start_data_fields['custom_fie
                 );
 
                 if ($fieldData['type'] == 'dropdown') {
-                    $optionsRaw = explode("\n",$adminField['options']);
                     $fieldData['options'] = array();
                     $defaultValue = null;
-                    foreach ($optionsRaw as $optionRaw) {
-                        $itemData = explode('=>',$optionRaw);
+                     $optionsRaw = explode("\n",$adminField['options']);
+                     foreach ($optionsRaw as $optionRaw) {
+                         $itemDataJson = json_decode($optionRaw,true);
 
-                        if ($defaultValue === null) {
-                            $defaultValue = explode('||',trim($itemData[0]))[0];
+                         if (is_array($itemDataJson)) {
+                             $nameValue = $itemDataJson['name'];
+                             $depValue = isset($itemDataJson['dep_id']) ? $itemDataJson['dep_id'] : null;
+                             $valueOption = isset($itemDataJson['value']) ? $itemDataJson['value'] : $nameValue;
+                             $subject = isset($itemDataJson['subject_id']) ? $itemDataJson['subject_id'] : null;
+                         } else {
+                             $itemData = explode('=>',$optionRaw);
+
+                             if ($defaultValue === null) {
+                                 $defaultValue = explode('||',trim($itemData[0]))[0];
+                             }
+
+                             $nameParts = explode('||',trim(isset($itemData[1]) ? $itemData[1] : $itemData[0]));
+                             $nameValue = $nameParts[0];
+
+                             $depValue = isset($nameParts[1]) ? (int)$nameParts[1] : null;
+
+                             $valueItem = explode('||',trim($itemData[0]));
+                             $valueOption = $valueItem[0];
+                             $subject = null;
                         }
 
-                        $nameParts = explode('||',trim(isset($itemData[1]) ? $itemData[1] : $itemData[0]));
-                        $nameValue = $nameParts[0];
+                         $optionItem = array(
+                             'name' => $nameValue,
+                             'dep_id' => $depValue,
+                             'value' => $valueOption,
+                         );
+                         
+                         if ($subject !== null) {
+                             $optionItem['subject_id'] = $subject;
+                         }
 
-                        $depValue = isset($nameParts[1]) ? (int)$nameParts[1] : null;
-
-                        $valueItem = explode('||',trim($itemData[0]));
-
-                        $fieldData['options'][] = array(
-                            'name' => $nameValue,
-                            'dep_id' => $depValue,
-                            'value' => $valueItem[0]
-                        );
+                        $fieldData['options'][] = $optionItem;
                     }
                     if (empty($fieldData['value'])) {
                         $fieldData['value'] = $defaultValue;
@@ -1064,7 +1081,7 @@ if ($outputResponse['disabled'] === true) {
 $outputResponse['department'] = $departmentsOptions;
 $outputResponse['dep_forms'] = $department_id_form;
 
-erLhcoreClassChatEventDispatcher::getInstance()->dispatch('widgetrestapi.onlinesettings', array('output' => & $outputResponse));
+erLhcoreClassChatEventDispatcher::getInstance()->dispatch('widgetrestapi.onlinesettings', array('ou_vid' => $Params['user_parameters_unordered']['vid'], 'output' => & $outputResponse));
 
 erLhcoreClassRestAPIHandler::outputResponse($outputResponse);
 exit();

@@ -230,6 +230,14 @@ $proactiveAttr = array(
         'params_call' => array_merge(['limit' => false, 'sort' => '`name` ASC'],$departmentFilterdefault),
         'validation_definition' => new ezcInputFormDefinitionElement(ezcInputFormDefinitionElement::OPTIONAL, 'int')
     ),
+    'parent_id' => array(
+        'type' => 'text',
+        'default_value' => 0,
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Parent invitation'),
+        'required' => false,
+        'hidden' => true,
+        'validation_definition' => new ezcInputFormDefinitionElement(ezcInputFormDefinitionElement::OPTIONAL, 'int')
+    ),
     'campaign_id' => array(
         'type' => 'combobox',
         'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Campaign'),
@@ -389,6 +397,14 @@ $proactiveAttr = array(
         'hidden' => true,
         'validation_definition' => new ezcInputFormDefinitionElement(ezcInputFormDefinitionElement::OPTIONAL, 'int')
     ),
+    'hide_op_img' => array(
+        'type' => 'checkbox',
+        'main_attr' => 'design_data_array',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Hide operator profile image'),
+        'required' => false,
+        'hidden' => true,
+        'validation_definition' => new ezcInputFormDefinitionElement(ezcInputFormDefinitionElement::OPTIONAL, 'int')
+    ),
     'hide_on_open' => array(
         'type' => 'checkbox',
         'main_attr' => 'design_data_array',
@@ -507,9 +523,11 @@ $proactiveAttr = array(
     ),
     'mobile_style' => array(
         'type' => 'textarea',
+        'ace_editor' => 'css',
+        'placeholder' => '.proactive-need-help{background-color:black!important;padding:0px!important;}',
         'main_attr' => 'design_data_array',
         'height' => '200px',
-        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme','Mobile style'),
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme','Custom CSS, applies also to invitation bubble'),
         'required' => false,
         'hidden' => true,
         'nginit' => true,

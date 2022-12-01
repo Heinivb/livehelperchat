@@ -575,15 +575,15 @@ class erLhAbstractModelProactiveChatInvitation {
             $conditionsValid = true;
 
             for ($i = 1; $i <= 10; $i++) {
-                 if ( isset($design_data_array['attrf_key_' . $i]) &&
-                    $design_data_array['attrf_key_' . $i] != '' &&
-                    isset($design_data_array['attrf_val_' . $i]) &&
-                    $design_data_array['attrf_val_' . $i] != ''
-                ) {
+                 if ( isset($design_data_array['attrf_key_' . $i]) &&  $design_data_array['attrf_key_' . $i] != '' ) {
 
-                     if (!isset($onlineAttrSystem[$design_data_array['attrf_key_' . $i]])){
+                     if (!isset($onlineAttrSystem[$design_data_array['attrf_key_' . $i]])) {
                          $conditionsValid = false;
                          break;
+                     }
+
+                     if (!isset($design_data_array['attrf_val_' . $i])) {
+                         $design_data_array['attrf_val_' . $i] = '';
                      }
 
                      $valuesExpected = explode('||',strtolower($design_data_array['attrf_val_' . $i]));
@@ -808,6 +808,8 @@ class erLhAbstractModelProactiveChatInvitation {
                 $campaign->invitation_type = 1;
                 $campaign->campaign_id = $message->campaign_id;
                 $campaign->variation_id = $messageContent->id;
+                $campaign->conv_event = isset($message->design_data_array['event_id']) ? $message->design_data_array['event_id'] : '';
+                $campaign->conv_int_expires = isset($message->design_data_array['conversion_expires_in']) && (int)$message->design_data_array['conversion_expires_in'] > 0 ? time() + (int)$message->design_data_array['conversion_expires_in'] : 0;
 
                 $detect = new Mobile_Detect;
                 $detect->setUserAgent($item->user_agent);
@@ -817,16 +819,13 @@ class erLhAbstractModelProactiveChatInvitation {
                 // Set conversion for track back for online visitor record
                 $item->conversion_id = $campaign->id;
 
-                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('onlineuser.proactive_triggered', array('variation' => & $messageContent, 'message' => & $message, 'ou' => & $item));
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('onlineuser.proactive_triggered', array('campaign' => & $campaign, 'variation' => & $messageContent, 'message' => & $message, 'ou' => & $item));
             } else {
 			    // We know there is invitation based on current criteria just time on site is still not matched.
                 $item->next_reschedule = $message->time_on_site - $item->time_on_site;
             }
 		}
 	}
-
-
-
 
 	public function customForm(){
 	    return 'proactive_invitation.tpl.php';
@@ -912,6 +911,11 @@ class erLhAbstractModelProactiveChatInvitation {
         $this->design_data = json_encode($this->design_data_array);
     }
 
+    public function beforeSave()
+    {
+        $this->beforeUpdate();
+    }
+
     public function getContentAttribute($attr)
     {
         $response = erLhcoreClassChatEventDispatcher::getInstance()->dispatch('theme.download_image.'.$attr, array('theme' => $this, 'attr' => $attr));
@@ -985,7 +989,7 @@ class erLhAbstractModelProactiveChatInvitation {
         }
     }
 
-    public function afterSave()
+    public function afterSave($params)
     {
         $movePhotos = array(
             'design_data_img_1',
@@ -1001,6 +1005,8 @@ class erLhAbstractModelProactiveChatInvitation {
 
         if ($pendingUpdate == true) {
             $this->updateThis();
+        } else {
+            $this->afterUpdate($params);
         }
     }
 

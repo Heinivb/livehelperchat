@@ -562,13 +562,7 @@ class erLhcoreClassChatValidator {
            $department = $chat->department;
         }
         
-        if ($department !== false && $department->department_transfer_id > 0) {
-            if (!(isset($department->bot_configuration_array['off_if_online']) && $department->bot_configuration_array['off_if_online'] == 1 && erLhcoreClassChat::isOnline($chat->dep_id,false, array('exclude_bot' => true, 'exclude_online_hours' => true)) === true)) {
-                $chat->transfer_if_na = 1;
-                $chat->transfer_timeout_ts = time();
-                $chat->transfer_timeout_ac = $department->transfer_timeout;
-            }
-        }
+
         
         if ($department !== false && $department->inform_unread == 1) {
         	$chat->reinform_timeout = $department->inform_unread_delay;
@@ -897,6 +891,17 @@ class erLhcoreClassChatValidator {
             $chat->priority = $priority['priority'];
         }
 
+        if ($department !== false && $department->department_transfer_id > 0) {
+            if (
+                !(isset($department->bot_configuration_array['off_if_online']) && $department->bot_configuration_array['off_if_online'] == 1 && erLhcoreClassChat::isOnline($chat->dep_id,false, array('exclude_bot' => true, 'exclude_online_hours' => true)) === true) &&
+                !(isset($department->bot_configuration_array['transfer_min_priority']) && is_numeric($department->bot_configuration_array['transfer_min_priority']) && (int)$department->bot_configuration_array['transfer_min_priority'] > $chat->priority)
+            ) {
+                $chat->transfer_if_na = 1;
+                $chat->transfer_timeout_ts = time();
+                $chat->transfer_timeout_ac = $department->transfer_timeout;
+            }
+        }
+
         if ($priority !== false && $priority['dep_id'] > 0) {
             $chat->dep_id = $priority['dep_id'];
         }
@@ -919,6 +924,8 @@ class erLhcoreClassChatValidator {
     }
 
     public static function validateJSVarsVisitor($visitor, $data) {
+
+        $hashData = md5($visitor->online_attr_system . '_' . $visitor->online_attr);
 
         $onlineAttr = $visitor->online_attr_array;
         $variableSet = [];
@@ -990,10 +997,13 @@ class erLhcoreClassChatValidator {
         $visitor->online_attr = json_encode($onlineAttr);
         $visitor->online_attr_array = $onlineAttr;
 
-        erLhcoreClassChatEventDispatcher::getInstance()->dispatch('onlineuser.update_js_vars', array('ou' => & $visitor));
+        $hashChanged = md5($visitor->online_attr_system . '_' . $visitor->online_attr) != $hashData;
+        erLhcoreClassChatEventDispatcher::getInstance()->dispatch('onlineuser.update_js_vars', array('data_changed' => $hashChanged, 'ou' => & $visitor));
 
-        $visitor->saveThis(array('update' => array('online_attr', 'online_attr_system')));
-
+        // Update only if data has changed
+        if ($hashChanged) {
+            $visitor->saveThis(array('update' => array('online_attr', 'online_attr_system')));
+        }
     }
 
     public static function isValidTimezoneId2($tzid) {
@@ -2115,7 +2125,10 @@ class erLhcoreClassChatValidator {
                 }
                 
                 if ($department !== false && $department->department_transfer_id > 0) {
-                    if (!(isset($department->bot_configuration_array['off_if_online']) && $department->bot_configuration_array['off_if_online'] == 1 && erLhcoreClassChat::isOnline($chat->dep_id,false, array('exclude_bot' => true, 'exclude_online_hours' => true)) === true)) {
+                    if (
+                        !(isset($department->bot_configuration_array['off_if_online']) && $department->bot_configuration_array['off_if_online'] == 1 && erLhcoreClassChat::isOnline($chat->dep_id,false, array('exclude_bot' => true, 'exclude_online_hours' => true)) === true) &&
+                        !(isset($department->bot_configuration_array['transfer_min_priority']) && is_numeric($department->bot_configuration_array['transfer_min_priority']) && (int)$department->bot_configuration_array['transfer_min_priority'] > $chat->priority)
+                    ) {
                         $chat->transfer_if_na = 1;
                         $chat->transfer_timeout_ts = time();
                         $chat->transfer_timeout_ac = $department->transfer_timeout;

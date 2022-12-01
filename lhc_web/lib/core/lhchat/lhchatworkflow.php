@@ -259,6 +259,7 @@ class erLhcoreClassChatWorkflow {
 
                 $chat->chat_duration = erLhcoreClassChat::getChatDurationToUpdateChatID($chat);
                 $chat->cls_time = time();
+                $chat->session_score = 0;
                 $chat->has_unread_messages = 0;
 
                 $chat->updateThis();
@@ -552,6 +553,7 @@ class erLhcoreClassChatWorkflow {
                 $chat->chat_duration = erLhcoreClassChat::getChatDurationToUpdateChatID($chat);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
+                $chat->session_score = 0;
                 $chat->updateThis();
 
                 if (!$avoidCloseCallback) {

@@ -1,5 +1,6 @@
 <?php
 
+
 try {
 
     $cfgSite = erConfigClassLhConfig::getInstance();

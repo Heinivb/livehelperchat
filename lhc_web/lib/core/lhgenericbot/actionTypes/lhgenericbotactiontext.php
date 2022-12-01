@@ -224,7 +224,22 @@ class erLhcoreClassGenericBotActionText {
             }
         }
 
+        if(substr($msg->msg, 1, -1) > 0){
+        try {
+            $db = ezcDbInstance::get();
+            $score = $chat->score + substr($msg->msg, 1, -1);
+            $session_score = $chat->session_score + substr($msg->msg, 1, -1);
+        
+            $stmt = $db->prepare("UPDATE lh_chat SET score = $score,session_score = $session_score where id=$chat->id");
+            $stmt->execute();
+        
+            } catch(PDOException $e) {
+              error_log($e->getMessage());
+            }
+        }
+
         if (!isset($params['do_not_save']) || $params['do_not_save'] == false) {
+
             erLhcoreClassChat::getSession()->save($msg);
         }
 

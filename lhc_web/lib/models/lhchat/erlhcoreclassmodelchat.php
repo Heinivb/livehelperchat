@@ -123,6 +123,7 @@ class erLhcoreClassModelChat {
                'gbot_id'    	        => $this->gbot_id,
                'cls_us'    	            => $this->cls_us,
                'iwh_id'    	            => $this->iwh_id,
+               'theme_id'    	        => $this->theme_id,
                'score'                  => $this->score,
                'session_score'          => $this->session_score,
                'is_visitor_initiate'    => $this->is_visitor_initiate,
@@ -803,6 +804,9 @@ class erLhcoreClassModelChat {
 
    // Bot ID assigned to the chat
    public $gbot_id = 0;
+
+   // Theme ID
+   public $theme_id = 0;
 
    // User status on close event
 

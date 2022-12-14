@@ -220,10 +220,12 @@ if (trim($form->msg) != '')
                     $userData = $currentUser->getUserData();
 
                     if ($userData->invisible_mode == 0 && erLhcoreClassChat::hasAccessToWrite($Chat)) {
-                        $Chat->status = erLhcoreClassModelChat::STATUS_ACTIVE_CHAT;
+                        $Chat->status = erLhcoreClassModelChat::STATUS_BOT_CHAT;
 
                         $Chat->pnd_time = time();
                         $Chat->wait_time = 1;
+
+                        $Chat->score = $Chat->score + 1;
 
                         $Chat->user_id = $currentUser->getUserID();
 

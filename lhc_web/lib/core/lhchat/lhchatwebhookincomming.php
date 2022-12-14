@@ -586,6 +586,11 @@ class erLhcoreClassChatWebhookIncoming {
                 $msg->chat_id = $chat->id;
                 $msg->user_id = $sender;
 
+                if($chat->is_visitor_initiate == 1){
+                    $chat->is_visitor_initiate = 0;
+                    $chat->session_score = 0;
+                }
+
                 $timeValue = self::extractAttribute('time', $conditions, $payloadMessage, time());
                 $msg->time = is_numeric($timeValue) ? $timeValue : strtotime($timeValue);
 
@@ -722,6 +727,8 @@ class erLhcoreClassChatWebhookIncoming {
                     'transfer_timeout_ts',
                     'transfer_timeout_ac',
                     'priority'
+                    'is_visitor_initiate',
+                    'session_score',
                 )));
 
                 if (empty($eChat->payload)) {

@@ -182,6 +182,8 @@ class erLhcoreClassChatHelper
 
                 $params['chat']->last_user_msg_time = $msg->time = time();
                 $params['chat']->cls_time = time();
+                // $params['chat']->session_score = 0;
+                $params['chat']->is_visitor_initiate = 1;
 
                 erLhcoreClassChat::getSession()->save($msg);
 
@@ -285,6 +287,8 @@ class erLhcoreClassChatHelper
                 erLhcoreClassChat::getSession()->save($msg);
 
                 $chat->last_msg_id = $msg->id;
+                // $chat->session_score = 0;
+                $chat->is_visitor_initiate = 1;
                 $chat->updateThis();
         
                 // Execute callback for close chat
@@ -321,6 +325,7 @@ class erLhcoreClassChatHelper
         }
         
         erLhcoreClassChat::updateActiveChats($chat->user_id);
+
          
         if ($chat->department !== false) {
             erLhcoreClassChat::updateDepartmentStats($chat->department);

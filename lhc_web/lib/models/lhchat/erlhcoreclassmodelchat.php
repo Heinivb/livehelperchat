@@ -124,6 +124,9 @@ class erLhcoreClassModelChat {
                'cls_us'    	            => $this->cls_us,
                'iwh_id'    	            => $this->iwh_id,
                'theme_id'    	        => $this->theme_id,
+               'score'                  => $this->score,
+               'session_score'          => $this->session_score,
+               'is_visitor_initiate'    => $this->is_visitor_initiate,
        );
    }
 
@@ -817,6 +820,9 @@ class erLhcoreClassModelChat {
    // 0 - online
    // 1 - offline
    public $cls_us = 0;
+   public $score = 0;
+   public $session_score = 0;
+   public $is_visitor_initiate = 0;
 
    public $iwh_id = 0;
 

@@ -162,6 +162,9 @@ class erLhcoreClassDepartament{
                 'bot_tr_id' => new ezcInputFormDefinitionElement(
                         ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1)
                 ),
+                'theme_ind' => new ezcInputFormDefinitionElement(
+                        ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1), FILTER_REQUIRE_ARRAY
+                ),
                 'bot_only_offline' => new ezcInputFormDefinitionElement(
                         ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
                 ),
@@ -191,7 +194,26 @@ class erLhcoreClassDepartament{
                 ),
                 'attr_int_3' => new ezcInputFormDefinitionElement(
                     ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 0)
-                )
+                ),
+                'active_prioritized_assignment' => new ezcInputFormDefinitionElement(
+                    ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+                ),
+                'assign_by_priority' => new ezcInputFormDefinitionElement(
+                    ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+                ),
+                'assign_by_priority_chat' => new ezcInputFormDefinitionElement(
+                    ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+                ),
+                'min_agent_priority' => new ezcInputFormDefinitionElement(
+                    ezcInputFormDefinitionElement::OPTIONAL, 'int'
+                ),
+                'min_chat_priority' => new ezcInputFormDefinitionElement(
+                    ezcInputFormDefinitionElement::OPTIONAL, 'int'
+                ),
+                'max_chat_priority' => new ezcInputFormDefinitionElement(
+                    ezcInputFormDefinitionElement::OPTIONAL, 'int'
+                ),
+
         );
 
         foreach (self::getWeekDays() as $dayShort => $dayLong) {
@@ -292,6 +314,43 @@ class erLhcoreClassDepartament{
 		   	} else {
 		   		$department->max_ac_dep_chats = 0;
 		   	}
+
+            if ( $form->hasValidData( 'assign_by_priority' ) && $form->assign_by_priority == true )	{
+                $botConfiguration['assign_by_priority'] = 1;
+            } else {
+                $botConfiguration['assign_by_priority'] = 0;
+            }
+
+            if ( $form->hasValidData( 'active_prioritized_assignment' ) && $form->active_prioritized_assignment == true )	{
+                $botConfiguration['active_prioritized_assignment'] = 1;
+            } else {
+                $botConfiguration['active_prioritized_assignment'] = 0;
+            }
+
+            if ( $form->hasValidData( 'assign_by_priority_chat' ) && $form->assign_by_priority_chat == true ) {
+                $botConfiguration['assign_by_priority_chat'] = 1;
+            } else {
+                $botConfiguration['assign_by_priority_chat'] = 0;
+            }
+
+            if ( $form->hasValidData( 'min_agent_priority' ) ) {
+                $botConfiguration['min_agent_priority'] = $form->min_agent_priority;
+            } else {
+                $botConfiguration['min_agent_priority'] = 0;
+            }
+
+            if ( $form->hasValidData( 'min_chat_priority' ) ) {
+                $botConfiguration['min_chat_priority'] = $form->min_chat_priority;
+            } else {
+                $botConfiguration['min_chat_priority'] = 0;
+            }
+
+            if ( $form->hasValidData( 'max_chat_priority' ) ) {
+                $botConfiguration['max_chat_priority'] = $form->max_chat_priority;
+            } else {
+                $botConfiguration['max_chat_priority'] = 0;
+            }
+
 	   	}
 
 	   	if ((isset($additionalParams['payload_data']) && erLhcoreClassRestAPIHandler::hasAccessTo('lhdepartment', 'actworkflow')) || erLhcoreClassUser::instance()->hasAccessTo('lhdepartment','actworkflow') ) {
@@ -579,6 +638,13 @@ class erLhcoreClassDepartament{
            $botConfiguration['bot_tr_id'] = $form->bot_tr_id;
        } else {
            $botConfiguration['bot_tr_id'] = 0;
+       }
+
+       if ( $form->hasValidData( 'theme_ind' ) )
+       {
+           $botConfiguration['theme_ind'] = implode(',',$form->theme_ind);
+       } else {
+           $botConfiguration['theme_ind'] = 0;
        }
 
        if ((isset($additionalParams['payload_data']) && erLhcoreClassRestAPIHandler::hasAccessTo('lhdepartment', 'managesurvey')) || erLhcoreClassUser::instance()->hasAccessTo('lhdepartment', 'managesurvey')) {

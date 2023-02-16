@@ -511,7 +511,7 @@
     <div class="row mb-2">
         <div class="col-12">
 
-            <div class="btn-group mr-2" role="group" aria-label="...">
+            <div class="btn-group me-2" role="group" aria-label="...">
                     <button type="submit" class="btn btn-primary btn-sm" name="doSearch"><span class="material-icons">search</span><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/lists/search_panel','Search');?></button>
             </div>
 
@@ -535,7 +535,7 @@
                     <input type="hidden" name="view" value="<?php echo $input->view?>" />
                 <?php endif; ?>
 
-                <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhviews','use')) : ?>
+                <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhviews','use_chat')) : ?>
                     <button type="button" onclick="return lhc.revealModal({'title' : 'Export', 'height':350, backdrop:true, 'url':'<?php echo $pages->serverURL?>/(export)/2?<?php echo $appendPrintExportURL?>'})" class="btn btn-outline-secondary btn-sm">
                         <span class="material-icons">saved_search</span>
                         <?php if ($input->view > 0) : ?>

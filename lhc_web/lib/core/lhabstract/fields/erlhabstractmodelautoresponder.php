@@ -29,7 +29,6 @@ return array(
         'type' => 'text',
         'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Position'),
         'required' => true,
-        'hidden' => true,
         'validation_definition' => new ezcInputFormDefinitionElement(
             ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
         )),
@@ -108,7 +107,12 @@ return array(
         'validation_definition' => new ezcInputFormDefinitionElement(
             ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
         )),
-    'dep_id' => array(
+    'list_department' => array(
+        'type' => 'none',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Departments'),
+        'required' => false
+    ),
+    /*'dep_id' => array(
         'type' => 'multi_dropdown',
         'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Department'),
         'required' => false,
@@ -121,7 +125,7 @@ return array(
         'params_call' => array_merge(['limit' => false,'sort' => '`name` ASC'],$departmentFilterdefault),
         'validation_definition' => new ezcInputFormDefinitionElement(
             ezcInputFormDefinitionElement::OPTIONAL, 'int'
-        )),
+        )),*/
      'user_id' => array(
         'type' => 'combobox',
         'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'User'),
@@ -403,7 +407,7 @@ return array(
         'timeout_op_reply_message_1' => array(
             'type' => 'textarea',
             'height' => '86px',
-            'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message for timeout [1]'),
+            'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message for timeout [1], use ||| to separate random messages.'),
             'required' => false,
             'hidden' => true,
             'main_attr' => 'bot_configuration_array',
@@ -413,7 +417,7 @@ return array(
        'timeout_op_reply_message_2' => array(
             'type' => 'textarea',
             'height' => '86px',
-            'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message for timeout [2]'),
+            'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message for timeout [2], use ||| to separate random messages.'),
             'required' => false,
             'hidden' => true,
             'main_attr' => 'bot_configuration_array',
@@ -423,7 +427,7 @@ return array(
        'timeout_op_reply_message_3' => array(
             'type' => 'textarea',
             'height' => '86px',
-            'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message for timeout [3]'),
+            'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message for timeout [3], use ||| to separate random messages.'),
             'required' => false,
             'hidden' => true,
             'main_attr' => 'bot_configuration_array',
@@ -433,7 +437,7 @@ return array(
        'timeout_op_reply_message_4' => array(
             'type' => 'textarea',
             'height' => '86px',
-            'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message for timeout [4]'),
+            'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message for timeout [4], use ||| to separate random messages.'),
             'required' => false,
             'hidden' => true,
             'main_attr' => 'bot_configuration_array',
@@ -443,7 +447,7 @@ return array(
        'timeout_op_reply_message_5' => array(
             'type' => 'textarea',
             'height' => '86px',
-            'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message for timeout [5]'),
+            'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message for timeout [5], use ||| to separate random messages.'),
             'required' => false,
             'hidden' => true,
             'main_attr' => 'bot_configuration_array',
@@ -498,7 +502,7 @@ return array(
         )),
         'close_message' => array(
         'type' => 'textarea',
-        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message to visitor on chat close'),
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message to visitor on chat close. Use ||| to separate random messages.'),
         'height' => '86px',
         'required' => false,
         'hidden' => true,
@@ -508,7 +512,7 @@ return array(
         )),
         'offline_message' => array(
         'type' => 'textarea',
-        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message to visitor if department is offline'),
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message to visitor if department is offline. Use ||| to separate random messages.'),
         'height' => '86px',
         'required' => false,
         'hidden' => true,
@@ -518,7 +522,7 @@ return array(
         )),
         'multilanguage_message' => array(
         'type' => 'textarea',
-        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message to visitor if operator speaks same language as visitor.'),
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/proactivechatinvitation', 'Message to visitor if operator speaks same language as visitor. Use ||| to separate random messages.'),
         'height' => '86px',
         'required' => false,
         'hidden' => true,
@@ -842,5 +846,245 @@ return array(
         'validation_definition' => new ezcInputFormDefinitionElement(
             ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 0)
         )),
+    'mpc_nm' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'How many pending chats have to be in the queue (not counting started chat) for pending chat messaging to be activated.'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 0)
+        )),
+    'pnd_repetitiveness' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Minimum pending chats for pending messaging to be activated'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 0)
+        )),
+      'pnd_time_zone' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+        'pnd_active_from_edit' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+        'pnd_active_to_edit' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
 
+
+        'pnd_mod_start_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+        'pnd_mod_end_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+
+        'pnd_tud_start_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+        'pnd_tud_end_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+
+        'pnd_wed_start_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+        'pnd_wed_end_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+
+        'pnd_thd_start_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+        'pnd_thd_end_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+
+        'pnd_frd_start_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+        'pnd_frd_end_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+        'pnd_sad_start_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+        'pnd_sad_end_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+
+        'pnd_sud_start_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+        'pnd_sud_end_time' => array(
+        'type' => 'text',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        )),
+        'pnd_mod' => array(
+        'type' => 'checkbox',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+        )),
+        'pnd_tud' => array(
+        'type' => 'checkbox',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+        )),
+        'pnd_wed' => array(
+        'type' => 'checkbox',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+        )),
+        'pnd_thd' => array(
+        'type' => 'checkbox',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+        )),
+        'pnd_frd' => array(
+        'type' => 'checkbox',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+        )),
+        'pnd_sad' => array(
+        'type' => 'checkbox',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+        )),
+        'pnd_sud' => array(
+        'type' => 'checkbox',
+        'trans' => erTranslationClassLhTranslation::getInstance()->getTranslation('abstract/widgettheme', 'Time zone'),
+        'required' => false,
+        'hidden' => true,
+        'main_attr' => 'bot_configuration_array',
+        'validation_definition' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+        )),
 );

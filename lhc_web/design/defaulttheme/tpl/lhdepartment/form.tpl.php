@@ -7,7 +7,7 @@
     </div>
     <div class="col-6">
         <div class="form-group">
-            <label><a class="live-help-tooltip" data-placement="top" title="" data-toggle="tooltip" data-original-title="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','If you enter alias make sure you pass this string as argument for a department. Otherwise argument will be ignored.');?>"><i class="material-icons">&#xE887;</i></a>
+            <label><a class="live-help-tooltip" data-placement="top" title="" data-bs-toggle="tooltip" data-original-title="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','If you enter alias make sure you pass this string as argument for a department. Otherwise argument will be ignored.');?>"><i class="material-icons">&#xE887;</i></a>
 
                 <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Alias for argument. No spaces or slashes.');?></label>
             <input type="text" maxlength="50" <?php if (!erLhcoreClassUser::instance()->hasAccessTo('lhdepartment','managealias')) : ?>disabled<?php endif;?>  ng-non-bindable class="form-control form-control-sm" name="Alias" value="<?php echo htmlspecialchars($departament->alias);?>" />
@@ -57,28 +57,32 @@
 
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs mb-2" role="tablist">
-			<li role="presentation" class="nav-item"><a class="nav-link active" href="#onlinehours" aria-controls="onlinehours" role="tab" data-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Automate online hours');?></a></li>
-			<li role="presentation" class="nav-item"><a class="nav-link" href="#notifications" aria-controls="notifications" role="tab" data-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Notifications');?></a></li>
+			<li role="presentation" class="nav-item"><a class="nav-link active" href="#onlinehours" aria-controls="onlinehours" role="tab" data-bs-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Automate online hours');?></a></li>
+			<li role="presentation" class="nav-item"><a class="nav-link" href="#notifications" aria-controls="notifications" role="tab" data-bs-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Notifications');?></a></li>
 			
 			<?php if (erLhcoreClassUser::instance()->hasAccessTo('lhdepartment','actworkflow')) : ?>
-			<li role="presentation" class="nav-item"><a class="nav-link" href="#chattransfer" aria-controls="chattransfer" role="tab" data-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Chat transfer worklow');?></a></li>
+			<li role="presentation" class="nav-item"><a class="nav-link" href="#chattransfer" aria-controls="chattransfer" role="tab" data-bs-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Chat transfer worklow');?></a></li>
 			<?php endif;?>
 			
 			<?php if (erLhcoreClassUser::instance()->hasAccessTo('lhdepartment','actautoassignment')) : ?>
-			<li role="presentation" class="nav-item"><a class="nav-link" href="#autoassignment" aria-controls="autoassignment" role="tab" data-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Auto assignment');?></a></li>
+			<li role="presentation" class="nav-item"><a class="nav-link" href="#autoassignment" aria-controls="autoassignment" role="tab" data-bs-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Auto assignment');?></a></li>
 			<?php endif;?>
 			
-			<li role="presentation" class="nav-item"><a class="nav-link" href="#product" aria-controls="product" role="tab" data-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Product');?></a></li>
+			<li role="presentation" class="nav-item"><a class="nav-link" href="#product" aria-controls="product" role="tab" data-bs-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Product');?></a></li>
 			
-			<li role="presentation" class="nav-item"><a class="nav-link" href="#miscellaneous" aria-controls="miscellaneous" role="tab" data-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Miscellaneous');?></a></li>
+			<li role="presentation" class="nav-item"><a class="nav-link" href="#miscellaneous" aria-controls="miscellaneous" role="tab" data-bs-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Miscellaneous');?></a></li>
 
-            <li role="presentation" class="nav-item"><a class="nav-link" href="#genericbot" aria-controls="genericbot" role="tab" data-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Bot configuration');?></a></li>
+            <li role="presentation" class="nav-item"><a class="nav-link" href="#genericbot" aria-controls="genericbot" role="tab" data-bs-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Bot configuration');?></a></li>
 
             <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhdepartment','managesurvey')) : ?>
-            <li role="presentation" class="nav-item"><a class="nav-link" href="#survey" aria-controls="survey" role="tab" data-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Survey');?></a></li>
+            <li role="presentation" class="nav-item"><a class="nav-link" href="#survey" aria-controls="survey" role="tab" data-bs-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Survey');?></a></li>
             <?php endif; ?>
 
-			<?php include(erLhcoreClassDesign::designtpl('lhdepartment/parts/tab_multiinclude.tpl.php'));?>
+            <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhdepartment','managedesign')) : ?>
+            <li role="presentation" class="nav-item"><a class="nav-link" href="#design" aria-controls="design" role="tab" data-bs-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Design');?></a></li>
+            <?php endif; ?>
+
+            <?php include(erLhcoreClassDesign::designtpl('lhdepartment/parts/tab_multiinclude.tpl.php'));?>
 		</ul>
 		
 		<div class="tab-content">
@@ -378,6 +382,7 @@
 
                     <div class="form-group">
                         <label><input type="checkbox" name="AutoAssignLowerLimit" value="on" <?php if (isset($departament->bot_configuration_array['auto_lower_limit']) && $departament->bot_configuration_array['auto_lower_limit'] == 1) : ?>checked="checked"<?php endif;?> /> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/operatorsbalancing','Assign chat to lowest number of chats having operator');?></label>
+                        <p><small><i>This setting applies also to Chat prioritized assignment</i></small></p>
                     </div>
 
                     <div class="form-group">
@@ -394,6 +399,42 @@
                         <input type="text" ng-non-bindable class="form-control form-control-sm" name="auto_delay_timeout" value="<?php echo htmlspecialchars(isset($departament->bot_configuration_array['auto_delay_timeout']) ? $departament->bot_configuration_array['auto_delay_timeout'] : '');?>" />
                     </div>
 
+                    <div class="form-group">
+                        <label><input type="checkbox" name="assign_by_priority" value="on" <?php if (isset($departament->bot_configuration_array['assign_by_priority']) && $departament->bot_configuration_array['assign_by_priority'] == 1) : ?>checked="checked"<?php endif;?> /> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/operatorsbalancing','Assign chat by operator priority');?></label>
+                        <p><small><i><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/operatorsbalancing','This has higher priority than assign chats to lower number of chats having operators');?></i></small></p>
+                    </div>
+
+                    <h6><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/operatorsbalancing','Prioritized assignment workflow');?></h6>
+
+                    <div class="form-group">
+                        <label><input type="checkbox" ng-init="AutoAssignPriorityActive=<?php if (isset($departament->bot_configuration_array['active_prioritized_assignment']) && $departament->bot_configuration_array['active_prioritized_assignment'] == 1) : ?>true<?php else : ?>false<?php endif;?>" ng-model="AutoAssignPriorityActive" name="active_prioritized_assignment" value="on" <?php if (isset($departament->bot_configuration_array['active_prioritized_assignment']) && $departament->bot_configuration_array['active_prioritized_assignment'] == 1) : ?>checked="checked"<?php endif;?> /> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/operatorsbalancing','Activate prioritized assignment');?></label>
+                    </div>
+
+                    <div ng-show="AutoAssignPriorityActive">
+
+                        <div class="form-group">
+                            <label><input type="checkbox" name="assign_by_priority_chat" value="on" <?php if (isset($departament->bot_configuration_array['assign_by_priority_chat']) && $departament->bot_configuration_array['assign_by_priority_chat'] == 1) : ?>checked="checked"<?php endif;?> /> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/operatorsbalancing','Assign chat by operator priority also');?></label>
+                            <p><small><i><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/operatorsbalancing','This has higher priority than assign chats to lower number of chats having operators');?></i></small></p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/operatorsbalancing','Minimum agent assignment priority');?></label>
+                                <input type="text" ng-non-bindable class="form-control form-control-sm" name="min_agent_priority" value="<?php echo htmlspecialchars(isset($departament->bot_configuration_array['min_agent_priority']) ? $departament->bot_configuration_array['min_agent_priority'] : '0');?>" />
+                            </div>
+                            <div class="col-4">
+                                <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/operatorsbalancing','Minimum chat priority for it being processed with prioritized assignment workflow');?></label>
+                                <input type="text" ng-non-bindable class="form-control form-control-sm" name="min_chat_priority" value="<?php echo htmlspecialchars(isset($departament->bot_configuration_array['min_chat_priority']) ? $departament->bot_configuration_array['min_chat_priority'] : '0');?>" />
+                            </div>
+                            <div class="col-4">
+                                <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/operatorsbalancing','Maximum chat priority for it being processed with prioritized assignment workflow');?></label>
+                                <input type="text" ng-non-bindable class="form-control form-control-sm" name="max_chat_priority" value="<?php echo htmlspecialchars(isset($departament->bot_configuration_array['max_chat_priority']) ? $departament->bot_configuration_array['max_chat_priority'] : '0');?>" />
+                            </div>
+                        </div>
+
+                    </div>
+
+
 				</div> 
 		    </div>
 			<?php endif;?>
@@ -406,6 +447,12 @@
 			<div role="tabpanel" class="tab-pane" id="survey">
                 <?php include(erLhcoreClassDesign::designtpl('lhdepartment/parts/survey_configuration.tpl.php'));?>
 		    </div>
+            <?php endif; ?>
+
+            <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhdepartment','managedesign')) : ?>
+                <div role="tabpanel" class="tab-pane" id="design">
+                    <?php include(erLhcoreClassDesign::designtpl('lhdepartment/parts/design_configuration.tpl.php'));?>
+                </div>
             <?php endif; ?>
 
 			<div role="tabpanel" class="tab-pane" id="miscellaneous">

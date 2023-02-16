@@ -726,7 +726,7 @@ class erLhcoreClassChatWebhookIncoming {
                     'transfer_if_na',
                     'transfer_timeout_ts',
                     'transfer_timeout_ac',
-                    'priority'
+                    'priority',
                     'is_visitor_initiate',
                     'session_score',
                 )));

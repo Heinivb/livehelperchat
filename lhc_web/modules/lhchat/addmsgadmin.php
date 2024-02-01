@@ -74,6 +74,7 @@ if (trim($form->msg) != '')
     	        $msg->user_id = $messageUserId;
     	        $msg->time = time();
     	        $msg->name_support = $userData->name_support;
+                $msg->del_st = erLhcoreClassModelmsg::STATUS_SENT;
 
                 if ($msg->user_id > 0 && $asChatOwner == true) {
                     $messageUserId = $msg->user_id = $Chat->user_id;
@@ -104,6 +105,7 @@ if (trim($form->msg) != '')
     	            erLhcoreClassTranslate::translateChatMsgOperator($Chat, $msg);
     	        }
 
+                \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => $Chat));
                 erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_msg_admin_saved',array('msg' => & $msg,'chat' => & $Chat));
 
                 if (isset($_POST['whisper'])) {
@@ -148,6 +150,10 @@ if (trim($form->msg) != '')
                     if (!$whisper && $Chat->status != erLhcoreClassModelChat::STATUS_CLOSED_CHAT) {
                         $Chat->has_unread_op_messages = 1;
                         $updateFields[] = 'has_unread_op_messages';
+                        if ($Chat->status_sub_sub == erLhcoreClassModelChat::STATUS_SUB_SUB_MSG_DELIVERED) {
+                            $Chat->status_sub_sub = erLhcoreClassModelChat::STATUS_SUB_SUB_DEFAULT;
+                            $updateFields[] = 'status_sub_sub';
+                        }
                     }
 
     	        	if (!$whisper && $Chat->unread_op_messages_informed != 0) {

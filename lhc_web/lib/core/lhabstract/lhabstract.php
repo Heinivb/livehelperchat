@@ -48,6 +48,10 @@ class erLhcoreClassAbstract
                         $ngModel .= " maxlength=\"{$attr['maxlength']}\" ";
                     }
 
+                    if (isset($attr['list_identifier'])) {
+                        $ngModel .= " list=\"{$attr['list_identifier']}\" ";
+                    }
+
                     $nameInputPrepend = (isset($attr['direct_name']) && $attr['direct_name'] == true) ? '' : 'AbstractInput_';
 
                     return '<input class="form-control form-control-sm' . (isset($attr['css_class']) ? ' ' . $attr['css_class'] : '') . '" ' . $ngModel . ' name="' . $nameInputPrepend . $name . '" type="' . $attr['type'] . '" value="' . htmlspecialchars((string)$value) . '" />';
@@ -269,10 +273,19 @@ class erLhcoreClassAbstract
         }
     }
 
-    public static function validateInput(& $object)
+    public static function validateInput(& $object, $fieldsToValidate = [])
     {
         $definition = array();
         $fields = $object->getFields();
+
+        if (!empty($fieldsToValidate)) {
+            $fieldsNew = [];
+            foreach ($fieldsToValidate as $fieldToValidate) {
+                $fieldsNew[$fieldToValidate] = $fields[$fieldToValidate];
+            }
+            $fields = $fieldsNew;
+        }
+
         foreach ($fields as $key => $field) {
 
             if (isset($field['multilanguage']) && $field['multilanguage'] == true) {

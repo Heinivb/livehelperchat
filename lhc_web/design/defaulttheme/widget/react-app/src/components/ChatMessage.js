@@ -1,10 +1,13 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 import parse, { domToReact } from 'html-react-parser';
 import { connect } from "react-redux";
 import { updateTriggerClicked, subscribeNotifications, parseScript } from "../actions/chatActions";
 import { withTranslation } from 'react-i18next';
 import { helperFunctions } from "../lib/helperFunctions";
 import ChatModal from './ChatModal';
+const InlineSurvey = React.lazy(() => import('./InlineSurvey'));
+const InlineIframe = React.lazy(() => import('./InlineIframe'));
+
 
 class ChatMessage extends PureComponent {
 
@@ -253,8 +256,9 @@ class ChatMessage extends PureComponent {
         var messages = parse(this.props.msg['msg'], {
 
             replace: domNode => {
-                if (domNode.attribs) {
 
+                if (domNode.attribs) {
+                    
                     var cloneAttr = Object.assign({}, domNode.attribs);
 
                     if (domNode.attribs.class) {
@@ -323,6 +327,10 @@ class ChatMessage extends PureComponent {
                             return <select {...domNode.attribs} onChange={(e) => this.abstractClick(cloneAttr, e)} >{domToReact(domNode.children)}</select>
                         }
 
+                    } else if (domNode.name && domNode.name === 'inlineiframe') {
+                        return <Suspense fallback="..."><InlineIframe {...domNode.attribs} updateMessage={(id) => this.props.updateMessage(id, this) }/></Suspense>;
+                    } else if (domNode.name && domNode.name === 'inlinesurvey') {
+                        return <Suspense fallback="..."><InlineSurvey {...domNode.attribs} surveyOptions={domNode.children} /></Suspense>;
                     } else if (domNode.name && domNode.name === 'input') {
 
                         if (domNode.attribs.type && domNode.attribs.type == 'checkbox' && cloneAttr.onchange) {

@@ -47,6 +47,10 @@ class erLhAbstractModelAutoResponderChat
                 $msg->name_support = $this->chat->user !== false ? $this->chat->user->name_support : ($this->auto_responder->operator != '' ? $this->auto_responder->operator : erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat', 'Live Support'));
                 $msg->user_id = $this->chat->user_id > 0 ? $this->chat->user_id : - 2;
                 $msg->time = time();
+
+                \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => $this->chat));
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_msg_admin_saved', array('msg' => & $msg, 'chat' => & $this->chat));
+
                 erLhcoreClassChat::getSession()->save($msg);
 
                 erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.web_add_msg_admin', array('msg' => & $msg, 'chat' => & $this->chat));
@@ -68,12 +72,15 @@ class erLhAbstractModelAutoResponderChat
             if ((empty($languagesIgnore) || empty(array_intersect($chatLanguages,$languagesIgnore))) && erLhcoreClassModelSpeechUserLanguage::getCount(array('filterlor' => array('language' => $chatLanguages),'filter' => array('user_id' => $this->chat->user_id))) > 0) {
 
                 $msg = new erLhcoreClassModelmsg();
-                $msg->msg = erLhcoreClassGenericBotWorkflow::translateMessage(trim($this->auto_responder->multilanguage_message), array('chat' => $this->chat));
+                $msg->msg = erLhcoreClassGenericBotWorkflow::translateMessage(trim($this->auto_responder->multilanguage_message), array('chat' => $this->chat, 'args' => ['chat' => $this->chat]));
                 $msg->chat_id = $this->chat->id;
                 $msg->name_support = $this->chat->user !== false ? $this->chat->user->name_support : ($this->auto_responder->operator != '' ? $this->auto_responder->operator : erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat', 'Live Support'));
                 $msg->user_id = $this->chat->user_id > 0 ? $this->chat->user_id : - 2;
                 $msg->time = time();
                 erLhcoreClassChat::getSession()->save($msg);
+
+                \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => $this->chat));
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_msg_admin_saved', array('msg' => & $msg, 'chat' => & $this->chat));
 
                 erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.web_add_msg_admin', array('msg' => & $msg, 'chat' => & $this->chat));
 
@@ -135,12 +142,13 @@ class erLhAbstractModelAutoResponderChat
 
                                 if (trim($this->auto_responder->{'timeout_message_' . $i}) != '') {
                                     $msg = new erLhcoreClassModelmsg();
-                                    $msg->msg = erLhcoreClassGenericBotWorkflow::translateMessage(trim($this->auto_responder->{'timeout_message_' . $i}), array('chat' => $this->chat));
+                                    $msg->msg = erLhcoreClassGenericBotWorkflow::translateMessage(trim($this->auto_responder->{'timeout_message_' . $i}), array('chat' => $this->chat, 'args' => ['chat' => $this->chat]));
                                     $msg->chat_id = $this->chat->id;
                                     $msg->name_support = $name_support;
                                     $msg->user_id = - 2;
                                     $msg->time = time();
 
+                                    \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
                                     erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
 
                                     erLhcoreClassChat::getSession()->save($msg);
@@ -193,6 +201,7 @@ class erLhAbstractModelAutoResponderChat
                         $msg->user_id = - 1;
                         $msg->time = time();
 
+                        \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
                         erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
 
                         erLhcoreClassChat::getSession()->save($msg);
@@ -216,6 +225,7 @@ class erLhAbstractModelAutoResponderChat
                             $msg->user_id = - 1;
                             $msg->time = time();
 
+                            \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
                             erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
 
                             erLhcoreClassChat::getSession()->save($msg);
@@ -246,12 +256,13 @@ class erLhAbstractModelAutoResponderChat
 
                                 if (!empty(trim($this->auto_responder->{'timeout_reply_message_' . $i}))){
                                     $msg = new erLhcoreClassModelmsg();
-                                    $msg->msg = erLhcoreClassGenericBotWorkflow::translateMessage(trim($this->auto_responder->{'timeout_reply_message_' . $i}), array('chat' => $this->chat));
+                                    $msg->msg = erLhcoreClassGenericBotWorkflow::translateMessage(trim($this->auto_responder->{'timeout_reply_message_' . $i}), array('chat' => $this->chat, 'args' => ['chat' => $this->chat]));
                                     $msg->chat_id = $this->chat->id;
                                     $msg->name_support = $name_support;
                                     $msg->user_id = $this->chat->user_id > 0 ? $this->chat->user_id : - 2;
                                     $msg->time = time();
 
+                                    \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
                                     erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
 
                                     erLhcoreClassChat::getSession()->save($msg);
@@ -283,12 +294,13 @@ class erLhAbstractModelAutoResponderChat
                                 if (!empty($this->auto_responder->{'timeout_op_reply_message_' . $i}))
                                 {
                                     $msg = new erLhcoreClassModelmsg();
-                                    $msg->msg = erLhcoreClassGenericBotWorkflow::translateMessage(trim($this->auto_responder->{'timeout_op_reply_message_' . $i}), array('chat' => $this->chat));
+                                    $msg->msg = erLhcoreClassGenericBotWorkflow::translateMessage(trim($this->auto_responder->{'timeout_op_reply_message_' . $i}), array('chat' => $this->chat, 'args' => ['chat' => $this->chat]));
                                     $msg->chat_id = $this->chat->id;
                                     $msg->name_support = $name_support;
                                     $msg->user_id = $this->chat->user_id > 0 ? $this->chat->user_id : - 2;
                                     $msg->time = time();
 
+                                    \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
                                     erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
 
                                     erLhcoreClassChat::getSession()->save($msg);
@@ -315,20 +327,24 @@ class erLhAbstractModelAutoResponderChat
                     }
 
                     for ($i = 5; $i >= 1; $i--) {
-                        if ($this->active_send_status < $i && (!empty($this->auto_responder->{'timeout_hold_message_' . $i}) || $this->auto_responder->hasMeta($this->chat, 'onhold')) && $this->auto_responder->{'wait_timeout_hold_' . $i} > 0 && (time() - $this->chat->last_op_msg_time > $this->auto_responder->{'wait_timeout_hold_' . $i}) ) {
+
+                        $this->auto_responder->{'timeout_hold_message_' . $i . '_translated'}; // Init magic variables
+
+                        if ($this->active_send_status < $i && (!empty($this->auto_responder->{'timeout_hold_message_' . $i . '_translated'}) || $this->auto_responder->hasMeta($this->chat, 'onhold')) && $this->auto_responder->{'wait_timeout_hold_' . $i} > 0 && (time() - $this->chat->last_op_msg_time > $this->auto_responder->{'wait_timeout_hold_' . $i}) ) {
 
                             $this->active_send_status = $i;
                             $this->saveThis();
                             $name_support = $this->chat->user !== false ? $this->chat->user->name_support : ($this->auto_responder->operator != '' ? $this->auto_responder->operator : erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat', 'Live Support'));
 
-                            if (!empty($this->auto_responder->{'timeout_hold_message_' . $i})) {
+                            if (!empty($this->auto_responder->{'timeout_hold_message_' . $i . '_translated'})) {
                                 $msg = new erLhcoreClassModelmsg();
-                                $msg->msg = erLhcoreClassGenericBotWorkflow::translateMessage(trim($this->auto_responder->{'timeout_hold_message_' . $i}), array('chat' => $this->chat));
+                                $msg->msg = erLhcoreClassGenericBotWorkflow::translateMessage(trim($this->auto_responder->{'timeout_hold_message_' . $i . '_translated'}), array('chat' => $this->chat, 'args' => ['chat' => $this->chat]));
                                 $msg->chat_id = $this->chat->id;
                                 $msg->name_support = $name_support;
                                 $msg->user_id = $this->chat->user_id > 0 ? $this->chat->user_id : - 2;
                                 $msg->time = time();
 
+                                \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
                                 erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
 
                                 erLhcoreClassChat::getSession()->save($msg);

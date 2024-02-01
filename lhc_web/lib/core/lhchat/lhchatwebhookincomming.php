@@ -501,214 +501,278 @@ class erLhcoreClassChatWebhookIncoming {
             )
         ));
 
-        $continueIfHasChat = false;
+        $db = ezcDbInstance::get();
 
-        if ($eChat !== false && ($chat = $eChat->chat) !== false) {
-            $continueIfHasChat = ($chat->status != erLhcoreClassModelChat::STATUS_CLOSED_CHAT) || ($chat->status == erLhcoreClassModelChat::STATUS_CLOSED_CHAT && !(!isset($conditions['chat_status']) || $conditions['chat_status'] == ""));
-        }
+        if ($eChat === false) {
 
-        if ($continueIfHasChat == true && $eChat !== false && ($chat = $eChat->chat) !== false ) {
+            $db->beginTransaction();
 
             $db = ezcDbInstance::get();
+            $stmt = $db->prepare("INSERT IGNORE INTO lh_chat_incoming (`chat_external_id`,`incoming_id`) VALUES (:chat_external_id,:incoming_id)");
+            $stmt->bindValue( ':chat_external_id',$chatIdExternal);
+            $stmt->bindValue( ':incoming_id',$incomingWebhook->id);
+            $stmt->execute();
+            $lastInsertId = $db->lastInsertId();
 
-            try {
+            if ($lastInsertId > 0) {
+                $eChat = new erLhcoreClassModelChatIncoming();
+                $eChat->chat_external_id = $chatIdExternal;
+                $eChat->incoming_id = $incomingWebhook->id;
+                $eChat->id = $lastInsertId;
+            } else {
+                $eChat = erLhcoreClassModelChatIncoming::findOne(array(
+                    'filter' => array(
+                        'chat_external_id' => $chatIdExternal,
+                        'incoming_id' => $incomingWebhook->id
+                    )
+                ));
+            }
 
-                $db->beginTransaction();
+            $db->commit();
+        }
 
-                $renotify = false;
+        try {
+            // Lock the record START
+            $db->beginTransaction();
 
-                if ($chat instanceof erLhcoreClassModelChat && $chat->status == erLhcoreClassModelChat::STATUS_CLOSED_CHAT) {
+            $eChat->syncAndLock();
 
-                    if (isset($conditions['chat_status']) && $conditions['chat_status'] == 'active' && $chat->user_id > 0) {
-                        $chat->status = erLhcoreClassModelChat::STATUS_ACTIVE_CHAT;
-                        $chat->status_sub_sub = 2; // Will be used to indicate that we have to show notification for this chat if it appears on list
-                    } else {
+            $continueIfHasChat = false;
 
-                        $chat->status = erLhcoreClassModelChat::STATUS_PENDING_CHAT;
-                        $chat->status_sub_sub = 2; // Will be used to indicate that we have to show notification for this chat if it appears on list
+            if ($eChat !== false && ($chat = $eChat->chat) !== false) {
+                $continueIfHasChat = ($chat->status != erLhcoreClassModelChat::STATUS_CLOSED_CHAT) || ($chat->status == erLhcoreClassModelChat::STATUS_CLOSED_CHAT && !(!isset($conditions['chat_status']) || $conditions['chat_status'] == ""));
+            }
 
-                        if (isset($conditions['reset_op']) && $conditions['reset_op'] == true) {
-                            $chat->user_id = 0;
-                        }
+            if ($continueIfHasChat == true && $eChat !== false && ($chat = $eChat->chat) !== false ) {
 
-                        $chat->pnd_time = time();
-                        $renotify = true;
+                $db = ezcDbInstance::get();
 
-                        if (isset($conditions['reset_dep']) && $conditions['reset_dep'] == true) {
-                            $chat->dep_id = $incomingWebhook->dep_id;
-                        }
-                    }
-                }
+                try {
 
-                if ($typeMessage == 'img' || $typeMessage == 'img_2' || $typeMessage == 'img_3' || $typeMessage == 'img_4' || $typeMessage == 'attachments') {
-                    if (isset($conditions['msg_cond_' . $typeMessage . '_url_decode']) && $conditions['msg_cond_' . $typeMessage . '_url_decode'] != '') {
-                        $file = self::parseFilesDecode(array(
-                            'msg' => $payloadMessage,
-                            'url' => $conditions['msg_cond_' . $typeMessage . '_url_decode'],
-                            'body_post' => (isset($conditions['msg_cond_' . $typeMessage . '_url_decode_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_decode_content'] : ''),
-                            'response_location' => (isset($conditions['msg_cond_' . $typeMessage . '_url_decode_output']) ? $conditions['msg_cond_' . $typeMessage . '_url_decode_output'] : ''),
-                            'request_headers' => (isset($conditions['msg_cond_' . $typeMessage . '_url_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_headers_content'] : ''),
-                            'incoming_webhook' => $incomingWebhook,
-                            'remote_request_headers' => (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content'] : ''),
-                            'is_remote_location' =>  (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_location']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_location'] : ''),
-                            'file_name_attr' => (isset($conditions['msg_cond_' . $typeMessage . '_file_name']) ? $conditions['msg_cond_' . $typeMessage . '_file_name'] : '')
-                        ), $chat);
+                    $db->beginTransaction();
 
-                        if (!empty($file)) {
-                            $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] = $file;
-                        }
-                    } else if (isset($conditions['msg_' . $typeMessage . '_download']) && $conditions['msg_' . $typeMessage . '_download'] == true) {
-                        $file = self::parseFiles(
-                            self::extractAttribute(
-                                'msg_cond_' . $typeMessage . '_body',
-                                $conditions,
-                                $payloadMessage,
-                                (isset($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']]) ? $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] : '')),
-                            $chat);
-                        if (!empty($file)) {
-                            self::array_set_value($payloadMessage, $conditions['msg_cond_' . $typeMessage . '_body'], $file);
-                        }
-                    } else if (
-                        // base64 encoded file
-                        strpos($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']], 'https://') === false &&
-                        strpos($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']], 'http://') === false) {
-                        $file = self::parseFilesBase64(array(
-                            'body' => $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']],
-                            'file_name' => $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_file_name']]), $chat);
-                        if (!empty($file)) {
-                            $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] = $file;
+                    $renotify = false;
+
+                    if ($chat instanceof erLhcoreClassModelChat && $chat->status == erLhcoreClassModelChat::STATUS_CLOSED_CHAT) {
+
+                        if (isset($conditions['chat_status']) && $conditions['chat_status'] == 'active' && $chat->user_id > 0) {
+                            $chat->status = erLhcoreClassModelChat::STATUS_ACTIVE_CHAT;
+                            $chat->status_sub_sub = erLhcoreClassModelChat::STATUS_SUB_SUB_CLOSED; // Will be used to indicate that we have to show notification for this chat if it appears on list
+                        } else {
+
+                            $chat->status = erLhcoreClassModelChat::STATUS_PENDING_CHAT;
+                            $chat->status_sub_sub = erLhcoreClassModelChat::STATUS_SUB_SUB_CLOSED; // Will be used to indicate that we have to show notification for this chat if it appears on list
+
+                            if (isset($conditions['reset_op']) && $conditions['reset_op'] == true) {
+                                $chat->user_id = 0;
+                            }
+
+                            $chat->pnd_time = time();
+                            $renotify = true;
+
+                            if (isset($conditions['reset_dep']) && $conditions['reset_dep'] == true) {
+                                $chat->dep_id = $incomingWebhook->dep_id;
+                            }
                         }
                     }
-                }
 
-                $msg = new erLhcoreClassModelmsg();
-                $msg->msg = self::extractMessageBody($msgBody, $payloadMessage);
-                $msg->chat_id = $chat->id;
-                $msg->user_id = $sender;
+                    if ($typeMessage == 'img' || $typeMessage == 'img_2' || $typeMessage == 'img_3' || $typeMessage == 'img_4' || $typeMessage == 'attachments') {
+                        if (isset($conditions['msg_cond_' . $typeMessage . '_url_decode']) && $conditions['msg_cond_' . $typeMessage . '_url_decode'] != '') {
+                            $file = self::parseFilesDecode(array(
+                                'msg' => $payloadMessage,
+                                'url' => $conditions['msg_cond_' . $typeMessage . '_url_decode'],
+                                'body_post' => (isset($conditions['msg_cond_' . $typeMessage . '_url_decode_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_decode_content'] : ''),
+                                'response_location' => (isset($conditions['msg_cond_' . $typeMessage . '_url_decode_output']) ? $conditions['msg_cond_' . $typeMessage . '_url_decode_output'] : ''),
+                                'request_headers' => (isset($conditions['msg_cond_' . $typeMessage . '_url_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_headers_content'] : ''),
+                                'incoming_webhook' => $incomingWebhook,
+                                'remote_request_headers' => (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content'] : ''),
+                                'is_remote_location' =>  (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_location']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_location'] : ''),
+                                'file_name_attr' => (isset($conditions['msg_cond_' . $typeMessage . '_file_name']) ? $conditions['msg_cond_' . $typeMessage . '_file_name'] : '')
+                            ), $chat);
+
+                            if (!empty($file)) {
+                                $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] = $file;
+                            }
+
+                        } else if (isset($conditions['msg_' . $typeMessage . '_download']) && $conditions['msg_' . $typeMessage . '_download'] == true) {
+
+                            $overrideAttributes = [];
+
+                            if ((isset($conditions['msg_cond_' . $typeMessage . '_file_name']) ? $conditions['msg_cond_' . $typeMessage . '_file_name'] : '')){
+                                $fileNameAttribute = erLhcoreClassGenericBotActionRestapi::extractAttribute($payloadMessage, $conditions['msg_cond_' . $typeMessage . '_file_name'], '.');
+                                if ($fileNameAttribute['found'] == true && is_string($fileNameAttribute['value']) && $fileNameAttribute['value'] !='') {
+                                    $overrideAttributes['upload_name'] = $fileNameAttribute['value'];
+                                }
+                            }
+
+                            $file = self::parseFiles(
+                                self::extractAttribute(
+                                    'msg_cond_' . $typeMessage . '_body',
+                                    $conditions,
+                                    $payloadMessage,
+                                    (isset($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']]) ? $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] : '')),
+                                $chat,
+                                [],
+                                $overrideAttributes
+                            );
+
+                            if (!empty($file)) {
+                                self::array_set_value($payloadMessage, $conditions['msg_cond_' . $typeMessage . '_body'], $file);
+                            }
+
+                        } else if (
+                            // base64 encoded file
+                            strpos($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']], 'https://') === false &&
+                            strpos($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']], 'http://') === false) {
+                            $file = self::parseFilesBase64(array(
+                                'body' => $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']],
+                                'file_name' => $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_file_name']]), $chat);
+                            if (!empty($file)) {
+                                $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] = $file;
+                            }
+                        }
+                    }
+
+                    $msg = new erLhcoreClassModelmsg();
+                    $msg->msg = self::extractMessageBody($msgBody, $payloadMessage);
+                    $msg->chat_id = $chat->id;
+                    $msg->user_id = $sender;
 
                 if($chat->is_visitor_initiate == 1){
                     $chat->is_visitor_initiate = 0;
                     $chat->session_score = 0;
                 }
 
-                $timeValue = self::extractAttribute('time', $conditions, $payloadMessage, time());
-                $msg->time = is_numeric($timeValue) ? $timeValue : strtotime($timeValue);
-
-                if ($msg->msg != '') {
-                    erLhcoreClassChat::getSession()->save($msg);
-
-                    $chat->last_user_msg_time = $msg->time;
-                    $chat->last_msg_id = $msg->id;
-                }
-
-                if ($renotify == true) {
-
-                    $department = $chat->department;
-
-                    if ($department !== false) {
-                        $chat->priority = $department->priority;
-                    }
-
-                    if ($department !== false && $department->department_transfer_id > 0) {
-                        if (
-                            !(isset($department->bot_configuration_array['off_if_online']) && $department->bot_configuration_array['off_if_online'] == 1 && erLhcoreClassChat::isOnline($chat->dep_id,false, array('exclude_bot' => true, 'exclude_online_hours' => true)) === true) &&
-                            !(isset($department->bot_configuration_array['transfer_min_priority']) && is_numeric($department->bot_configuration_array['transfer_min_priority']) && (int)$department->bot_configuration_array['transfer_min_priority'] > $chat->priority)
-                        ) {
-                            $chat->transfer_if_na = 1;
-                            $chat->transfer_timeout_ts = time();
-                            $chat->transfer_timeout_ac = $department->transfer_timeout;
-                        }
-                    }
+                    $timeValue = self::extractAttribute('time', $conditions, $payloadMessage, time());
+                    $msg->time = is_numeric($timeValue) ? $timeValue : strtotime($timeValue);
 
                     if ($msg->msg != '') {
-                        erLhcoreClassChatValidator::setBot($chat, array('msg' => $msg));
-                    } else {
-                        erLhcoreClassChatValidator::setBot($chat, array('ignore_default' => ($typeMessage == 'button')));
+                        erLhcoreClassChat::getSession()->save($msg);
+
+                        $chat->last_user_msg_time = $msg->time;
+                        $chat->last_msg_id = $msg->id;
                     }
-                }
 
-                // Create auto responder if there is none
-                if ($chat->auto_responder === false) {
-                    $responder = erLhAbstractModelAutoResponder::processAutoResponder($chat);
-                    if ($responder instanceof erLhAbstractModelAutoResponder) {
-                        $responderChat = new erLhAbstractModelAutoResponderChat();
-                        $responderChat->auto_responder_id = $responder->id;
-                        $responderChat->chat_id = $chat->id;
-                        $responderChat->wait_timeout_send = 1 - $responder->repeat_number;
-                        $responderChat->saveThis();
+                    if ($renotify == true) {
 
-                        $chat->auto_responder_id = $responderChat->id;
-                        $chat->auto_responder = $responderChat;
-                    }
-                }
+                        $department = $chat->department;
 
-                $chatVariables = $chat->chat_variables_array;
+                        if ($department !== false) {
+                            $chat->priority = $department->priority;
+                        }
 
-                // Auto responder if department is offline
-                if ($chat->auto_responder !== false) {
+                        $priority = \erLhcoreClassChatValidator::getPriorityByAdditionalData($chat, array('detailed' => true));
 
-                    $responder = $chat->auto_responder->auto_responder;
+                        if ($priority !== false && $priority['priority'] > $chat->priority) {
+                            $chat->priority = $priority['priority'];
+                        }
+                        
+                        if ($priority !== false && $priority['dep_id'] > 0) {
+                            $chat->dep_id = $priority['dep_id'];
+                            $chat->department = $department = erLhcoreClassModelDepartament::fetch($chat->dep_id);
+                        }
 
-                    if ($chat->status !== erLhcoreClassModelChat::STATUS_BOT_CHAT && is_object($responder) && $responder->offline_message != '' && !erLhcoreClassChat::isOnline($chat->dep_id, false, array(
-                            'online_timeout' => (int)erLhcoreClassModelChatConfig::fetch('sync_sound_settings')->data['online_timeout'],
-                            'ignore_user_status' => (int)erLhcoreClassModelChatConfig::fetch('ignore_user_status')->current_value,
-                            'exclude_bot' => true
-                        ))) {
-                        if (!isset($chatVariables['iwh_timeout']) || $chatVariables['iwh_timeout'] < time() - (int)259200) {
-                            $chatVariables['iwh_timeout'] = time();
-                            $chat->chat_variables_array = $chatVariables;
-                            $chat->chat_variables = json_encode($chatVariables);
+                        if ($department !== false && $department->department_transfer_id > 0) {
+                            if (
+                                !(isset($department->bot_configuration_array['off_if_online']) && $department->bot_configuration_array['off_if_online'] == 1 && erLhcoreClassChat::isOnline($chat->dep_id,false, array('exclude_bot' => true, 'exclude_online_hours' => true)) === true) &&
+                                !(isset($department->bot_configuration_array['transfer_min_priority']) && is_numeric($department->bot_configuration_array['transfer_min_priority']) && (int)$department->bot_configuration_array['transfer_min_priority'] > $chat->priority)
+                            ) {
+                                $chat->transfer_if_na = 1;
+                                $chat->transfer_timeout_ts = time();
+                                $chat->transfer_timeout_ac = $department->transfer_timeout;
+                            }
+                        }
 
-                            $msgResponder = new erLhcoreClassModelmsg();
-                            $msgResponder->msg = trim($responder->offline_message);
-                            $msgResponder->chat_id = $chat->id;
-                            $msgResponder->name_support = $responder->operator != '' ? $responder->operator : erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat', 'Live Support');
-                            $msgResponder->user_id = -2;
-                            $msgResponder->time = time() + 1;
-                            erLhcoreClassChat::getSession()->save($msgResponder);
-
-                            $chat->last_msg_id = $msgResponder->id;
-
-
+                        if ($msg->msg != '') {
+                            erLhcoreClassChatValidator::setBot($chat, array('msg' => $msg));
+                        } else {
+                            erLhcoreClassChatValidator::setBot($chat, array('ignore_default' => ($typeMessage == 'button')));
                         }
                     }
-                }
 
-                if ($chat->nick == 'Visitor' || $chat->nick == '') {
-                    $chat->nick = self::extractAttribute('nick', $conditions, $payloadMessage, $chat->nick);
-                }
+                    // Create auto responder if there is none
+                    if ($chat->auto_responder === false) {
+                        $responder = erLhAbstractModelAutoResponder::processAutoResponder($chat);
+                        if ($responder instanceof erLhAbstractModelAutoResponder) {
+                            $responderChat = new erLhAbstractModelAutoResponderChat();
+                            $responderChat->auto_responder_id = $responder->id;
+                            $responderChat->chat_id = $chat->id;
+                            $responderChat->wait_timeout_send = 1 - $responder->repeat_number;
+                            $responderChat->saveThis();
 
-                if (isset($conditions['nick_pregmatch']) && $conditions['nick_pregmatch'] != '' && $chat->nick != 'Visitor') {
-                    if (!preg_match($conditions['nick_pregmatch'], $chat->nick)) {
-                        $chat->nick = 'Visitor';
+                            $chat->auto_responder_id = $responderChat->id;
+                            $chat->auto_responder = $responderChat;
+                        }
                     }
-                }
 
-                if ($chat->nick == 'Visitor') {
-                    $chat->nick = self::extractAttribute('nick', $conditions, $payloadAll, $chat->nick);
-                }
+                    $chatVariables = $chat->chat_variables_array;
 
-                $chat->phone = self::extractAttribute('phone', $conditions, $payloadMessage, $chat->phone);
+                    // Auto responder if department is offline
+                    if ($chat->auto_responder !== false) {
 
-                if ($sender == 0) {
-                    $ip = self::extractAttribute('ip', $conditions, $payloadMessage, $chat->ip);
+                        $responder = $chat->auto_responder->auto_responder;
 
-                    if ($ip != '' && $chat->ip != $ip) {
-                        $chat->ip = $ip;
-                        erLhcoreClassModelChat::detectLocation($chat, "");
+                        if ($chat->status !== erLhcoreClassModelChat::STATUS_BOT_CHAT && is_object($responder) && $responder->offline_message != '' && !erLhcoreClassChat::isOnline($chat->dep_id, false, array(
+                                'online_timeout' => (int)erLhcoreClassModelChatConfig::fetch('sync_sound_settings')->data['online_timeout'],
+                                'ignore_user_status' => (int)erLhcoreClassModelChatConfig::fetch('ignore_user_status')->current_value,
+                                'exclude_bot' => true
+                            ))) {
+                            if (!isset($chatVariables['iwh_timeout']) || $chatVariables['iwh_timeout'] < time() - (int)259200) {
+                                $chatVariables['iwh_timeout'] = time();
+                                $chat->chat_variables_array = $chatVariables;
+                                $chat->chat_variables = json_encode($chatVariables);
+
+                                $msgResponder = new erLhcoreClassModelmsg();
+                                $msgResponder->msg = trim($responder->offline_message);
+                                $msgResponder->chat_id = $chat->id;
+                                $msgResponder->name_support = $responder->operator != '' ? $responder->operator : erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat', 'Live Support');
+                                $msgResponder->user_id = -2;
+                                $msgResponder->time = time() + 1;
+                                erLhcoreClassChat::getSession()->save($msgResponder);
+
+                                $chat->last_msg_id = $msgResponder->id;
+
+
+                            }
+                        }
                     }
-                }
 
-                // Some agents triggers to terminate LHC, because we think it's a bot
-                // GoogleBusinessMessage Scenario
-                $_SERVER['HTTP_USER_AGENT'] = 'API, Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36';
+                    if ($chat->nick == 'Visitor' || $chat->nick == '') {
+                        $chat->nick = self::extractAttribute('nick', $conditions, $payloadMessage, $chat->nick);
+                    }
 
-                // Store online visitor record so previous chat workflow works
-                self::assignOnlineVisitor($chat, $eChat);
+                    if (isset($conditions['nick_pregmatch']) && $conditions['nick_pregmatch'] != '' && $chat->nick != 'Visitor') {
+                        if (!preg_match($conditions['nick_pregmatch'], $chat->nick)) {
+                            $chat->nick = 'Visitor';
+                        }
+                    }
+
+                    if ($chat->nick == 'Visitor') {
+                        $chat->nick = self::extractAttribute('nick', $conditions, $payloadAll, $chat->nick);
+                    }
+
+                    $chat->phone = self::extractAttribute('phone', $conditions, $payloadMessage, $chat->phone);
+
+                    if ($sender == 0) {
+                        $ip = self::extractAttribute('ip', $conditions, $payloadMessage, $chat->ip);
+
+                        if ($ip != '' && $chat->ip != $ip) {
+                            $chat->ip = $ip;
+                            erLhcoreClassModelChat::detectLocation($chat, "");
+                        }
+                    }
+
+                    // Some agents triggers to terminate LHC, because we think it's a bot
+                    // GoogleBusinessMessage Scenario
+                    $_SERVER['HTTP_USER_AGENT'] = 'API, Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36';
+
+                    // Store online visitor record so previous chat workflow works
+                    self::assignOnlineVisitor($chat, $eChat);
 
                 $chat->updateThis(array('update' => array(
                     'country_code',
                     'country_name',
+                    'dep_id',
                     'lat',
                     'lon',
                     'city',
@@ -727,448 +791,472 @@ class erLhcoreClassChatWebhookIncoming {
                     'transfer_timeout_ts',
                     'transfer_timeout_ac',
                     'priority',
+                    'auto_responder_id',
                     'is_visitor_initiate',
                     'session_score',
                 )));
 
-                if (empty($eChat->payload)) {
-                    $eChat->payload = json_encode($payloadAll);
-                }
-
-                $eChat->utime = time();
-                $eChat->updateThis();
-
-                $chat->incoming_chat = $eChat;
-
-                $db->commit();
-            } catch (Exception $e) {
-                $db->rollback();
-                throw new Exception($e);
-            }
-
-            if (isset($msgResponder))
-            {
-                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.web_add_msg_admin', array(
-                    'chat' => & $chat,
-                    'msg' => $msgResponder
-                ));
-            }
-
-            // Button payload message type
-            if ($typeMessage == 'button') {
-                $messageData = erLhcoreClassGenericBotActionRestapi::extractAttribute($payloadMessage, $buttonBody, '.');
-                if ($messageData['found'] == true && $messageData['value'] != '') {
-
-                    $buttonPayload = $messageData['value'];
-
-                    if (strpos($buttonPayload, 'trigger__') === 0) {
-                        $payloadParts = explode('__',$buttonPayload);
-                        $message = erLhcoreClassModelmsg::fetch($payloadParts[3]);
-                        self::sendBotResponse($chat, $message, array(
-                            'type' => 'trigger',
-                            'payload' => $payloadParts[1] . '__' . $payloadParts[2],
-                            'msg_last_id' => $chat->last_msg_id // Message visitor is clicking is not necessary the last message
-                        ));
-                    } else if (strpos($buttonPayload, 'bpayload__') === 0) {
-                        $payloadParts = explode('__',$buttonPayload);
-                        $message = erLhcoreClassModelmsg::fetch($payloadParts[3]);
-                        self::sendBotResponse($chat, $message, array(
-                            'type' => 'payload',
-                            'payload' => $payloadParts[1] . '__' . $payloadParts[2],
-                            'msg_last_id' => $chat->last_msg_id // Message visitor is clicking is not necessary the last message
-                        ));
-                    } else {
-
-                        $event = erLhcoreClassGenericBotWorkflow::findEvent($buttonPayload, $chat->gbot_id, 0, array(), array('dep_id' => $chat->dep_id));
-
-                        if (!($event instanceof erLhcoreClassModelGenericBotTriggerEvent)){
-                            $event = erLhcoreClassGenericBotWorkflow::findTextMatchingEvent($buttonPayload, $chat->gbot_id, array(), array('dep_id' => $chat->dep_id));
-                        }
-
-                        if ($event instanceof erLhcoreClassModelGenericBotTriggerEvent){
-                            erLhcoreClassGenericBotWorkflow::processTrigger($chat, $event->trigger);
-                        } else {
-                            // Send default message for unknown button click
-                            $bot = erLhcoreClassModelGenericBotBot::fetch($chat->gbot_id);
-
-                            $trigger = erLhcoreClassModelGenericBotTrigger::findOne(array('filterin' => array('bot_id' => $bot->getBotIds()), 'filter' => array('default_unknown_btn' => 1)));
-
-                            if ($trigger instanceof erLhcoreClassModelGenericBotTrigger) {
-                                erLhcoreClassGenericBotWorkflow::processTrigger($chat, $trigger, true, array('args' => array('msg_text' => $buttonPayload)));
-                            }
-                       }
-
-                       self::sendBotResponse($chat, $msg, array('msg_last_id' => ($msg->id > 0 ? $msg->id : $chat->last_msg_id), 'init' => true));
+                    if (empty($eChat->payload)) {
+                        $eChat->payload = json_encode($payloadAll);
                     }
+
+                    $eChat->utime = time();
+                    $eChat->updateThis();
+
+                    $chat->incoming_chat = $eChat;
+
+                    $db->commit();
+                } catch (Exception $e) {
+                    $db->rollback();
+                    throw new Exception($e);
                 }
 
-            } else {
-                self::sendBotResponse($chat, $msg, array('msg_last_id' => ($msg->id > 0 ? $msg->id : $chat->last_msg_id), 'init' => $renotify));
-            }
+                // Release eChat record
+                $db->commit();
 
-            // Standard event on unread chat messages
-            if ($chat->has_unread_messages == 1 && $chat->last_user_msg_time < (time() - 5)) {
-                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.unread_chat', array(
-                    'chat' => & $chat
-                ));
-            }
-
-            // We dispatch same event as we were using desktop client, because it force admins and users to resync chat for new messages
-            // This allows NodeJS users to know about new message. In this particular case it's admin users
-            // If operator has opened chat instantly sync
-            if ($msg->id > 0) {
-
-                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.messages_added_passive', array(
-                    'chat' => & $chat,
-                    'msg' => $msg
-                ));
-
-                // If operator has closed a chat we need force back office sync
-                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.nodjshelper_notify_delay', array(
-                    'chat' => & $chat,
-                    'msg' => $msg
-                ));
-
-                if ($renotify == true) {
-                    // General module signal that it has received an sms
-                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.restart_chat',array(
+                if (isset($msgResponder))
+                {
+                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.web_add_msg_admin', array(
                         'chat' => & $chat,
-                        'msg' => $msg,
+                        'msg' => $msgResponder
                     ));
                 }
-            }
 
-        } else {
+                // Button payload message type
+                if ($typeMessage == 'button') {
+                    $messageData = erLhcoreClassGenericBotActionRestapi::extractAttribute($payloadMessage, $buttonBody, '.');
+                    if ($messageData['found'] == true && $messageData['value'] != '') {
 
-            $db = ezcDbInstance::get();
+                        $buttonPayload = $messageData['value'];
 
-            try {
-
-                $db->beginTransaction();
-
-                // Save chat
-                $chat = new erLhcoreClassModelChat();
-
-                $chat->nick = self::extractAttribute('nick', $conditions, $payloadMessage, 'Visitor');
-
-                // Perhaps it's first level attribute
-                if ($chat->nick == 'Visitor') {
-                    $chat->nick = self::extractAttribute('nick', $conditions, $payloadAll, 'Visitor');
-                }
-
-                if (isset($conditions['nick_pregmatch']) && $conditions['nick_pregmatch'] != '' && $chat->nick != 'Visitor') {
-                    if (!preg_match($conditions['nick_pregmatch'], $chat->nick)) {
-                        $chat->nick = 'Visitor';
-                    }
-                }
-
-                $chat->phone = self::extractAttribute('phone', $conditions, $payloadMessage);
-                $chat->email = self::extractAttribute('email', $conditions, $payloadMessage);
-
-                if ($sender == 0) {
-                    $ip = self::extractAttribute('ip', $conditions, $payloadMessage, $chat->ip);
-
-                    if ($ip != '' && $chat->ip != $ip) {
-                        $chat->ip = $ip;
-                        erLhcoreClassModelChat::detectLocation($chat, "");
-                    }
-                }
-
-                $chat->time = time();
-                $chat->pnd_time = time();
-                $chat->status = 0;
-                $chat->hash = erLhcoreClassChat::generateHash();
-                $chat->referrer = '';
-                $chat->session_referrer = '';
-                $chat->dep_id = $incomingWebhook->dep_id;
-                $chat->iwh_id = $incomingWebhook->id;
-
-                $chatVariables = [];
-
-                if (isset($conditions['add_field_value']) && $conditions['add_field_value'] != '') {
-                    $chatVariables['iwh_field'] = self::extractAttribute('add_field_value', $conditions, $payloadMessage, '');
-                }
-
-                if (isset($conditions['add_field_2_value']) && $conditions['add_field_2_value'] != '') {
-                    $chatVariables['iwh_field_2'] = self::extractAttribute('add_field_2_value', $conditions, $payloadMessage, '');
-                }
-
-                if (!empty($chatVariables)) {
-                    $chat->chat_variables = json_encode($chatVariables);
-                }
-
-                $chat->saveThis();
-                
-                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.webhook_incoming_chat_started', array(
-                    'webhook' => & $incomingWebhook,
-                    'data' => & $payloadAll,
-                    'chat' => & $chat
-                ));
-
-                if ($typeMessage == 'img' || $typeMessage == 'img_2' || $typeMessage == 'img_3' || $typeMessage == 'img_4' || $typeMessage == 'attachments') {
-                    if (isset($conditions['msg_cond_' . $typeMessage . '_url_decode']) && $conditions['msg_cond_' . $typeMessage . '_url_decode'] != '') {
-                        $file = self::parseFilesDecode(array(
-                            'msg' => $payloadMessage,
-                            'url' => $conditions['msg_cond_' . $typeMessage . '_url_decode'],
-                            'body_post' => $conditions['msg_cond_' . $typeMessage . '_url_decode_content'],
-                            'response_location' => $conditions['msg_cond_' . $typeMessage . '_url_decode_output'],
-                            'request_headers' => (isset($conditions['msg_cond_' . $typeMessage . '_url_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_headers_content'] : ''),
-                            'incoming_webhook' => $incomingWebhook,
-                            'remote_request_headers' => (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content'] : ''),
-                            'is_remote_location' =>  (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_location']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_location'] : ''),
-                            'file_name_attr' => (isset($conditions['msg_cond_' . $typeMessage . '_file_name']) ? $conditions['msg_cond_' . $typeMessage . '_file_name'] : '')
-                        ), $chat);
-                        if (!empty($file)) {
-                            $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] = $file;
-                        }
-                    } else if (isset($conditions['msg_' . $typeMessage . '_download']) && $conditions['msg_' . $typeMessage . '_download'] == true) {
-                        $file = self::parseFiles(
-                            self::extractAttribute(
-                                'msg_cond_' . $typeMessage . '_body',
-                                $conditions,
-                                $payloadMessage,
-                                (isset($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']]) ? $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] : '')),
-                            $chat);
-                        if (!empty($file)) {
-                            self::array_set_value($payloadMessage, $conditions['msg_cond_' . $typeMessage . '_body'], $file);
-                        }
-                    } else if (
-                        // base64 encoded file
-                        strpos($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']], 'https://') === false &&
-                        strpos($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']], 'http://') === false) {
-                        $file = self::parseFilesBase64(array('body' => $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']], 'file_name' => $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_file_name']]), $chat);
-                        if (!empty($file)) {
-                            $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] = $file;
-                        }
-                    }
-                }
-
-                // Save message
-                $msg = new erLhcoreClassModelmsg();
-                $msg->msg = self::extractMessageBody($msgBody, $payloadMessage);
-                $msg->chat_id = $chat->id;
-                $msg->user_id = $sender;
-
-                if ($msg->msg != '') {
-                    $timeValue = self::extractAttribute('time', $conditions, $payloadMessage, time());
-                    $msg->time = is_numeric($timeValue) ? $timeValue : strtotime($timeValue);
-
-                    erLhcoreClassChat::getSession()->save($msg);
-                }
-
-                // Save external chat
-                $eChat = ($eChat instanceof erLhcoreClassModelChatIncoming) ? $eChat : (new erLhcoreClassModelChatIncoming());
-
-                if ($eChat->chat_id > 0) {
-                    $previousChat = erLhcoreClassModelChat::fetch($eChat->chat_id);
-                }
-
-                $chatIdExternal2 = self::extractAttribute('chat_id_2', $conditions, $payloadMessage);
-
-                $eChat->chat_external_id = self::extractAttribute('chat_id', $conditions, $payloadMessage);
-
-                if ($eChat->chat_external_id == '') {
-                    $eChat->chat_external_id = self::extractAttribute('chat_id', $conditions, $payloadAll);
-                }
-
-                if ($chatIdExternal2 == '') {
-                    $chatIdExternal2 = self::extractAttribute('chat_id_2', $conditions, $payloadAll);
-                }
-
-                if ($eChat->chat_external_id == '') {
-                    throw new Exception('ChatId attribute could not be found!');
-                }
-
-                if (isset($conditions['chat_id_preg_rule']) && $conditions['chat_id_preg_rule'] != '') {
-                    $eChat->chat_external_id = preg_replace($conditions['chat_id_preg_rule'], $conditions['chat_id_preg_value'], $eChat->chat_external_id);
-                }
-
-                if ($chatIdExternal2 != '') {
-                    $eChat->chat_external_id = $eChat->chat_external_id . '__' . $chatIdExternal2;
-                }
-
-                $eChat->incoming_id = $incomingWebhook->id;
-                $eChat->chat_id = $chat->id;
-                $eChat->utime = time();
-                $eChat->payload = json_encode($payloadAll);
-                $eChat->saveThis();
-
-                /**
-                 * Set appropriate chat attributes
-                 */
-                if ($msg->id > 0) {
-                    $chat->last_msg_id = $msg->id;
-                    $chat->last_user_msg_time = $msg->time;
-                }
-
-                $chat->incoming_chat = $eChat;
-
-                $department = $chat->department;
-
-                if ($department !== false) {
-                    $chat->priority = $department->priority;
-                }
-
-                if ($department !== false && $department->department_transfer_id > 0) {
-                    if (
-                        !(isset($department->bot_configuration_array['off_if_online']) && $department->bot_configuration_array['off_if_online'] == 1 && erLhcoreClassChat::isOnline($chat->dep_id,false, array('exclude_bot' => true, 'exclude_online_hours' => true)) === true) &&
-                        !(isset($department->bot_configuration_array['transfer_min_priority']) && is_numeric($department->bot_configuration_array['transfer_min_priority']) && (int)$department->bot_configuration_array['transfer_min_priority'] > $chat->priority)
-                    ) {
-                        $chat->transfer_if_na = 1;
-                        $chat->transfer_timeout_ts = time();
-                        $chat->transfer_timeout_ac = $department->transfer_timeout;
-                    }
-                }
-
-                $chat->updateThis(['update' => [
-                    'last_msg_id',
-                    'last_user_msg_time',
-                    'dep_id',
-                    'priority',
-                    'transfer_if_na',
-                    'transfer_timeout_ts',
-                    'transfer_timeout_ac'
-                ]]);
-
-                // Set bot
-                if ($msg->id > 0) {
-                    erLhcoreClassChatValidator::setBot($chat, array('msg' => $msg, 'ignore_default' => ($typeMessage == 'button')));
-                } else {
-                    erLhcoreClassChatValidator::setBot($chat, array('ignore_default' => ($typeMessage == 'button')));
-                }
-
-                $db->commit();
-
-            } catch (Exception $e) {
-                $db->rollback();
-                throw $e;
-            }
-
-            if ($typeMessage == 'button') {
-                $messageData = erLhcoreClassGenericBotActionRestapi::extractAttribute($payloadMessage, $buttonBody, '.');
-                if ($messageData['found'] == true && $messageData['value'] != '') {
-
-                    $buttonPayload = $messageData['value'];
-
-                    if (strpos($buttonPayload, 'trigger__') === 0) {
-                        $payloadParts = explode('__',$buttonPayload);
-                        $message = erLhcoreClassModelmsg::fetch($payloadParts[3]);
-                        self::sendBotResponse($chat, $message, array(
-                            'init' => true,
-                            'type' => 'trigger',
-                            'payload' => $payloadParts[1] . '__' . $payloadParts[2],
-                            'msg_last_id' => $chat->last_msg_id // Message visitor is clicking is not necessary the last message
-                        ));
-                    } else if (strpos($buttonPayload, 'bpayload__') === 0) {
-                        $payloadParts = explode('__',$buttonPayload);
-                        $message = erLhcoreClassModelmsg::fetch($payloadParts[3]);
-                        self::sendBotResponse($chat, $message, array(
-                            'init' => true,
-                            'type' => 'payload',
-                            'payload' => $payloadParts[1] . '__' . $payloadParts[2],
-                            'msg_last_id' => $chat->last_msg_id // Message visitor is clicking is not necessary the last message
-                        ));
-                    } else {
-
-                        $event = erLhcoreClassGenericBotWorkflow::findEvent($buttonPayload, $chat->gbot_id, 0, array(), array('dep_id' => $chat->dep_id));
-
-                        if (!($event instanceof erLhcoreClassModelGenericBotTriggerEvent)){
-                            $event = erLhcoreClassGenericBotWorkflow::findTextMatchingEvent($buttonPayload, $chat->gbot_id, array(), array('dep_id' => $chat->dep_id));
-                        }
-
-                        if ($event instanceof erLhcoreClassModelGenericBotTriggerEvent){
-                            erLhcoreClassGenericBotWorkflow::processTrigger($chat, $event->trigger);
+                        if (strpos($buttonPayload, 'trigger__') === 0) {
+                            $payloadParts = explode('__',$buttonPayload);
+                            $message = erLhcoreClassModelmsg::fetch($payloadParts[3]);
+                            self::sendBotResponse($chat, $message, array(
+                                'type' => 'trigger',
+                                'payload' => $payloadParts[1] . '__' . $payloadParts[2],
+                                'msg_last_id' => $chat->last_msg_id // Message visitor is clicking is not necessary the last message
+                            ));
+                        } else if (strpos($buttonPayload, 'bpayload__') === 0) {
+                            $payloadParts = explode('__',$buttonPayload);
+                            $message = erLhcoreClassModelmsg::fetch($payloadParts[3]);
+                            self::sendBotResponse($chat, $message, array(
+                                'type' => 'payload',
+                                'payload' => $payloadParts[1] . '__' . $payloadParts[2],
+                                'msg_last_id' => $chat->last_msg_id // Message visitor is clicking is not necessary the last message
+                            ));
                         } else {
-                            // Send default message for unknown button click
-                            $bot = erLhcoreClassModelGenericBotBot::fetch($chat->gbot_id);
 
-                            $trigger = erLhcoreClassModelGenericBotTrigger::findOne(array('filterin' => array('bot_id' => $bot->getBotIds()), 'filter' => array('default_unknown_btn' => 1)));
+                            $event = erLhcoreClassGenericBotWorkflow::findEvent($buttonPayload, $chat->gbot_id, 0, array(), array('dep_id' => $chat->dep_id));
 
-                            if ($trigger instanceof erLhcoreClassModelGenericBotTrigger) {
-                                erLhcoreClassGenericBotWorkflow::processTrigger($chat, $trigger, true, array('args' => array('msg_text' => $buttonPayload)));
+                            if (!($event instanceof erLhcoreClassModelGenericBotTriggerEvent)){
+                                $event = erLhcoreClassGenericBotWorkflow::findTextMatchingEvent($buttonPayload, $chat->gbot_id, array(), array('dep_id' => $chat->dep_id));
                             }
-                        }
 
-                        self::sendBotResponse($chat, $msg, array('msg_last_id' => ($msg->id > 0 ? $msg->id : $chat->last_msg_id), 'init' => true));
+                            if ($event instanceof erLhcoreClassModelGenericBotTriggerEvent){
+                                erLhcoreClassGenericBotWorkflow::processTrigger($chat, $event->trigger);
+                            } else {
+                                // Send default message for unknown button click
+                                $bot = erLhcoreClassModelGenericBotBot::fetch($chat->gbot_id);
+
+                                $trigger = erLhcoreClassModelGenericBotTrigger::findOne(array('filterin' => array('bot_id' => $bot->getBotIds()), 'filter' => array('default_unknown_btn' => 1)));
+
+                                if ($trigger instanceof erLhcoreClassModelGenericBotTrigger) {
+                                    erLhcoreClassGenericBotWorkflow::processTrigger($chat, $trigger, true, array('args' => array('msg_text' => $buttonPayload)));
+                                }
+                            }
+
+                            self::sendBotResponse($chat, $msg, array('msg_last_id' => ($msg->id > 0 ? $msg->id : $chat->last_msg_id), 'init' => true));
+                        }
+                    }
+
+                } else {
+                    self::sendBotResponse($chat, $msg, array('msg_last_id' => ($msg->id > 0 ? $msg->id : $chat->last_msg_id), 'init' => $renotify));
+                }
+
+                // Standard event on unread chat messages
+                if ($chat->has_unread_messages == 1 && $chat->last_user_msg_time < (time() - 5)) {
+                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.unread_chat', array(
+                        'chat' => & $chat
+                    ));
+                }
+
+                // We dispatch same event as we were using desktop client, because it force admins and users to resync chat for new messages
+                // This allows NodeJS users to know about new message. In this particular case it's admin users
+                // If operator has opened chat instantly sync
+                if ($msg->id > 0) {
+
+                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.messages_added_passive', array(
+                        'chat' => & $chat,
+                        'msg' => $msg
+                    ));
+
+                    // If operator has closed a chat we need force back office sync
+                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.nodjshelper_notify_delay', array(
+                        'chat' => & $chat,
+                        'msg' => $msg
+                    ));
+
+                    if ($renotify == true) {
+                        // General module signal that it has received an sms
+                        erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.restart_chat',array(
+                            'chat' => & $chat,
+                            'msg' => $msg,
+                        ));
                     }
                 }
 
             } else {
-                self::sendBotResponse($chat, $msg, array('msg_last_id' => ($msg->id > 0 ? $msg->id : $chat->last_msg_id), 'init' => true));
-            }
 
-            // Process auto responder
-            $responder = erLhAbstractModelAutoResponder::processAutoResponder($chat);
+                try {
 
-            if ($responder instanceof erLhAbstractModelAutoResponder) {
-                $responderChat = new erLhAbstractModelAutoResponderChat();
-                $responderChat->auto_responder_id = $responder->id;
-                $responderChat->chat_id = $chat->id;
-                $responderChat->wait_timeout_send = 1 - $responder->repeat_number;
-                $responderChat->saveThis();
+                    $db->beginTransaction();
 
-                $chat->auto_responder_id = $responderChat->id;
+                    // Save chat
+                    $chat = new erLhcoreClassModelChat();
 
-                if ($chat->status !== erLhcoreClassModelChat::STATUS_BOT_CHAT)
-                {
-                    if ($responder->offline_message != '' && !erLhcoreClassChat::isOnline($chat->dep_id, false, array(
-                            'online_timeout' => (int) erLhcoreClassModelChatConfig::fetch('sync_sound_settings')->data['online_timeout'],
-                            'ignore_user_status' => (int)erLhcoreClassModelChatConfig::fetch('ignore_user_status')->current_value,
-                            'exclude_bot' => true
-                        ))) {
-                        $msg = new erLhcoreClassModelmsg();
-                        $msg->msg = trim($responder->offline_message);
-                        $msg->chat_id = $chat->id;
-                        $msg->name_support = $responder->operator != '' ? $responder->operator : erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Live Support');
-                        $msg->user_id = -2;
-                        $msg->time = time() + 1;
-                        erLhcoreClassChat::getSession()->save($msg);
+                    $chat->nick = self::extractAttribute('nick', $conditions, $payloadMessage, 'Visitor');
 
-                        $messageResponder = $msg;
+                    // Perhaps it's first level attribute
+                    if ($chat->nick == 'Visitor') {
+                        $chat->nick = self::extractAttribute('nick', $conditions, $payloadAll, 'Visitor');
+                    }
 
-                        if ($chat->last_msg_id < $msg->id) {
-                            $chat->last_msg_id = $msg->id;
+                    if (isset($conditions['nick_pregmatch']) && $conditions['nick_pregmatch'] != '' && $chat->nick != 'Visitor') {
+                        if (!preg_match($conditions['nick_pregmatch'], $chat->nick)) {
+                            $chat->nick = 'Visitor';
                         }
+                    }
 
-                        $chatVariables['iwh_timeout'] = time();
-                        $chat->chat_variables_array = $chatVariables;
+                    $chat->phone = self::extractAttribute('phone', $conditions, $payloadMessage);
+                    $chat->email = self::extractAttribute('email', $conditions, $payloadMessage);
+
+                    if ($sender == 0) {
+                        $ip = self::extractAttribute('ip', $conditions, $payloadMessage, $chat->ip);
+
+                        if ($ip != '' && $chat->ip != $ip) {
+                            $chat->ip = $ip;
+                            erLhcoreClassModelChat::detectLocation($chat, "");
+                        }
+                    }
+
+                    $chat->time = time();
+                    $chat->pnd_time = time();
+                    $chat->status = 0;
+                    $chat->hash = erLhcoreClassChat::generateHash();
+                    $chat->referrer = '';
+                    $chat->session_referrer = '';
+                    $chat->dep_id = $incomingWebhook->dep_id;
+                    $chat->iwh_id = $incomingWebhook->id;
+
+                    $chatVariables = [];
+
+                    if (isset($conditions['add_field_value']) && $conditions['add_field_value'] != '') {
+                        $chatVariables['iwh_field'] = self::extractAttribute('add_field_value', $conditions, $payloadMessage, '');
+                    }
+
+                    if (isset($conditions['add_field_2_value']) && $conditions['add_field_2_value'] != '') {
+                        $chatVariables['iwh_field_2'] = self::extractAttribute('add_field_2_value', $conditions, $payloadMessage, '');
+                    }
+
+                    if (!empty($chatVariables)) {
                         $chat->chat_variables = json_encode($chatVariables);
                     }
+
+                    $chat->saveThis();
+
+                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.webhook_incoming_chat_started', array(
+                        'webhook' => & $incomingWebhook,
+                        'data' => & $payloadAll,
+                        'chat' => & $chat
+                    ));
+
+                    if ($typeMessage == 'img' || $typeMessage == 'img_2' || $typeMessage == 'img_3' || $typeMessage == 'img_4' || $typeMessage == 'attachments') {
+                        if (isset($conditions['msg_cond_' . $typeMessage . '_url_decode']) && $conditions['msg_cond_' . $typeMessage . '_url_decode'] != '') {
+                            $file = self::parseFilesDecode(array(
+                                'msg' => $payloadMessage,
+                                'url' => $conditions['msg_cond_' . $typeMessage . '_url_decode'],
+                                'body_post' => $conditions['msg_cond_' . $typeMessage . '_url_decode_content'],
+                                'response_location' => $conditions['msg_cond_' . $typeMessage . '_url_decode_output'],
+                                'request_headers' => (isset($conditions['msg_cond_' . $typeMessage . '_url_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_headers_content'] : ''),
+                                'incoming_webhook' => $incomingWebhook,
+                                'remote_request_headers' => (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content'] : ''),
+                                'is_remote_location' =>  (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_location']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_location'] : ''),
+                                'file_name_attr' => (isset($conditions['msg_cond_' . $typeMessage . '_file_name']) ? $conditions['msg_cond_' . $typeMessage . '_file_name'] : '')
+                            ), $chat);
+                            if (!empty($file)) {
+                                $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] = $file;
+                            }
+                        } else if (isset($conditions['msg_' . $typeMessage . '_download']) && $conditions['msg_' . $typeMessage . '_download'] == true) {
+                            $file = self::parseFiles(
+                                self::extractAttribute(
+                                    'msg_cond_' . $typeMessage . '_body',
+                                    $conditions,
+                                    $payloadMessage,
+                                    (isset($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']]) ? $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] : '')),
+                                $chat);
+                            if (!empty($file)) {
+                                self::array_set_value($payloadMessage, $conditions['msg_cond_' . $typeMessage . '_body'], $file);
+                            }
+                        } else if (
+                            // base64 encoded file
+                            strpos($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']], 'https://') === false &&
+                            strpos($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']], 'http://') === false) {
+                            $file = self::parseFilesBase64(array('body' => $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']], 'file_name' => $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_file_name']]), $chat);
+                            if (!empty($file)) {
+                                $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] = $file;
+                            }
+                        }
+                    }
+
+                    // Save message
+                    $msg = new erLhcoreClassModelmsg();
+                    $msg->msg = self::extractMessageBody($msgBody, $payloadMessage);
+                    $msg->chat_id = $chat->id;
+                    $msg->user_id = $sender;
+
+                    if ($msg->msg != '') {
+                        $timeValue = self::extractAttribute('time', $conditions, $payloadMessage, time());
+                        $msg->time = is_numeric($timeValue) ? $timeValue : strtotime($timeValue);
+
+                        erLhcoreClassChat::getSession()->save($msg);
+                    }
+
+                    // Save external chat
+                    $eChat = ($eChat instanceof erLhcoreClassModelChatIncoming) ? $eChat : (new erLhcoreClassModelChatIncoming());
+
+                    if ($eChat->chat_id > 0) {
+                        $previousChat = erLhcoreClassModelChat::fetch($eChat->chat_id);
+                    }
+
+                    $chatIdExternal2 = self::extractAttribute('chat_id_2', $conditions, $payloadMessage);
+
+                    $eChat->chat_external_id = self::extractAttribute('chat_id', $conditions, $payloadMessage);
+
+                    if ($eChat->chat_external_id == '') {
+                        $eChat->chat_external_id = self::extractAttribute('chat_id', $conditions, $payloadAll);
+                    }
+
+                    if ($chatIdExternal2 == '') {
+                        $chatIdExternal2 = self::extractAttribute('chat_id_2', $conditions, $payloadAll);
+                    }
+
+                    if ($eChat->chat_external_id == '') {
+                        throw new Exception('ChatId attribute could not be found!');
+                    }
+
+                    if (isset($conditions['chat_id_preg_rule']) && $conditions['chat_id_preg_rule'] != '') {
+                        $eChat->chat_external_id = preg_replace($conditions['chat_id_preg_rule'], $conditions['chat_id_preg_value'], $eChat->chat_external_id);
+                    }
+
+                    if ($chatIdExternal2 != '') {
+                        $eChat->chat_external_id = $eChat->chat_external_id . '__' . $chatIdExternal2;
+                    }
+
+                    $eChat->incoming_id = $incomingWebhook->id;
+                    $eChat->chat_id = $chat->id;
+                    $eChat->utime = time();
+                    $eChat->payload = json_encode($payloadAll);
+                    $eChat->saveThis();
+
+                    /**
+                     * Set appropriate chat attributes
+                     */
+                    if ($msg->id > 0) {
+                        $chat->last_msg_id = $msg->id;
+                        $chat->last_user_msg_time = $msg->time;
+                    }
+
+                    $chat->incoming_chat = $eChat;
+
+                    $department = $chat->department;
+
+                    if ($department !== false) {
+                        $chat->priority = $department->priority;
+                    }
+
+                    $priority = \erLhcoreClassChatValidator::getPriorityByAdditionalData($chat, array('detailed' => true));
+
+                    if ($priority !== false && $priority['priority'] > $chat->priority) {
+                        $chat->priority = $priority['priority'];
+                    }
+
+                    if ($priority !== false && $priority['dep_id'] > 0) {
+                        $chat->dep_id = $priority['dep_id'];
+                        $chat->department = $department = erLhcoreClassModelDepartament::fetch($chat->dep_id);
+                    }
+
+                    if ($department !== false && $department->department_transfer_id > 0) {
+                        if (
+                            !(isset($department->bot_configuration_array['off_if_online']) && $department->bot_configuration_array['off_if_online'] == 1 && erLhcoreClassChat::isOnline($chat->dep_id,false, array('exclude_bot' => true, 'exclude_online_hours' => true)) === true) &&
+                            !(isset($department->bot_configuration_array['transfer_min_priority']) && is_numeric($department->bot_configuration_array['transfer_min_priority']) && (int)$department->bot_configuration_array['transfer_min_priority'] > $chat->priority)
+                        ) {
+                            $chat->transfer_if_na = 1;
+                            $chat->transfer_timeout_ts = time();
+                            $chat->transfer_timeout_ac = $department->transfer_timeout;
+                        }
+                    }
+
+                    $chat->updateThis(['update' => [
+                        'last_msg_id',
+                        'last_user_msg_time',
+                        'dep_id',
+                        'priority',
+                        'transfer_if_na',
+                        'transfer_timeout_ts',
+                        'transfer_timeout_ac'
+                    ]]);
+
+                    // Set bot
+                    if ($msg->id > 0) {
+                        erLhcoreClassChatValidator::setBot($chat, array('msg' => $msg, 'ignore_default' => ($typeMessage == 'button')));
+                    } else {
+                        erLhcoreClassChatValidator::setBot($chat, array('ignore_default' => ($typeMessage == 'button')));
+                    }
+
+                    $db->commit();
+
+                } catch (Exception $e) {
+                    $db->rollback();
+                    throw $e;
                 }
-            }
 
-            // Save chat
-            $chat->updateThis();
+                // Release eChat record
+                $db->commit();
 
-            if (!isset($_SERVER['HTTP_USER_AGENT'])) {
-                $_SERVER['HTTP_USER_AGENT'] = 'API, Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36';
-            }
+                if ($typeMessage == 'button') {
+                    $messageData = erLhcoreClassGenericBotActionRestapi::extractAttribute($payloadMessage, $buttonBody, '.');
+                    if ($messageData['found'] == true && $messageData['value'] != '') {
 
-            // Store online visitor record so previous chat workflow works
-            self::assignOnlineVisitor($chat, $eChat);
+                        $buttonPayload = $messageData['value'];
 
-            // If previous chat did not had online record associated assign in
-            if (isset($previousChat) && $previousChat instanceof erLhcoreClassModelChat && $previousChat->online_user_id == 0 && $chat->online_user_id > 0) {
-                $previousChat->online_user_id = $chat->online_user_id;
-                $previousChat->updateThis(['update' => ['online_user_id']]);
-            }
+                        if (strpos($buttonPayload, 'trigger__') === 0) {
+                            $payloadParts = explode('__',$buttonPayload);
+                            $message = erLhcoreClassModelmsg::fetch($payloadParts[3]);
+                            self::sendBotResponse($chat, $message, array(
+                                'init' => true,
+                                'type' => 'trigger',
+                                'payload' => $payloadParts[1] . '__' . $payloadParts[2],
+                                'msg_last_id' => $chat->last_msg_id // Message visitor is clicking is not necessary the last message
+                            ));
+                        } else if (strpos($buttonPayload, 'bpayload__') === 0) {
+                            $payloadParts = explode('__',$buttonPayload);
+                            $message = erLhcoreClassModelmsg::fetch($payloadParts[3]);
+                            self::sendBotResponse($chat, $message, array(
+                                'init' => true,
+                                'type' => 'payload',
+                                'payload' => $payloadParts[1] . '__' . $payloadParts[2],
+                                'msg_last_id' => $chat->last_msg_id // Message visitor is clicking is not necessary the last message
+                            ));
+                        } else {
 
-            // Auto responder has something to send to visitor.
-            if (isset($messageResponder)) {
-                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.web_add_msg_admin', array(
+                            $event = erLhcoreClassGenericBotWorkflow::findEvent($buttonPayload, $chat->gbot_id, 0, array(), array('dep_id' => $chat->dep_id));
+
+                            if (!($event instanceof erLhcoreClassModelGenericBotTriggerEvent)){
+                                $event = erLhcoreClassGenericBotWorkflow::findTextMatchingEvent($buttonPayload, $chat->gbot_id, array(), array('dep_id' => $chat->dep_id));
+                            }
+
+                            if ($event instanceof erLhcoreClassModelGenericBotTriggerEvent){
+                                erLhcoreClassGenericBotWorkflow::processTrigger($chat, $event->trigger);
+                            } else {
+                                // Send default message for unknown button click
+                                $bot = erLhcoreClassModelGenericBotBot::fetch($chat->gbot_id);
+
+                                $trigger = erLhcoreClassModelGenericBotTrigger::findOne(array('filterin' => array('bot_id' => $bot->getBotIds()), 'filter' => array('default_unknown_btn' => 1)));
+
+                                if ($trigger instanceof erLhcoreClassModelGenericBotTrigger) {
+                                    erLhcoreClassGenericBotWorkflow::processTrigger($chat, $trigger, true, array('args' => array('msg_text' => $buttonPayload)));
+                                }
+                            }
+
+                            self::sendBotResponse($chat, $msg, array('msg_last_id' => ($msg->id > 0 ? $msg->id : $chat->last_msg_id), 'init' => true));
+                        }
+                    }
+
+                } else {
+                    self::sendBotResponse($chat, $msg, array('msg_last_id' => ($msg->id > 0 ? $msg->id : $chat->last_msg_id), 'init' => true));
+                }
+
+                // Process auto responder
+                $responder = erLhAbstractModelAutoResponder::processAutoResponder($chat);
+
+                if ($responder instanceof erLhAbstractModelAutoResponder) {
+                    $responderChat = new erLhAbstractModelAutoResponderChat();
+                    $responderChat->auto_responder_id = $responder->id;
+                    $responderChat->chat_id = $chat->id;
+                    $responderChat->wait_timeout_send = 1 - $responder->repeat_number;
+                    $responderChat->saveThis();
+
+                    $chat->auto_responder_id = $responderChat->id;
+
+                    if ($chat->status !== erLhcoreClassModelChat::STATUS_BOT_CHAT)
+                    {
+                        if ($responder->offline_message != '' && !erLhcoreClassChat::isOnline($chat->dep_id, false, array(
+                                'online_timeout' => (int) erLhcoreClassModelChatConfig::fetch('sync_sound_settings')->data['online_timeout'],
+                                'ignore_user_status' => (int)erLhcoreClassModelChatConfig::fetch('ignore_user_status')->current_value,
+                                'exclude_bot' => true
+                            ))) {
+                            $msg = new erLhcoreClassModelmsg();
+                            $msg->msg = trim($responder->offline_message);
+                            $msg->chat_id = $chat->id;
+                            $msg->name_support = $responder->operator != '' ? $responder->operator : erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Live Support');
+                            $msg->user_id = -2;
+                            $msg->time = time() + 1;
+                            erLhcoreClassChat::getSession()->save($msg);
+
+                            $messageResponder = $msg;
+
+                            if ($chat->last_msg_id < $msg->id) {
+                                $chat->last_msg_id = $msg->id;
+                            }
+
+                            $chatVariables['iwh_timeout'] = time();
+                            $chat->chat_variables_array = $chatVariables;
+                            $chat->chat_variables = json_encode($chatVariables);
+                        }
+                    }
+                }
+
+                // Save chat
+                $chat->updateThis();
+
+                if (!isset($_SERVER['HTTP_USER_AGENT'])) {
+                    $_SERVER['HTTP_USER_AGENT'] = 'API, Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36';
+                }
+
+                // Store online visitor record so previous chat workflow works
+                self::assignOnlineVisitor($chat, $eChat);
+
+                // If previous chat did not had online record associated assign in
+                if (isset($previousChat) && $previousChat instanceof erLhcoreClassModelChat && $previousChat->online_user_id == 0 && $chat->online_user_id > 0) {
+                    $previousChat->online_user_id = $chat->online_user_id;
+                    $previousChat->updateThis(['update' => ['online_user_id']]);
+                }
+
+                // Auto responder has something to send to visitor.
+                if (isset($messageResponder)) {
+                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.web_add_msg_admin', array(
+                        'chat' => & $chat,
+                        'msg' => $messageResponder
+                    ));
+                }
+
+                /**
+                 * Execute standard callback as chat was started
+                 */
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.chat_started', array(
                     'chat' => & $chat,
-                    'msg' => $messageResponder
+                    'msg' => $msg
                 ));
             }
 
-            /**
-             * Execute standard callback as chat was started
-             */
-            erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.chat_started', array(
-                'chat' => & $chat,
-                'msg' => $msg
-            ));
+
+
+        } catch (Exception $e) {
+            $db->rollback();
+            throw $e;
         }
+
     }
 
     public static function assignOnlineVisitor(& $chat, $eChat)
@@ -1301,7 +1389,7 @@ class erLhcoreClassChatWebhookIncoming {
 
         if (!is_array($url)) {
 
-            $mediaContent = erLhcoreClassModelChatOnlineUser::executeRequest($url, $headers);
+            $mediaContent = erLhcoreClassModelChatOnlineUser::executeRequest(str_replace(' ','%20',trim($url)), $headers);
 
             // File name
             $partsFilename = explode('/',strtok($url, '?'));
@@ -1348,6 +1436,7 @@ class erLhcoreClassChatWebhookIncoming {
             }
 
             if ($mimeType !== false) {
+                $mimeType = trim(explode(';',$mimeType)[0]);
                 $extension = self::getExtensionByMime($mimeType);
                 if ($extension !== false) {
                     $fileUpload->extension = $extension;
@@ -1376,6 +1465,7 @@ class erLhcoreClassChatWebhookIncoming {
             'swf' => 'application/x-shockwave-flash',
             'flv' => 'video/x-flv',
             'ogg' => 'audio/ogg',
+            'webm' => 'video/x-matroska',
 
             // images
             'png' => 'image/png',
@@ -1419,6 +1509,7 @@ class erLhcoreClassChatWebhookIncoming {
             // open office
             'odt' => 'application/vnd.oasis.opendocument.text',
             'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         );
 
         if ($getMime == false) {

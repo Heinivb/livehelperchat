@@ -307,7 +307,7 @@ export default function (dispatch, getState) {
 
             i18n.init({
                 backend: {
-                    loadPath: paramsInit['base_url']+'{{lng}}/widgetrestapi/lang/{{ns}}?v=7'+(""+date.getFullYear() + date.getMonth() + date.getDate())
+                    loadPath: paramsInit['base_url']+'{{lng}}/widgetrestapi/lang/{{ns}}?v=9'+(""+date.getFullYear() + date.getMonth() + date.getDate())
                 },
                 lng: ((paramsInit['lang'] && paramsInit['lang'] != '') ?  paramsInit['lang'].replace('/','') : 'eng'),
                 fallbackLng: 'eng',
@@ -408,6 +408,8 @@ export default function (dispatch, getState) {
                 'hash' : state.chatwidget.getIn(['chatData','hash']),
                 'theme' :  state.chatwidget.get('theme')
             }));
+
+            dispatch({type: 'attr_rem', attr : ['chat_ui','survey_id']});
         }
     }
 

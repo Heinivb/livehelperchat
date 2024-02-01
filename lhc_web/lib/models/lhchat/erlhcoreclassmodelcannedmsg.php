@@ -39,6 +39,7 @@ class erLhcoreClassModelCannedMsg
             'repetitiveness' => $this->repetitiveness,
             'days_activity' => $this->days_activity,
             'disabled' => $this->disabled,
+            'delete_on_exp' => $this->delete_on_exp,
         );
     }
 
@@ -337,7 +338,7 @@ class erLhcoreClassModelCannedMsg
             $filter[] = "(
                 repetitiveness = 0 OR 
                 (repetitiveness = 1 AND days_activity != '' AND JSON_EXTRACT(days_activity,'$.".$dayShort[date('N')].".start') <= " . date('Hi') . " AND JSON_EXTRACT(days_activity,'$.".$dayShort[date('N')].".end') >= " . date('Hi') . " ) OR
-                (repetitiveness = 2 AND active_from <= " . time() . " AND active_to >= " . time() . ") OR
+                (repetitiveness = 2 AND active_from <= " . time() . " AND (active_to = 0 OR active_to >= " . time() . ")) OR
                 (repetitiveness = 3 AND FROM_UNIXTIME(active_from,'%m%d%H%i') <= " . date('mdHi') . " AND FROM_UNIXTIME(active_to,'%m%d%H%i') >= " . date('mdHi') . ")
             )";
 
@@ -384,6 +385,7 @@ class erLhcoreClassModelCannedMsg
             }
         }
 
+        \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'canned_replace', 'replace_array' => & $replaceArray, 'chat' => $chat, 'user' => $user));
         erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.workflow.canned_message_replace', array(
             'chat' => $chat,
             'replace_array' => & $replaceArray,
@@ -521,6 +523,7 @@ class erLhcoreClassModelCannedMsg
     public $repetitiveness = self::REP_NO;
     public $days_activity = '';
     public $disabled = 0;
+    public $delete_on_exp = 0;
 
 
 }

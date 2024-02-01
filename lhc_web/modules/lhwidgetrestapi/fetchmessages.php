@@ -94,6 +94,10 @@ if (is_object($chat) && $chat->hash === $requestPayload['hash'])
 				    $Messages = erLhcoreClassChat::getPendingMessages((int)$requestPayload['chat_id'], (isset($requestPayload['lmgsid']) ? (int)$requestPayload['lmgsid'] : 0), true);
 				    if (count($Messages) > 0)
 				    {
+                        if ($chat->user_id > 0 && \LiveHelperChat\Models\LHCAbstract\ChatMessagesGhosting::shouldMask($chat->user_id)) {
+                             \LiveHelperChat\Models\LHCAbstract\ChatMessagesGhosting::maskVisitorMessages($Messages);
+                        }
+
 				        $tpl = erLhcoreClassTemplate::getInstance( 'lhchat/syncuser.tpl.php');
 				        $tpl->set('messages',$Messages);
 				        $tpl->set('chat',$chat);
@@ -149,6 +153,11 @@ if (is_object($chat) && $chat->hash === $requestPayload['hash'])
 
 				if ( $chat->is_operator_typing == true /*&& $Params['user_parameters_unordered']['ot'] != 't'*/ ) {
 				    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.syncuser.operator_typing',array('chat' => & $chat));
+
+                    if ($chat->operator_typing_user !== false) {
+                        \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'typing', 'chat' => $chat));
+                    }
+
 					$ott = ($chat->operator_typing_user !== false) ? $chat->operator_typing_user->name_support . ' ' . htmlspecialchars_decode(erTranslationClassLhTranslation::getInstance()->getTranslation('chat/chat','is typing now...'),ENT_QUOTES) : htmlspecialchars_decode(erTranslationClassLhTranslation::getInstance()->getTranslation('chat/chat','Operator is typing now...'),ENT_QUOTES);
 				}  elseif (/*$Params['user_parameters_unordered']['ot'] == 't' &&*/ $chat->is_operator_typing == false) {
 					$ott = false;
@@ -188,7 +197,27 @@ if (is_object($chat) && $chat->hash === $requestPayload['hash'])
 		    	$saveChat = true;
 		    }
 
-		    if ($chat->has_unread_op_messages == 1)
+            if (($chat->has_unread_op_messages == 1 && isset($requestPayload['active_widget']) && $requestPayload['active_widget'] === true) || (isset($requestPayload['lmgsid']) && isset($Messages) && count($Messages) > 0)) {
+                if (isset($requestPayload['active_widget']) && $requestPayload['active_widget'] === true) {
+                    $db->query('UPDATE `lh_msg` SET `del_st` = 3 WHERE `chat_id` = ' . (int)$chat->id . ' AND `del_st` IN (0,1,2) AND (`user_id` > 0 OR `user_id` = -2)');
+                    if ($chat->status_sub_sub == erLhcoreClassModelChat::STATUS_SUB_SUB_MSG_DELIVERED) {
+                        $chat->status_sub_sub = erLhcoreClassModelChat::STATUS_SUB_SUB_DEFAULT;
+                        $updateFields[] = 'status_sub_sub';
+                        $saveChat = true;
+                    }
+                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.messages_read',array('chat' => & $chat));
+                } else {
+                    $db->query('UPDATE `lh_msg` SET `del_st` = 2 WHERE `chat_id` = ' . (int)$chat->id . ' AND `del_st` IN (0,1) AND (`user_id` > 0 OR `user_id` = -2)');
+                    if ($chat->status_sub_sub == erLhcoreClassModelChat::STATUS_SUB_SUB_DEFAULT) {
+                        $chat->status_sub_sub = erLhcoreClassModelChat::STATUS_SUB_SUB_MSG_DELIVERED;
+                        $updateFields[] = 'status_sub_sub';
+                        $saveChat = true;
+                    }
+                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.messages_delivered',array('chat' => & $chat));
+                }
+            }
+
+		    if ($chat->has_unread_op_messages == 1 && isset($requestPayload['active_widget']) && $requestPayload['active_widget'] === true)
 		    {
 		    	$chat->unread_op_messages_informed = 0;
 		    	$chat->has_unread_op_messages = 0;
@@ -217,6 +246,18 @@ if (is_object($chat) && $chat->hash === $requestPayload['hash'])
 
 	} catch (Exception $e) {
 	    $db->rollback();
+
+        // Store log
+        erLhcoreClassLog::write($e->getMessage() . ' - ' . $e->getTraceAsString(),
+            ezcLog::SUCCESS_AUDIT,
+            array(
+                'source' => 'lhc',
+                'category' => 'store',
+                'line' => $e->getLine(),
+                'file' => 'fetchmessages.php',
+                'object_id' => $requestPayload['chat_id']
+            )
+        );
 	}
 
 } else {

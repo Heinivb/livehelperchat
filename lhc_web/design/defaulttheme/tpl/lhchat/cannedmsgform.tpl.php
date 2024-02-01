@@ -31,7 +31,7 @@
 
         <?php if ($canned_message->id > 0) : ?>
         <label>
-            <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation("chat/cannedmsg","Subject");?> <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhchat','administratecannedmsg')) : ?><button type="button" class="btn btn-xs btn-outline-secondary pb-1 ps-1" onclick="return lhc.revealModal({'url':'/index.php/site_admin/cannedmsg/subject/<?php echo $canned_message->id?>'})"><i class="material-icons me-0"></i></button><?php endif;?>
+            <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation("chat/cannedmsg","Subject");?> <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhchat','administratecannedmsg')) : ?><button type="button" class="btn btn-xs btn-outline-secondary pb-1 ps-1" onclick="return lhc.revealModal({'url':WWW_DIR_JAVASCRIPT+'/cannedmsg/subject/<?php echo $canned_message->id?>'})"><i class="material-icons me-0"></i></button><?php endif;?>
             <div id="canned-message-subjects-<?php echo $canned_message->id?>"></div>
             <script>
                 $.get(WWW_DIR_JAVASCRIPT + 'cannedmsg/subject/<?php echo $canned_message->id?>/?getsubjects=1', function(data) {
@@ -132,8 +132,13 @@
                 <div class="col-3">
                     <div class="form-group">
                         <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/cannedmsg','Active to');?></label>
-                        <input class="form-control form-control-sm" name="active_to" type="datetime-local" value="<?php echo date('Y-m-d\TH:i', $canned_message->active_to > 0 ? $canned_message->active_to : time())?>">
+                        <input class="form-control form-control-sm" onchange="" name="active_to" type="datetime-local" value="<?php echo $canned_message->active_to > 0 ? date('Y-m-d\TH:i', $canned_message->active_to) : ""?>">
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3" ng-show="cannedRepeatPeriod == '<?php echo erLhcoreClassModelCannedMsg::REP_PERIOD?>'">
+                    <label><input type="checkbox" value="on" <?php if ($canned_message->delete_on_exp == 1) : ?>checked="checked"<?php endif;?> name="delete_on_exp"> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/cannedmsg','On expire delete canned message');?></label>
                 </div>
             </div>
         </div>

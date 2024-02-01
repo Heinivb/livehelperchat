@@ -20,6 +20,7 @@ import { Suspense, lazy } from 'react';
 const VoiceMessage = React.lazy(() => import('./VoiceMessage'));
 const MailModal = React.lazy(() => import('./MailModal'));
 const FontSizeModal = React.lazy(() => import('./FontSizeModal'));
+const CustomHTML = React.lazy(() => import('./CustomHTML'));
 
 @connect((store) => {
     return {
@@ -49,7 +50,8 @@ class OnlineChat extends Component {
         scrollButton: false,
         fontSize: 100,
         reactToMsgId: 0,
-        otm: 0 // New operator messages
+        otm: 0, // New operator messages
+        messages_ui: true // Is visitor in messages UI, in case extension has overlay and messages was received
     };
 
     constructor(props) {
@@ -479,7 +481,7 @@ class OnlineChat extends Component {
             if (prevProps.chatwidget.getIn(['chatLiveData','messages']).size != 0 && this.props.chatwidget.getIn(['chatLiveData','uw']) === false) {
                 let widgetOpen = ((this.props.chatwidget.get('shown') && this.props.chatwidget.get('mode') == 'widget') || (this.props.chatwidget.get('mode') != 'widget' && document.hasFocus()));
                 if (hasNewMessages == false) {
-                    hasNewMessages = widgetOpen == false || window.lhcChat['is_focused'] == false || setScrollBottom == false;
+                    hasNewMessages = widgetOpen == false || window.lhcChat['is_focused'] == false || setScrollBottom == false || this.state.messages_ui === false;
                     oldId = hasNewMessages == true ? prevProps.chatwidget.getIn(['chatLiveData','messages']).size : 0;
                     otm = this.props.chatwidget.getIn(['chatLiveData','otm']);
                 } else {
@@ -647,7 +649,8 @@ class OnlineChat extends Component {
             'hash' : this.props.chatwidget.getIn(['chatData','hash']),
             'lmgsid' : this.props.chatwidget.getIn(['chatLiveData','lmsgid']),
             'theme' : this.props.chatwidget.get('theme'),
-            'new_chat' : this.props.chatwidget.get('newChat')
+            'new_chat' : this.props.chatwidget.get('newChat'),
+            'active_widget' : (((this.props.chatwidget.get('shown') && this.props.chatwidget.get('mode') == 'widget') || (this.props.chatwidget.get('mode') != 'widget' && document.hasFocus())) && window.lhcChat['is_focused'] == true && this.state.messages_ui !== false)
         };
 
         // If it's new chat check do we have last message from previous chat if so send it also
@@ -697,15 +700,17 @@ class OnlineChat extends Component {
     keyUp(e) {
         if (e.key !== 'Enter' && !e.shiftKey) {
             if (this.isTyping === false) {
+                const { t } = this.props;
                 this.isTyping = true;
-                this.props.dispatch(userTyping('true',this.state.value));
+                this.props.dispatch(userTyping('true',this.props.chatwidget.hasIn(['chat_ui','hide_typing']) &&  this.props.chatwidget.getIn(['chat_ui','hide_typing']) === true ? t('online_chat.visitor_typing') : this.state.value));
             } else {
                 clearTimeout(this.typingStopped);
                 this.typingStopped = setTimeout(this.typingStoppedAction, 6000);
                 if (this.currentMessageTyping != this.state.value ) {
                     if (Math.abs(this.currentMessageTyping.length - this.state.value.length) > 6 || this.props.chatwidget.get('overrides').contains('typing')) {
+                        const { t } = this.props;
                         this.currentMessageTyping = this.state.value;
-                        this.props.dispatch(userTyping('true',this.state.value));
+                        this.props.dispatch(userTyping('true', this.props.chatwidget.hasIn(['chat_ui','hide_typing']) &&  this.props.chatwidget.getIn(['chat_ui','hide_typing']) === true ? t('online_chat.visitor_typing') : this.state.value));
                     }
                 }
             }
@@ -963,12 +968,15 @@ class OnlineChat extends Component {
 
                     {this.props.chatwidget.hasIn(['chatStatusData','result']) && !this.props.chatwidget.hasIn(['chat_ui','hide_status']) && this.props.chatwidget.getIn(['chatStatusData','result']) && <div id="chat-status-container" className={"p-2 border-bottom live-status-"+this.props.chatwidget.getIn(['chatLiveData','status'])}><ChatStatus updateStatus={this.updateStatus} vtm={this.props.chatwidget.hasIn(['chat_ui','switch_to_human']) && this.props.chatwidget.getIn(['chatLiveData','status']) == STATUS_BOT_CHAT ? this.props.chatwidget.getIn(['chatLiveData','vtm']) : 0} status={this.props.chatwidget.getIn(['chatStatusData','result'])} /></div>}
 
-                    <div className={msg_expand} onClick={(e) => {this.setState({'reactToMsgId' : 0})}} id="messagesBlock" onScroll={this.onScrollMessages}>
+                    <div className={msg_expand + (this.props.chatwidget.hasIn(['chat_ui','after_chat_status']) && this.props.chatwidget.getIn(['chat_ui','after_chat_status']) != '' ? ' has-after-chat-status' : '')} onClick={(e) => {this.setState({'reactToMsgId' : 0})}} id="messagesBlock" onScroll={this.onScrollMessages}>
+
+                        {this.props.chatwidget.hasIn(['chat_ui','after_chat_status']) && this.props.chatwidget.getIn(['chat_ui','after_chat_status']) != '' && <Suspense fallback=""><CustomHTML setStateParent={(state) => this.setState(state)} has_new={this.state.hasNew && this.state.otm > 0} attr="after_chat_status" /></Suspense>}
+
                         <div className={bottom_messages} id="messages-scroll" style={fontSizeStyle} ref={this.messagesAreaRef}>
                             {this.props.chatwidget.hasIn(['chat_ui','prev_chat']) && <div dangerouslySetInnerHTML={{__html:this.props.chatwidget.getIn(['chat_ui','prev_chat'])}}></div>}
                             {messages}
                         </div>
-                        {this.state.scrollButton && <div className="position-absolute btn-bottom-scroll fade-in"><button type="button" onClick={this.scrollToMessage} className="btn btn-sm btn-secondary">{(this.state.hasNew && this.state.otm > 0 && <div><i className="material-icons">&#xf11a;</i>{this.state.otm} {(this.state.otm == 1 ? (this.props.chatwidget.getIn(['chat_ui','cnew_msg']) || t('button.new_msg')) : (this.props.chatwidget.getIn(['chat_ui','cnew_msgm']) || t('button.new_msgm')))}</div>) || (this.props.chatwidget.getIn(['chat_ui','cscroll_btn']) || t('button.scroll_bottom'))}</button></div>}
+                        {this.state.scrollButton && <div className="position-absolute btn-bottom-scroll fade-in" id="id-btn-bottom-scroll"><button type="button" onClick={this.scrollToMessage} className="btn btn-sm btn-secondary">{(this.state.hasNew && this.state.otm > 0 && <div><i className="material-icons">&#xf11a;</i>{this.state.otm} {(this.state.otm == 1 ? (this.props.chatwidget.getIn(['chat_ui','cnew_msg']) || t('button.new_msg')) : (this.props.chatwidget.getIn(['chat_ui','cnew_msgm']) || t('button.new_msgm')))}</div>) || (this.props.chatwidget.getIn(['chat_ui','cscroll_btn']) || t('button.scroll_bottom'))}</button></div>}
                     </div>
 
                     <div className={(this.props.chatwidget.get('msgLoaded') === false || this.state.enabledEditor === false ? 'd-none ' : 'd-flex ') + "flex-row border-top position-relative message-send-area"} >
@@ -1008,7 +1016,7 @@ class OnlineChat extends Component {
 
                         {!this.props.chatwidget.getIn(['chatLiveData','closed']) && !this.props.chatwidget.get('network_down') && <div className="disable-select">
 
-                                <div className="user-chatwidget-buttons pt-1 pe-1" id="ChatSendButtonContainer">
+                                <div className="user-chatwidget-buttons pt-2 pe-1" id="ChatSendButtonContainer">
 
                                     {this.state.voiceMode === true && <Suspense fallback="..."><VoiceMessage onCompletion={this.updateMessages} progress={this.setStatusText} base_url={this.props.chatwidget.get('base_url')} chat_id={this.props.chatwidget.getIn(['chatData','id'])} hash={this.props.chatwidget.getIn(['chatData','hash'])} maxSeconds="30" cancel={this.cancelVoiceRecording} /></Suspense>}
 

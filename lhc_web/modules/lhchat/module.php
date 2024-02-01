@@ -148,6 +148,12 @@ $ViewList['updatemsg'] = array(
     'functions' => array( 'use' )
 );
 
+$ViewList['updatemessagedata'] = array(
+    'params' => array('chat_id', 'hash', 'msg_id'),
+    'uparams' => array(),
+    'functions' => array(  )
+);
+
 $ViewList['printchatadmin'] = array(
     'params' => array('chat_id'),
     'uparams' => array(),
@@ -595,7 +601,7 @@ $ViewList['userclosechat'] = array(
 $ViewList['onlineusers'] = array(
     'params' => array(),
     'ajax' => true,
-    'uparams' => array('clear_list','method','deletevisitor','timeout','csfr','department','maxrows','country','timeonsite','department_dpgroups'),
+    'uparams' => array('clear_list','method','deletevisitor','timeout','csfr','department','maxrows','country','timeonsite','department_dpgroups','nochat'),
     'functions' => array( 'use_onlineusers' ),
     'multiple_arguments' => array(
         'department',
@@ -647,7 +653,7 @@ $ViewList['syncandsoundesetting'] = array(
 
 $ViewList['cannedmsg'] = array(
     'params' => array(),
-    'uparams' => array('action','id','csfr','message','title','fmsg','department_id','subject_id','tab','user_id','timefrom','timeto'),
+    'uparams' => array('action','id','csfr','message','title','fmsg','department_id','subject_id','tab','user_id','timefrom','timeto','sortby'),
     'functions' => array( 'explorecannedmsg' ),
     'multiple_arguments' => array(
         'department_id',
@@ -767,5 +773,12 @@ $FunctionList['editpreviousop'] = array('explain' => 'Allow operator to edit oth
 $FunctionList['editpreviouvis'] = array('explain' => 'Allow operator to edit visitors previous messages');
 $FunctionList['impersonate'] = array('explain' => 'Allow operator to impersonate another operator on joining chat window');
 $FunctionList['allowtransfertoanydep'] = array('explain' => 'Allow operator to transfer chat to any department.');
+$FunctionList['list_all_chats'] = array('explain' => 'Allow operator to list all chats independently of operator and status.');
+$FunctionList['list_my_chats'] = array('explain' => 'Allow operator to list chats he is owner');
+$FunctionList['list_pending_chats'] = array('explain' => 'Allow operator to list chats without an owner and in status pending.');
+$FunctionList['use_unhidden_phone'] = array('explain' => 'Allow operator to see full phone number');
+$FunctionList['chat_see_email'] = array('explain' => 'Allow operator to see e-mail of the visitor');
+$FunctionList['chat_see_unhidden_email'] = array('explain' => 'Allow operator to see full e-mail address of the visitor');
+$FunctionList['see_sensitive_information'] = array('explain' => 'Allow operator to see sensitive information in the messages');
 
 ?>

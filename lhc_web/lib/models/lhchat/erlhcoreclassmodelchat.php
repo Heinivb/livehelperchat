@@ -144,6 +144,7 @@ class erLhcoreClassModelChat {
            'lh_abstract_subject_chat',
            'lh_chat_voice_video',
            'lh_chat_incoming',
+           'lh_chat_participant',
            'lh_canned_msg_use'] as $table) {
            $q = ezcDbInstance::get()->createDeleteQuery();
            $q->deleteFrom($table)->where( $q->expr->eq( 'chat_id', $this->id ) );
@@ -398,6 +399,11 @@ class erLhcoreClassModelChat {
        			return $this->product_name;
        		break;
 
+       	case 'department_role':
+                $this->department_role = \LiveHelperChat\Models\Brand\BrandMember::findOne(['filter' => ['dep_id' => $this->dep_id]]);
+       			return $this->department_role;
+       		break;
+
        	case 'department_name':
        			return $this->department_name = (string)$this->department;
        		break;
@@ -440,8 +446,12 @@ class erLhcoreClassModelChat {
        		break;
        		
        	case 'user_tz_identifier_time':
-       			$date = new DateTime('NOW', new DateTimeZone($this->user_tz_identifier));
-       			$this->user_tz_identifier_time = $date->format(erLhcoreClassModule::$dateHourFormat);       			
+                try {
+                    $date = new DateTime('NOW', new DateTimeZone($this->user_tz_identifier));
+                } catch (Exception $e) {
+                    $date = new DateTime('NOW', new DateTimeZone('UTC'));
+                }
+       			$this->user_tz_identifier_time = $date->format(erLhcoreClassModule::$dateHourFormat);
        			return $this->user_tz_identifier_time;
        		break;
        		
@@ -525,9 +535,17 @@ class erLhcoreClassModelChat {
        	        }
        			return $this->chat_variables_array;
 
-       	case 'user_status_front':
+       case 'chat_dynamic_array':
 
-       	    if ($this->status == self::STATUS_CLOSED_CHAT && $this->cls_us != 0) {
+           $chat_dynamic_array = [];
+           erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.dynamic_array', array('chat' => $this, 'dynamic_array' => & $chat_dynamic_array));
+           $this->chat_dynamic_array = $chat_dynamic_array;
+
+           return $this->chat_dynamic_array;
+
+       case 'user_status_front':
+
+           if ($this->status == self::STATUS_CLOSED_CHAT && $this->cls_us != 0) {
                 $this->user_status_front = $this->cls_us - 1;
                 return $this->user_status_front;
             }
@@ -677,6 +695,7 @@ class erLhcoreClassModelChat {
    const STATUS_SUB_SUB_DEFAULT = 0;
    const STATUS_SUB_SUB_TRANSFERED = 1;
    const STATUS_SUB_SUB_CLOSED = 2; // Chat was previously closed, but became pending again.
+   const STATUS_SUB_SUB_MSG_DELIVERED = 3; // Chat was previously closed, but became pending again.
 
    const USER_STATUS_JOINED_CHAT = 0;
    const USER_STATUS_CLOSED_CHAT = 1;

@@ -41,6 +41,24 @@ $ViewList['account'] = array(
     'functions' => array( 'selfedit' )
 );
 
+$ViewList['editdepartment'] = array(
+    'params' => array('user_id','dep_id'),
+    'uparams' => array('csfr','action','mode','editor'),
+    'functions' => array( 'selfedit' )
+);
+
+$ViewList['newdepartment'] = array(
+    'params' => array('user_id'),
+    'uparams' => array('csfr','mode','editor'),
+    'functions' => array( 'selfedit' )
+);
+
+$ViewList['userdepartments'] = array(
+    'params' => array('user_id'),
+    'uparams' => array('editor'),
+    'functions' => array( 'selfedit' )
+);
+
 $ViewList['avatarbuilder'] = array(
     'params' => array('id'),
     'uparams' => array(),
@@ -238,6 +256,7 @@ $FunctionList['changephoto'] = array('explain' => 'Allow user to change his own 
 $FunctionList['change_job_title'] = array('explain' => 'Allow user to change his own job title');
 $FunctionList['change_core_attributes'] = array('explain' => 'Allow user to change his own username/password/e-mail/XMPP Username');
 $FunctionList['change_name_surname'] = array('explain' => 'Allow user to change his own name/surname');
+$FunctionList['change_password'] = array('explain' => 'Allow user to change his password');
 $FunctionList['pswdsecurity'] = array('explain' => 'Allow user to manage password requirements');
 $FunctionList['largeactivitytimeout'] = array('explain' => 'Allow user to choose a large inactivity timeout');
 

@@ -539,7 +539,13 @@ class erLhcoreClassGenericBotWorkflow {
     public static function processEvent($chatEvent, & $chat, $params = array()) {
 
         if (isset($params['msg'])) {
-            $payload = $params['msg']->msg;
+            if (is_object($params['msg'])) {
+                $payload = $params['msg']->msg;
+            } elseif (is_string($params['msg'])) {
+                $payload = $params['msg'];
+            } else {
+                $payload = '';
+            }
         } elseif (isset($params['msg_text']) && !empty($params['msg_text'])) {
             $payload = $params['msg_text'];
         } else {
@@ -1726,7 +1732,7 @@ class erLhcoreClassGenericBotWorkflow {
 
         if ($setLastMessageId == true && isset($message) && $message instanceof erLhcoreClassModelmsg) {
             if ($message->id > 0) {
-                self::setLastMessageId($chat, $message->id, true);
+                self::setLastMessageId($chat, $message->id, true, (isset($params['args']) ? $params['args'] : []));
             }
         }
 
@@ -2493,6 +2499,25 @@ class erLhcoreClassGenericBotWorkflow {
                     }
                 }
             }
+
+            $matchesValues = [];
+            preg_match_all('~\{condition\.((?:[^\{\}\}]++|(?R))*)\}~', $message,$matchesValues);
+
+            if (!empty($matchesValues[0])) {
+                foreach ($matchesValues[0] as $indexElement => $elementValue) {
+                    $validConditions = true;
+
+                    $conditionsToValidate = \LiveHelperChat\Models\Bot\Condition::getList(['filter' => ['identifier' => $matchesValues[1][$indexElement]]]);
+
+                    if (empty($conditionsToValidate)) {
+                        $message = str_replace($elementValue,  'not_valid',$message);
+                    } else {
+                        foreach ($conditionsToValidate as $conditionToValidate) {
+                            $message = str_replace($elementValue, ($conditionToValidate->isValid($params) ? 'valid' : 'not_valid'), $message);
+                        }
+                    }
+                }
+            }
         }
 
         return $message;
@@ -2535,19 +2560,26 @@ class erLhcoreClassGenericBotWorkflow {
         return $msg;
     }
 
-    public static function setLastMessageId($chat, $messageId, $isBot = false) {
+    public static function setLastMessageId($chat, $messageId, $isBot = false, $params = []) {
 
         $db = ezcDbInstance::get();
 
-        $attrLastMessageTime = $isBot === false ? 'last_user_msg_time' : 'last_op_msg_time';
+        if (!(isset($params['ignore_times']) && $params['ignore_times'] === true)) {
+            $attrLastMessageTime = $isBot === false ? 'last_user_msg_time' : 'last_op_msg_time';
+            $chat->{$attrLastMessageTime} = time();
+            $stmt = $db->prepare("UPDATE lh_chat SET {$attrLastMessageTime} = :last_user_msg_time, lsync = :lsync, last_msg_id = :last_msg_id, has_unread_messages = :has_unread_messages, unanswered_chat = :unanswered_chat WHERE id = :id");
+        } else {
+            $stmt = $db->prepare("UPDATE lh_chat SET lsync = :lsync, last_msg_id = :last_msg_id, has_unread_messages = :has_unread_messages, unanswered_chat = :unanswered_chat WHERE id = :id");
+        }
 
-        $chat->{$attrLastMessageTime} = time();
-
-        $stmt = $db->prepare("UPDATE lh_chat SET {$attrLastMessageTime} = :last_user_msg_time, lsync = :lsync, last_msg_id = :last_msg_id, has_unread_messages = :has_unread_messages, unanswered_chat = :unanswered_chat WHERE id = :id");
         $stmt->bindValue(':id', $chat->id, PDO::PARAM_INT);
         $stmt->bindValue(':lsync', time(), PDO::PARAM_INT);
         $stmt->bindValue(':has_unread_messages', ($chat->status == erLhcoreClassModelChat::STATUS_BOT_CHAT ? 0 : 1), PDO::PARAM_INT);
-        $stmt->bindValue(':last_user_msg_time', time(), PDO::PARAM_INT);
+
+        if (!(isset($params['ignore_times']) && $params['ignore_times'] === true)) {
+            $stmt->bindValue(':last_user_msg_time', time(), PDO::PARAM_INT);
+        }
+
         $stmt->bindValue(':unanswered_chat', 0, PDO::PARAM_INT);
         $stmt->bindValue(':last_msg_id',$messageId,PDO::PARAM_INT);
         $stmt->execute();

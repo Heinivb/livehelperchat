@@ -19,16 +19,16 @@ var revealM = {
 
         hideCallback : false,
 
+        modalInstance : null,
+
+        previousHideListener : null,
+    
+        previousShowListener : null,
+
 		revealModal : function(params) {
 
-			if ($('body').hasClass('modal-open')) {
-				if (revealM.hideCallback === false) {
-                    $('#myModal').modal('dispose');
-                } else {
-                    $('#myModal').modal('hide');
-                }
-			} else {
-				$('#myModal').modal('dispose');
+			if (revealM.modalInstance) {
+                revealM.modalInstance.hide();
 			}
 
             if (typeof params['hidecallback'] !== 'undefined') {
@@ -46,31 +46,18 @@ var revealM = {
 				if (typeof params['loadmethod'] !== 'undefined' && params['loadmethod'] == 'post')
 				{
 					jQuery.post(params['url'], params['datapost'], function(data){
-							if (typeof params['showcallback'] !== 'undefined') {
-								$('#myModal').on('shown.bs.modal',params['showcallback']);
-							}
-
-							if (typeof params['hidecallback'] !== 'undefined') {
-								$('#myModal').on('hide.bs.modal',params['hidecallback']);
-							}
-
 							$('#myModal').html(data);
-                            const myModal = new bootstrap.Modal('#myModal', mparams).show();
+                            revealM.modalInstance = new bootstrap.Modal('#myModal', mparams);
+                            revealM.setShowHideCallbacks(params);
+                            revealM.modalInstance.show();
                             revealM.setCenteredDraggable();
 					});
 				} else {
 					jQuery.get(params['url'], function(data){
-
-							if (typeof params['showcallback'] !== 'undefined') {
-								$('#myModal').on('shown.bs.modal',params['showcallback']);
-							}
-
-							if (typeof params['hidecallback'] !== 'undefined') {
-								$('#myModal').on('hide.bs.modal',params['hidecallback']);
-							}
-
 							$('#myModal').html(data);//.modal(mparams).show();
-                            const myModal = new bootstrap.Modal('#myModal', mparams).show();
+                            revealM.modalInstance = new bootstrap.Modal('#myModal', mparams);
+                            revealM.setShowHideCallbacks(params);
+                            revealM.modalInstance.show();
                             revealM.setCenteredDraggable();
 					});
 				}
@@ -84,24 +71,42 @@ var revealM = {
 				}
 				var additionalModalBody = typeof params['modalbodyclass'] === 'undefined' ? '' : ' '+params['modalbodyclass'];
 
-                if (typeof params['showcallback'] !== 'undefined') {
-                    $('#myModal').on('shown.bs.modal',params['showcallback']);
-                }
-
-                if (typeof params['hidecallback'] !== 'undefined') {
-                    $('#myModal').on('hide.bs.modal',params['hidecallback']);
-                }
-                
 				$('#myModal').html('<div class="modal-dialog modal-dialog-scrollable modal-xl"><div class="modal-content">'+header+'<div class="modal-body'+additionalModalBody+'">'+prependeBody+'<iframe src="'+params['url']+'" frameborder="0" style="width:100%" height="'+params['height']+'" /></div></div></div>');
-                const myModal = new bootstrap.Modal('#myModal', mparams).show();
+                revealM.modalInstance = new bootstrap.Modal('#myModal', mparams);
+                revealM.setShowHideCallbacks(params);
+                revealM.modalInstance.show();
 
-				revealM.setCenteredDraggable();
+                revealM.setCenteredDraggable();
 				
 			}
 		},
 
+        setShowHideCallbacks : function(params) {
+            // Remove old listeners
+            if (revealM.previousHideListener && document.getElementById('myModal')) {
+                document.getElementById('myModal').removeEventListener('hide.bs.modal', revealM.previousHideListener);
+                revealM.previousHideListener = null;
+            }
+
+            if (revealM.previousShowListener && document.getElementById('myModal')) {
+                document.getElementById('myModal').removeEventListener('show.bs.modal', revealM.previousShowListener);
+                revealM.previousShowListener = null;
+            }
+
+            // Attach new listeners
+            if (typeof params['showcallback'] !== 'undefined' && document.getElementById('myModal')) {
+                document.getElementById('myModal').addEventListener('show.bs.modal', params['showcallback']);
+                revealM.previousShowListener = params['showcallback'];
+            }
+
+            if (typeof params['hidecallback'] !== 'undefined' && document.getElementById('myModal')) {
+                revealM.previousHideListener = params['hidecallback'];
+                document.getElementById('myModal').addEventListener('hide.bs.modal', params['hidecallback']);
+            }
+        },
+
         setCenteredDraggable : function(){
-            if ($('#admin-body').length > 0) {
+            if ($('#admin-body').length > 0 && !$('html').attr('data-mobile')) {
                 var modalContent = $('#myModal .modal-dialog');
 
                 var prevPos = revealM.rememberPositions();

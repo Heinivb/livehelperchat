@@ -33,7 +33,10 @@ $translations = array(
         "close" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Close'),
         "back_to_chat" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Back'),
         "email_explain" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','We will send you a trascript of your chat with agent, so you can browse it later.'),
-        "lang" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Change language')
+        "lang" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Change language'),
+        "next" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Next 〉'),
+        "back" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','〈 Back'),
+        "submit" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Submit'),
     ],
     "chat" => [
         "option_sound" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/user_settings','Enable/Disable sound about new messages from the operator'),
@@ -52,7 +55,8 @@ $translations = array(
         "go_to_survey" =>  erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Go to Survey.'),
         "leave_a_message" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Leave a message'),
         "send_failed" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','There was an issue sending the message. Try again.'),
-        "send_connection" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','No internet connection.')
+        "send_connection" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','No internet connection.'),
+        "visitor_typing" => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Visitor is typing')
     ],
     "department" => [
         "offline" => "--=" . erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Offline') . "=--",

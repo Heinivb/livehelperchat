@@ -127,7 +127,8 @@ class erLhcoreClassChatCommand
                     }
 
                     $argumentsTrigger = array(
-                        'msg' => $commandData['argument'], 
+                        'msg' => $commandData['argument'],
+                        'chat' => $params['chat'],
                         'caller_user_id' => $params['user']->id,
                         'caller_user_class' => get_class($params['user']));
 
@@ -238,6 +239,7 @@ class erLhcoreClassChatCommand
             $msg->time = time();
             $msg->name_support = $params['user']->name_support;
 
+            \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $params['chat']));
             erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_msg_admin_saved', array('msg' => & $msg, 'chat' => & $params['chat']));
 
             $msg->saveThis();
@@ -272,6 +274,7 @@ class erLhcoreClassChatCommand
             $msg->time = time();
             $msg->name_support = $params['user']->name_support;
 
+            \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $params['chat']));
             erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_msg_admin_saved',array('msg' => & $msg, 'chat' => & $params['chat']));
 
             $msg->saveThis();
@@ -303,8 +306,8 @@ class erLhcoreClassChatCommand
 
         if ($params['argument'] != '') {
             $defaultHoldMessage = $params['argument'];
-        } else if ($params['chat']->auto_responder !== false && $params['chat']->auto_responder->auto_responder !== false && $params['chat']->auto_responder->auto_responder->wait_timeout_hold != '') {
-            $defaultHoldMessage = $params['chat']->auto_responder->auto_responder->wait_timeout_hold;
+        } else if ($params['chat']->auto_responder !== false && $params['chat']->auto_responder->auto_responder !== false && $params['chat']->auto_responder->auto_responder->wait_timeout_hold_translated != '') {
+            $defaultHoldMessage = $params['chat']->auto_responder->auto_responder->wait_timeout_hold_translated;
         } else {
             $defaultHoldMessage = '';
         }
@@ -312,12 +315,13 @@ class erLhcoreClassChatCommand
         if ($defaultHoldMessage != '') {
             // Store as message to visitor
             $msg = new erLhcoreClassModelmsg();
-            $msg->msg = $defaultHoldMessage;
+            $msg->msg = erLhcoreClassGenericBotWorkflow::translateMessage(trim($defaultHoldMessage), array('chat' => $params['chat']));
             $msg->chat_id = $params['chat']->id;
             $msg->user_id = $params['user']->id;
             $msg->time = time();
             $msg->name_support = $params['user']->name_support;
 
+            \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $params['chat']));
             erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_msg_admin_saved',array('msg' => & $msg, 'chat' => & $params['chat']));
 
             $msg->saveThis();

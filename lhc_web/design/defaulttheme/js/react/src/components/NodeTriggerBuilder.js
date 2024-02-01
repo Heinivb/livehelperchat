@@ -22,11 +22,13 @@ import NodeTriggerActionEventType from './builder/NodeTriggerActionEventType';
 import NodeTriggerActionRepeatRestrict from './builder/NodeTriggerActionRepeatRestrict';
 import NodeTriggerActionExecuteJS from './builder/NodeTriggerActionExecuteJS';
 import NodeTriggerActionRestAPI from './builder/NodeTriggerActionRestAPI';
+import NodeTriggerActionIframe from './builder/NodeTriggerActionIframe';
 import NodeTriggerActionTbody from './builder/NodeTriggerActionTbody';
 import NodeTriggerActionTextConditional from './builder/NodeTriggerActionTextConditional';
 import NodeTriggerActionAlertIcon from './builder/NodeTriggerActionAlertIcon';
 import NodeTriggerActionMail from './builder/NodeTriggerActionMail';
 import NodeTriggerActionLogAction from './builder/NodeTriggerActionLogAction';
+import NodeTriggerActionSurvey from './builder/NodeTriggerActionSurvey';
 import NodeTriggerListTemplate from './builder/NodeTriggerListTemplate';
 
 @connect((store) => {
@@ -243,10 +245,14 @@ class NodeTriggerBuilder extends Component {
                     return <NodeTriggerActionTextConditional upField={this.upField} downField={this.downField} isFirst={index == 0} isLast={index + 1 == totalTriggers} key={key} id={index} onChangeContent={this.handleContentChange} onChangeType={this.handleTypeChange} action={action} removeAction={this.removeAction} deleteSubelement={this.deleteSubelement} addSubelement={this.addSubelement} />
                 } else if (action.get('type') == 'alert_icon') {
                     return <NodeTriggerActionAlertIcon upField={this.upField} downField={this.downField} isFirst={index == 0} isLast={index + 1 == totalTriggers} key={key} id={index} onChangeContent={this.handleContentChange} onChangeType={this.handleTypeChange} action={action} removeAction={this.removeAction} deleteSubelement={this.deleteSubelement} addSubelement={this.addSubelement} />
+                } else if (action.get('type') == 'survey') {
+                    return <NodeTriggerActionSurvey upField={this.upField} downField={this.downField} isFirst={index == 0} isLast={index + 1 == totalTriggers} key={key} id={index} onChangeContent={this.handleContentChange} onChangeType={this.handleTypeChange} action={action} removeAction={this.removeAction} deleteSubelement={this.deleteSubelement} addSubelement={this.addSubelement} />
                 } else if (action.get('type') == 'mail') {
                     return <NodeTriggerActionMail upField={this.upField} downField={this.downField} isFirst={index == 0} isLast={index + 1 == totalTriggers} key={key} id={index} onChangeContent={this.handleContentChange} onChangeType={this.handleTypeChange} action={action} removeAction={this.removeAction} deleteSubelement={this.deleteSubelement} addSubelement={this.addSubelement} />
                 } else if (action.get('type') == 'laction') {
                     return <NodeTriggerActionLogAction upField={this.upField} downField={this.downField} isFirst={index == 0} isLast={index + 1 == totalTriggers} key={key} id={index} onChangeContent={this.handleContentChange} onChangeType={this.handleTypeChange} action={action} removeAction={this.removeAction} deleteSubelement={this.deleteSubelement} addSubelement={this.addSubelement} />
+                } else if (action.get('type') == 'iframe') {
+                    return <NodeTriggerActionIframe upField={this.upField} downField={this.downField} isFirst={index == 0} isLast={index + 1 == totalTriggers} key={key} id={index} onChangeContent={this.handleContentChange} onChangeType={this.handleTypeChange} action={action} removeAction={this.removeAction} deleteSubelement={this.deleteSubelement} addSubelement={this.addSubelement} />
                 }
             });
         }

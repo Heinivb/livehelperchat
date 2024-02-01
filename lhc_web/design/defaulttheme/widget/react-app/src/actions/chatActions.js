@@ -138,6 +138,10 @@ export function voteAction(obj) {
     return axios.post(window.lhcChat['base_url'] + "chat/voteaction/" + obj.id + '/' + obj.hash + '/' + obj.type, null, defaultHeaders)
 }
 
+export function updateMessageData(obj, payload) {
+    return axios.post(window.lhcChat['base_url'] + "chat/updatemessagedata/" + obj.id + '/' + obj.hash + '/' + obj.msg_id, payload, defaultHeaders)
+}
+
 export function transferToHumanAction(obj) {
     return axios.post(window.lhcChat['base_url'] + "chat/transfertohuman/" + obj.id + '/' + obj.hash, null, defaultHeaders)
 }
@@ -215,7 +219,8 @@ export function storeSubscriber(payload) {
                         'chat_id': state.chatwidget.getIn(['chatData','id']),
                         'hash' : state.chatwidget.getIn(['chatData','hash']),
                         'lmgsid' : state.chatwidget.getIn(['chatLiveData','lmsgid']),
-                        'theme' : state.chatwidget.get('theme')
+                        'theme' : state.chatwidget.get('theme'),
+                        'active_widget' : true
                     }));
                 }
         })
@@ -443,7 +448,7 @@ export function updateMessage(obj) {
             elm = document.getElementById('msg-'+response.data.id);
 
             // Update className
-            if (classNameRow !== null) {
+            if (elm && classNameRow !== null) {
                 elm.className = classNameRow;
             }
 
@@ -454,55 +459,6 @@ export function updateMessage(obj) {
                     elmScroll.scrollTop = elmScroll.scrollHeight + 1000;
                 }
             }
-
-
-/*
-            let elmUpdated = document.getElementById('msg-'+response.data.id);
-            let collection = elmUpdated.getElementsByTagName('script');
-            let collectionButton = elmUpdated.getElementsByTagName('button');
-            let collectionA = elmUpdated.getElementsByTagName('a');
-
-            for (let item of collection) {
-                var attribs = {};
-                if (item.hasAttributes()) {
-                    var attrs = item.attributes;
-                    for (var i = attrs.length - 1; i >= 0; i--) {
-                        attribs[attrs[i].name] = attrs[i].value;
-                    }
-                }
-                item.attribs = attribs;
-                parseScript(item, this);
-            }
-
-            for (let item of collectionButton) {
-                var attribs = {};
-                if (item.hasAttributes()) {
-                    var attrs = item.attributes;
-                    for (var i = attrs.length - 1; i >= 0; i--) {
-                        attribs[attrs[i].name] = attrs[i].value;
-                    }
-                }
-                item.attribs = attribs;
-                if (item.onclick) {
-                    item.onclick = () => parseScript(item, this);
-                }
-            }
-
-            for (let item of collectionA) {
-                var attribs = {};
-                if (item.hasAttributes()) {
-                    var attrs = item.attributes;
-                    for (var i = attrs.length - 1; i >= 0; i--) {
-                        attribs[attrs[i].name] = attrs[i].value;
-                    }
-                }
-                item.attribs = attribs;
-
-                if (item.onclick) {
-                    item.onclick = () => parseScript(item, this, obj, dispatch, getState);
-                }
-            }*/
-
         })
         .catch((err) => {
             console.log(err);
@@ -741,7 +697,7 @@ export function addMessage(obj) {
                     
                     syncStatus.add_msg = false;
                     
-                    fetchMessages({'theme' : obj.theme, 'chat_id' : obj.id, 'lmgsid' : getState().chatwidget.getIn(['chatLiveData','lmsgid']), 'hash' : obj.hash})(dispatch, getState);
+                    fetchMessages({'active_widget': true, 'theme' : obj.theme, 'chat_id' : obj.id, 'lmgsid' : getState().chatwidget.getIn(['chatLiveData','lmsgid']), 'hash' : obj.hash})(dispatch, getState);
 
                     if (response.data.t) {
                         helperFunctions.sendMessageParent('botTrigger',[{'trigger' : response.data.t}]);
@@ -836,4 +792,8 @@ export function userTyping(status, msg) {
             });
         }
     }
+}
+
+export function submitInlineSurvey(obj) {
+    return axios.post(window.lhcChat['base_url'] + "survey/fillinline", obj, defaultHeaders);
 }

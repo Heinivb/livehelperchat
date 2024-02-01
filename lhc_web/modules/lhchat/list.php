@@ -78,12 +78,14 @@ if (is_array($filterParams['input_form']->subject_id) && !empty($filterParams['i
 /**
  * Departments filter
  * */
-$limitation = erLhcoreClassChat::getDepartmentLimitation();
+$limitation = erLhcoreClassChat::getDepartmentLimitation( 'lh_chat', ['check_list_permissions' => true]);
 
 if ($limitation !== false) {
     if ($limitation !== true) {
         $filterParams['filter']['customfilter'][] = $limitation;
     }
+} else {
+    $filterParams['filter']['customfilter'][] = '1 = -1';
 }
 
 erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.list_filter',array('filter' => & $filterParams, 'uparams' => $Params['user_parameters_unordered']));
@@ -199,8 +201,12 @@ try {
     if ($pages->items_total > 0) {
         $items = erLhcoreClassModelChat::getList(array_merge($filterParams['filter'],array('limit' => $pages->items_per_page,'offset' => $pages->low)));
         $iconsAdditional = erLhAbstractModelChatColumn::getList(array('ignore_fields' => array('position','conditions','column_identifier','enabled'), 'sort' => false, 'filter' => array('icon_mode' => 1, 'enabled' => 1, 'chat_enabled' => 1)));
-        erLhcoreClassChat::prefillGetAttributes($items, array(), array(), array('additional_columns' => $iconsAdditional, 'do_not_clean' => true));
+        $iconsAdditionalColumn = erLhAbstractModelChatColumn::getList(array('ignore_fields' => array('position','conditions','column_identifier','enabled'), 'sort' => 'position ASC, id ASC','filter' => array('enabled' => 1, 'icon_mode' => 0, 'chat_list_enabled' => 1)));
+
+        erLhcoreClassChat::prefillGetAttributes($items, array(), array(), array('additional_columns' => ($iconsAdditional + $iconsAdditionalColumn), 'do_not_clean' => true));
         $tpl->set('icons_additional',$iconsAdditional);
+        $tpl->set('additional_chat_columns',$iconsAdditionalColumn);
+
         erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.list_items',array('filter' => & $items, 'uparams' => $Params['user_parameters_unordered']));
 
         $subjectsChats = erLhAbstractModelSubjectChat::getList(array('filterin' => array('chat_id' => array_keys($items))));

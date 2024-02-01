@@ -74,6 +74,10 @@ export default ({onChange, type}) => {
         {
             'value': 'mail',
             'text' : 'Send mail',
+        },
+        {
+            'value': 'survey',
+            'text' : 'Send inline survey',
         }
     ]);
 
@@ -105,6 +109,10 @@ export default ({onChange, type}) => {
         {
             'value': 'tbody',
             'text' : 'Execute trigger body',
+        },
+        {
+            'value': 'iframe',
+            'text' : 'Sourceless Iframe',
         },
         {
             'value': 'laction',

@@ -24,7 +24,8 @@
                             <tr>
                             	<th width="1%"><input class="mb-0" type="checkbox" ng-model="check_all_items" /></th>
                                 <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/pendingchats','Information');?></th>
-                                 <th width="1%"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/pendingchats','Operator');?></th>
+                                <?php include(erLhcoreClassDesign::designtpl('lhchat/lists_chats_parts/additional_chat_column.tpl.php'));?>
+                                <th width="1%"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/pendingchats','Operator');?></th>
                                 <th width="1%"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/pendingchats','Department');?></th>
                                 <?php include(erLhcoreClassDesign::designtpl('lhchat/lists_chats_parts/column_after_department_multiinclude.tpl.php'));?>
                                 <th width="1%"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/pendingchats','Status');?></th>
@@ -45,7 +46,7 @@
                               <span title="<?php echo $chat->id;?>" class="material-icons fs12 me-0<?php echo $chat->user_status_front == 2 ? ' icon-user-away' : ($chat->user_status_front == 0 ? ' icon-user-online' : ' icon-user-offline')?>" class="">&#xE3A6;</span>&nbsp;
                             
                               <?php if ( !empty($chat->country_code) ) : ?><img src="<?php echo erLhcoreClassDesign::design('images/flags');?>/<?php echo $chat->country_code?>.png" alt="<?php echo htmlspecialchars($chat->country_name)?>" title="<?php echo htmlspecialchars($chat->country_name)?>" />&nbsp;<?php endif; ?>
-                              <a class="material-icons" onclick="lhc.previewChat(<?php echo $chat->id?>)">info_outline</a>
+                              <a class="material-icons" id="preview-item-<?php echo $chat->id?>" data-list-navigate="true" onclick="lhc.previewChat(<?php echo $chat->id?>,this)">info_outline</a>
                               
                               <a ng-non-bindable href="#!#Fchat-id-<?php echo $chat->id?>" class="action-image material-icons" data-title="<?php echo htmlspecialchars($chat->nick,ENT_QUOTES);?>" onclick="lhinst.startChatNewWindow('<?php echo $chat->id;?>',$(this).attr('data-title'))" title="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/pendingchats','Open in a new window');?>">open_in_new</a>
 
@@ -86,6 +87,7 @@
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </td>
+                            <?php include(erLhcoreClassDesign::designtpl('lhchat/lists_chats_parts/additional_chat_column_row.tpl.php'));?>
                             <td ng-non-bindable nowrap>
                                 <?php echo htmlspecialchars($chat->user);?>
                             </td>

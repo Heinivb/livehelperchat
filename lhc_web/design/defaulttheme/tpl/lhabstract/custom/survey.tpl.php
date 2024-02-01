@@ -10,10 +10,22 @@
 	<?php include(erLhcoreClassDesign::designtpl('lhkernel/alert_success.tpl.php'));?>
 <?php endif; ?>
 
-<div class="form-group">
-<label><?php echo $fields['name']['trans'];?></label>
-<?php echo erLhcoreClassAbstract::renderInput('name', $fields['name'], $object)?>
+<div class="row">
+    <div class="col-6">
+        <div class="form-group">
+            <label><?php echo $fields['name']['trans'];?></label>
+            <?php echo erLhcoreClassAbstract::renderInput('name', $fields['name'], $object)?>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <label><?php echo $fields['identifier']['trans'];?></label>
+            <?php echo erLhcoreClassAbstract::renderInput('identifier', $fields['identifier'], $object)?>
+        </div>
+    </div>
 </div>
+
+<?php include(erLhcoreClassDesign::designtpl('lhabstract/custom/survey/custom_multiinclude.tpl.php'));?>
 
 <?php $translatableItem = array('identifier' => 'feedback_text'); ?>
 <?php include(erLhcoreClassDesign::designtpl('lhabstract/custom/theme/theme_text_translatable.tpl.php'));?>
@@ -27,6 +39,10 @@
 
 <div class="form-group">
     <label><?php echo erLhcoreClassAbstract::renderInput('disable_chat_download', $fields['disable_chat_download'], $object)?> <?php echo $fields['disable_chat_download']['trans'];?></label>
+</div>
+
+<div class="form-group">
+    <label><?php echo erLhcoreClassAbstract::renderInput('return_on_close', $fields['return_on_close'], $object)?> <?php echo $fields['return_on_close']['trans'];?></label>
 </div>
 
 <hr>

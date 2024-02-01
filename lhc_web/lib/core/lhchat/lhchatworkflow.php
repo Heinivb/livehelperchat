@@ -257,12 +257,14 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = time() - ($chat->pnd_time > 0 ? $chat->pnd_time : $chat->time);
                 }
 
-                $chat->chat_duration = erLhcoreClassChat::getChatDurationToUpdateChatID($chat);
+                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
                 $chat->cls_time = time();
                 $chat->session_score = 0;
                 $chat->has_unread_messages = 0;
 
                 $chat->updateThis();
+
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.auto_close',array('msg' => & $msg,'chat' => & $chat));
 
                 erLhcoreClassChat::closeChatCallback($chat, $chat->user);
 
@@ -297,10 +299,12 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = time() - ($chat->pnd_time > 0 ? $chat->pnd_time : $chat->time);
                 }
 
-                $chat->chat_duration = erLhcoreClassChat::getChatDurationToUpdateChatID($chat);
+                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->updateThis();
+
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.auto_close',array('msg' => & $msg,'chat' => & $chat));
 
                 erLhcoreClassChat::closeChatCallback($chat, $chat->user);
 
@@ -338,10 +342,12 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = time() - ($chat->pnd_time > 0 ? $chat->pnd_time : $chat->time);
                 }
 
-                $chat->chat_duration = erLhcoreClassChat::getChatDurationToUpdateChatID($chat);
+                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->updateThis();
+
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.auto_close',array('msg' => & $msg,'chat' => & $chat));
 
                 erLhcoreClassChat::closeChatCallback($chat, $chat->user);
 
@@ -379,10 +385,12 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = time() - ($chat->pnd_time > 0 ? $chat->pnd_time : $chat->time);
                 }
 
-                $chat->chat_duration = erLhcoreClassChat::getChatDurationToUpdateChatID($chat);
+                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->updateThis();
+
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.auto_close',array('msg' => & $msg,'chat' => & $chat));
 
                 erLhcoreClassChat::closeChatCallback($chat, $chat->user);
 
@@ -421,10 +429,12 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = 1;
                 }
 
-                $chat->chat_duration = erLhcoreClassChat::getChatDurationToUpdateChatID($chat);
+                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->updateThis();
+
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.auto_close',array('msg' => & $msg,'chat' => & $chat));
 
                 erLhcoreClassChat::closeChatCallback($chat, $chat->user);
 
@@ -466,10 +476,12 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = time() - ($chat->pnd_time > 0 ? $chat->pnd_time : $chat->time);
                 }
 
-                $chat->chat_duration = erLhcoreClassChat::getChatDurationToUpdateChatID($chat);
+                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->updateThis();
+
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.auto_close',array('msg' => & $msg,'chat' => & $chat));
 
                 erLhcoreClassChat::closeChatCallback($chat, $chat->user);
 
@@ -550,11 +562,13 @@ class erLhcoreClassChatWorkflow {
                     }
                 }
 
-                $chat->chat_duration = erLhcoreClassChat::getChatDurationToUpdateChatID($chat);
+                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->session_score = 0;
                 $chat->updateThis();
+
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.auto_close',array('msg' => & $msg,'chat' => & $chat));
 
                 if (!$avoidCloseCallback) {
                     erLhcoreClassChat::closeChatCallback($chat, $chat->user);
@@ -921,6 +935,7 @@ class erLhcoreClassChatWorkflow {
 
             $items = array($cannedMsg);
 
+            \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'canned_replace', 'replace_array' => & $replaceArray, 'user' => $chat->user, 'chat' => $chat));
             erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.workflow.canned_message_replace',array('items' => & $items, 'user' => $chat->user, 'chat' => $chat, 'replace_array' => & $replaceArray));
 
             $cannedMsg = $items[0];
@@ -946,6 +961,7 @@ class erLhcoreClassChatWorkflow {
             $chat->has_unread_op_messages = 1;
             $chat->unread_op_messages_informed = 0;
 
+            \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $chat));
             erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.workflow.canned_message_before_save',array('msg' => & $msg, 'chat' => & $chat));
 
             erLhcoreClassChat::getSession()->save($msg);

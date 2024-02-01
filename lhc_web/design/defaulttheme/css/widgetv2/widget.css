@@ -388,6 +388,10 @@ div.message-row.response div.msg-body{
     max-width:90%;
 }
 
+div.message-row.response div.msg-body.sub-message{
+    background-color: transparent;
+    color: #212529;
+}
 
 /**
 * Switch style for frontend visitors
@@ -1114,7 +1118,7 @@ textarea[name=ChatMessage] {
     position: absolute;
     right: 0;
     left: 0;
-    margin-top:-26px;
+    margin-top:-23px;
     border-bottom-style: dashed!important;
 }
 

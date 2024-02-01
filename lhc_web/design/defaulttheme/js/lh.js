@@ -162,7 +162,7 @@ function lh(){
             $('#CSChatMessage-'+chat_id).unbind('keyup', function(){});
         }
 
-        this.removeSynchroChat(chat_id);
+        this.removeSynchroChat(chat_id, true);
         this.removeBackgroundChat(chat_id);
         this.hideNotification(chat_id);
         var inst = this;
@@ -704,24 +704,22 @@ function lh(){
 
         document.body.removeChild(textArea);
 
-        inst.tooltip({
+        var toolTip = new bootstrap.Tooltip(inst,{
             trigger: 'click',
             placement: 'top'
         });
 
         function setTooltip(message) {
-            inst.tooltip('hide')
-                .attr('data-original-title', message)
-                .tooltip('show');
+            toolTip.show();
         }
 
         function hideTooltip() {
             setTimeout(function() {
-                inst.tooltip('hide');
+                toolTip.dispose();
             }, 1000);
         }
 
-        setTooltip(inst.attr('data-success'));
+        setTooltip();
         hideTooltip();
 
     },
@@ -783,9 +781,9 @@ function lh(){
             tabs.find('> ul > li > a.active').removeClass("active");
             tabs.find('> ul > #chat-tab-li-'+chat_id+' > a').addClass("active");
             tabs.find('> div.tab-content > div.active').removeClass('active');
-            tabs.find('> div.tab-content').append('<div role="tabpanel" class="tab-pane active" id="chat-id-'+chat_id+'"></div>');
+            tabs.find('> div.tab-content').append('<div role="tabpanel" class="tab-pane chat-tab-pane active" id="chat-id-'+chat_id+'"></div>');
         } else {
-            tabs.find('> div.tab-content').append('<div role="tabpanel" class="tab-pane" id="chat-id-'+chat_id+'"></div>');
+            tabs.find('> div.tab-content').append('<div role="tabpanel" class="tab-pane chat-tab-pane" id="chat-id-'+chat_id+'"></div>');
         }
 
         ee.emitEvent('groupChatTabLoaded', [chat_id]);
@@ -923,7 +921,7 @@ function lh(){
         }
     };
 
-    this.removeSynchroChat = function (chat_id)
+    this.removeSynchroChat = function (chat_id, passive)
     {
         var j = 0;
 
@@ -939,7 +937,9 @@ function lh(){
 
         this.forgetChat(chat_id,'achat_id');
 
-        ee.emitEvent('removeSynchroChat', [chat_id]);
+        if (passive !== true) {
+            ee.emitEvent('removeSynchroChat', [chat_id]);
+        }
 
         if (LHCCallbacks.removeSynchroChat) {
         	LHCCallbacks.removeSynchroChat(chat_id);
@@ -1081,7 +1081,7 @@ function lh(){
     {
     	if ($('#chat-main-column-'+chat_id+' .collapse-right').text() == 'chevron_right'){
 	    	$('#chat-right-column-'+chat_id).hide();
-	    	$('#chat-main-column-'+chat_id).removeClass('col-sm-7').addClass('col-sm-12');
+	    	$('#chat-main-column-'+chat_id).removeClass('col-xl-8').addClass('col-xl-12');
 	    	$('#chat-main-column-'+chat_id+' .collapse-right').text('chevron_left');
 	    	try {
 		    	if (localStorage) {
@@ -1090,7 +1090,7 @@ function lh(){
 	    	} catch(e) {}
     	} else {
     		$('#chat-right-column-'+chat_id).show();
-	    	$('#chat-main-column-'+chat_id).removeClass('col-sm-12').addClass('col-sm-7');
+	    	$('#chat-main-column-'+chat_id).removeClass('col-xl-12').addClass('col-xl-8');
 	    	$('#chat-main-column-'+chat_id+' .collapse-right').text('chevron_right');
 	    	
 	    	try {
@@ -1144,10 +1144,12 @@ function lh(){
                 ee.emitEvent('angularLoadChatList');
             } else {
 	            alert(data.result);
+                ee.emitEvent('angularStartChatbyId',[chat_id]);
             }
         }).fail(function(jqXHR, textStatus, errorThrown) {
             ee.emitEvent('angularSyncDisabled', [false]);
-            console.dir(jqXHR);
+            alert('There was an error processing your request: ' + '[' + jqXHR.status + '] [' + jqXHR.statusText + '] [' + jqXHR.responseText + '] ' + errorThrown);
+            ee.emitEvent('angularStartChatbyId',[chat_id]);
         });
 
         if ($('#CSChatMessage-'+chat_id).length != 0) {
@@ -1963,9 +1965,13 @@ function lh(){
 	        	                      if (item.um == 1) {
 	        	                    	  statusel.addClass('chat-unread');
 	        	                    	  $('#msg-send-status-'+item.chat_id).addClass('icon-user-offline');
-	  	                			  } else {
+                                          if (item.ssub == 3) {
+                                              $('#messagesBlock-'+item.chat_id).find('.msg-del-st-0,.msg-del-st-1').removeClass('msg-del-st-0 msg-del-st-1').addClass('msg-del-st-2').text('done_all');
+                                          }
+                                      } else {
 	  	                				  $('#msg-send-status-'+item.chat_id).addClass('icon-user-online');
 	  	                				  statusel.removeClass('chat-unread');
+                                          $('#messagesBlock-'+item.chat_id).find('.msg-del-st-0,.msg-del-st-1,.msg-del-st-2').remove();
 	  	                			  }
 
 	        	                      if (item.lp !== false) {
@@ -2809,18 +2815,41 @@ function lh(){
     };
 
     this.submitModalForm = function(form, idElement){
-    	var inst = this;
-    	$.post(form.attr('action'),form.serialize(), function(data) {
-            var idElementDetermined = idElement ? '#'+idElement : '#myModal';
-            if (!idElement) {
-                var styleOriginal = $('#myModal > .modal-dialog')[0].style.cssText;
+        var inst = this;
+
+        $('#modal-in-progress').removeClass('hide');
+        $('.modal-submit-disable').addClass('disabled').attr('disabled',"disabled");
+
+        $.ajax({
+            url: form.attr("action"),
+            type: form.attr("method"),
+            //dataType: "JSON",
+            data: new FormData(form[0]),
+            processData: false,
+            contentType: false,
+            success: function (data, status)
+            {
+                $('#modal-in-progress').addClass('hide');
+                $('.modal-submit-disable').removeClass('disabled').attr('disabled',"disabled");
+
+                var idElementDetermined = idElement ? '#'+idElement : '#myModal';
+                if (!idElement) {
+                    var styleOriginal = $('#myModal > .modal-dialog')[0].style.cssText;
+                }
+                $(idElementDetermined).html(data);
+                if (!idElement && $('#myModal > .modal-dialog').length > 0) {
+                    $('#myModal > .modal-dialog')[0].style.cssText = styleOriginal;
+                } else {
+                    $(idElementDetermined).html('<div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-body">'+data+'</div></div></div>');
+                }
+            },
+            error: function (xhr, desc, err)
+            {
+                alert('An error has accoured! ' + xhr.responseText);
             }
-            $(idElementDetermined).html(data);
-            if (!idElement) {
-                $('#myModal > .modal-dialog')[0].style.cssText = styleOriginal;
-            }
-	   	 });
-    	return false;
+        });
+
+        return false;
     };
 
     this.pendingMessagesToStore = [];

@@ -73,7 +73,7 @@ class erLhcoreClassChat {
      */
     public static function getPendingChats($limit = 50, $offset = 0, $filterAdditional = array(), $filterAdditionalMainAttr = array(), $limitationDepartment = array())
     {
-    	$limitation = self::getDepartmentLimitation('lh_chat',$limitationDepartment);
+    	$limitation = self::getDepartmentLimitation('lh_chat', $limitationDepartment);
 
     	// Does not have any assigned department
     	if ($limitation === false) { return array(); }
@@ -144,7 +144,7 @@ class erLhcoreClassChat {
             $subjectIds = json_decode(erLhcoreClassModelUserSetting::getSetting('subject_id', $filterString), true);
         }
 
-        $limitation = self::getDepartmentLimitation();
+        $limitation = self::getDepartmentLimitation('lh_chat', ['check_list_permissions' => true]);
 
         // Does not have any assigned department
         if ($limitation === false) {
@@ -548,8 +548,21 @@ class erLhcoreClassChat {
     	    $userData = $params['user'];
     	    $userId = $userData->id;
     	}
-    	
-    	
+
+        $limitationPermission = true;
+
+        if (isset($params['check_list_permissions'])) {
+            if (!erLhcoreClassUser::instance()->hasAccessTo('lhchat','list_all_chats')) {
+                $limitationPermission = false;
+                if (erLhcoreClassUser::instance()->hasAccessTo('lhchat','list_my_chats')) {
+                    $limitationPermission = '(`user_id` = ' . (int)erLhcoreClassUser::instance()->getUserID() . ')';
+                    if (erLhcoreClassUser::instance()->hasAccessTo('lhchat','list_pending_chats')) {
+                        $limitationPermission = '(`user_id` = ' . (int)erLhcoreClassUser::instance()->getUserID() . ' OR (`user_id` = 0 AND `status` = 0))';
+                    }
+                }
+            }
+        }
+
     	if ( $userData->all_departments == 0 )
     	{
     		$userDepartaments = erLhcoreClassUserDep::getUserDepartaments($userId, $userData->cache_version);
@@ -562,8 +575,17 @@ class erLhcoreClassChat {
 
     		$LimitationDepartament = '('.$tableName.'.dep_id IN ('.implode(',',$userDepartaments).'))';
 
+            if ($limitationPermission === false) {
+                return false;
+            } elseif ($limitationPermission !== true) {
+                $LimitationDepartament = '(' . $LimitationDepartament . ' AND ' . $limitationPermission . ')';
+            }
+
     		return $LimitationDepartament;
-    	}
+
+    	} elseif ($limitationPermission !== true) {
+            return $limitationPermission;
+        }
 
     	return true;
     }
@@ -571,7 +593,7 @@ class erLhcoreClassChat {
     // Get's unread messages from users
     public static function getUnreadMessagesChats($limit = 10, $offset = 0, $filterAdditional = array()) {
 
-    	$limitation = self::getDepartmentLimitation();
+    	$limitation = self::getDepartmentLimitation('lh_chat', ['check_list_permissions' => true]);
 
     	// Does not have any assigned department
     	if ($limitation === false) {
@@ -630,7 +652,7 @@ class erLhcoreClassChat {
 
     public static function getActiveChats($limit = 50, $offset = 0, $filterAdditional = array())
     {
-    	$limitation = self::getDepartmentLimitation();
+    	$limitation = self::getDepartmentLimitation('lh_chat', ['check_list_permissions' => true]);
 
     	// Does not have any assigned department
     	if ($limitation === false) { return array(); }
@@ -656,7 +678,7 @@ class erLhcoreClassChat {
 
     public static function getActiveChatsCount($filterAdditional = array())
     {
-    	$limitation = self::getDepartmentLimitation();
+    	$limitation = self::getDepartmentLimitation('lh_chat', ['check_list_permissions' => true]);
 
     	// Does not have any assigned department
     	if ($limitation === false) { return 0; }
@@ -678,7 +700,7 @@ class erLhcoreClassChat {
 
     public static function getClosedChats($limit = 50, $offset = 0, $filterAdditional = array())
     {
-    	$limitation = self::getDepartmentLimitation();
+    	$limitation = self::getDepartmentLimitation('lh_chat', ['check_list_permissions' => true]);
 
     	// Does not have any assigned department
     	if ($limitation === false) { return array(); }
@@ -1657,9 +1679,16 @@ class erLhcoreClassChat {
                         if (isset($variableValue) && $variableValue != '') {
                             $object->{'cc_'.$column->id} = $variableValue;
                         }
+                    } elseif (strpos($column->variable,'{args.') !== false) {
+                        foreach (explode('||',$column->variable) as $variableValue) {
+                            $variableValueReplaced = erLhcoreClassGenericBotWorkflow::translateMessage($variableValue, array('chat' => $object, 'args' => ['chat' => $object]));
+                            $object->{'cc_' . $column->id} = $variableValueReplaced;
+                            if ($variableValueReplaced != '') {
+                                break;
+                            }
+                        }
+
                     }
-
-
                 }
             }
 
@@ -2030,47 +2059,6 @@ class erLhcoreClassChat {
        }
    }
 
-   public static function getChatDurationToUpdateChatID($chat) {
-
-       $sql = 'SELECT lh_msg.time, lh_msg.user_id FROM lh_msg WHERE lh_msg.chat_id = :chat_id AND lh_msg.user_id != -1 ORDER BY id ASC';
-       $db = ezcDbInstance::get();
-       $stmt = $db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
-       $stmt->bindValue(':chat_id',$chat->id);
-       $stmt->execute();
-
-       $timeout_user = erLhcoreClassModelChatConfig::fetch('cduration_timeout_user')->current_value;
-       $timeout_operator = erLhcoreClassModelChatConfig::fetch('cduration_timeout_operator')->current_value;
-
-       $params = array(
-           'timeout_user' => ($timeout_user > 0 ? $timeout_user : 4)*60,// How long operator can wait for message from visitor before delay between messages are ignored
-           'timeout_operator' => ($timeout_operator > 0 ? $timeout_operator : 10)*60
-       );
-
-       $previousMessage = null;
-       $timeToAdd = 0;
-       while ($row = $stmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) {
-           if ($previousMessage === null) {
-               $previousMessage = $row;
-               continue;
-           }
-
-           if ($row['user_id'] == 0) {
-               $timeout = $params['timeout_user'];
-           } else {
-               $timeout = $params['timeout_operator'];
-           }
-
-           $diff = $row['time'] - $previousMessage['time'];
-
-           if ($diff < $timeout && $diff > 0) {
-               $timeToAdd += $diff;
-           }
-           $previousMessage = $row;
-       }
-
-   	   	return $timeToAdd;
-   }
-   
    /**
     * @see https://github.com/LiveHelperChat/livehelperchat/pull/809
     *

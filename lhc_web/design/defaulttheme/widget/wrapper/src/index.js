@@ -55,7 +55,7 @@
             lhc.loaded = false;
             lhc.connected = false;
             lhc.ready = false;
-            lhc.version = 210;
+            lhc.version = 224;
 
             const isMobileItem = require('ismobilejs');
             var isMobile = isMobileItem.default(global.navigator.userAgent).phone;
@@ -130,6 +130,7 @@
                 // Main attributes
                 var attributesWidget = {
                     terminated: false,
+                    viewport_enabled: true,
                     prefixLowercase: prefixLowercase,
                     prefixStorage: prefixStorage,
                     prefixScope: scopeScript,
@@ -173,6 +174,7 @@
                     profile_pic: LHC_API.args.profile_pic || null,
                     position: LHC_API.args.position || 'bottom_right',
                     position_placement: LHC_API.args.position_placement || 'bottom_right',
+                    position_placement_original: LHC_API.args.position_placement || 'bottom_right',
                     base_url: LHC_API.args.lhc_base_url,
                     mode: LHC_API.args.mode || 'widget',
                     tag: LHC_API.args.tag || '',
@@ -219,7 +221,8 @@
                     wright: 0,
                     width: ((isMobile || attributesWidget.fscreen) ? 100 : (LHC_API.args.wwidth || 350)),
                     height: ((isMobile || attributesWidget.fscreen) ? 100 : (LHC_API.args.wheight || 520)),
-                    units: ((isMobile || attributesWidget.fscreen) ? '%' : 'px')
+                    units: ((isMobile || attributesWidget.fscreen) ? '%' : 'px'),
+                    position_placement: attributesWidget.position_placement
                 });
 
                 var chatEvents = new chatEventsHandler(attributesWidget);
@@ -378,7 +381,7 @@
                     }
 
                     if (data.wposition) {
-                        attributesWidget.position_placement = data.wposition;
+                        LHC_API.args.position_placement = attributesWidget.position_placement = data.wposition;
                     }
 
                     attributesWidget.captcha = {hash: data.hash, ts: data.hash_ts};
@@ -432,6 +435,10 @@
                             attributesWidget.clinst = true;
                         }
 
+                        if (data.chat_ui.viewport) {
+                            attributesWidget.viewport_enabled = data.chat_ui.viewport != 2 && data.chat_ui.viewport == 1 && isMobile === true;
+                        }
+
                         if (data.chat_ui.wbottom) {
                             attributesWidget.widgetDimesions.nextProperty('wbottom', data.chat_ui.wbottom);
                         }
@@ -481,6 +488,10 @@
                                 }, attributesWidget);
                             });
                         }
+                    }
+
+                    if (storageHandler.getSessionStorage(prefixStorage + '_pos_placement') !== null) {
+                        attributesWidget.position_placement = storageHandler.getSessionStorage(prefixStorage + '_pos_placement');
                     }
 
                     if (data.nh && attributesWidget.fresh === false && attributesWidget['position'] != 'api') {
@@ -869,6 +880,13 @@
 
                 attributesWidget.eventEmitter.addListener('widgetHeight', (data) => {
 
+                    if (data.position_placement) {
+                        attributesWidget.position_placement = data.position_placement;
+                        attributesWidget.widgetDimesions.nextProperty('position_placement', attributesWidget.position_placement);
+                        storageHandler.setSessionStorage(prefixStorage + '_pos_placement',attributesWidget.position_placement);
+                        return;
+                    }
+
                     if (data.reset_height) {
                         attributesWidget.widgetDimesions.nextProperty('height_override', null);
                         attributesWidget.widgetDimesions.nextProperty('bottom_override', null);
@@ -936,8 +954,17 @@
 
                 // Listed for post messages
                 const handleMessages = (e) => {
-
                     if (attributesWidget.terminated === true || typeof e.data !== 'string' || e.data.indexOf(attributesWidget.prefixLowercase + '::')) {
+                        if (typeof e.data === 'object' && typeof e.data.action === 'string' &&  e.data.action === "lhc_set_var") {
+                            Object.keys(e.data).forEach(key => {
+                                if (key !== 'action') {
+                                    if (typeof lhc_var !== 'undefined') {
+                                        lhc_var[key] = e.data[key];
+                                    }
+                                }
+                            });
+                            return;
+                        }
                         return;
                     }
 
@@ -947,7 +974,7 @@
                         var originDomain = e.origin.replace("http://", "").replace("https://", "").replace(/:(\d+)$/, '');
 
                         // We allow to send events only from chat installation or page where script is embeded.
-                        if (originDomain !== document.domain && attributesWidget.domain_lhc !== originDomain && parts[1] !== 'started' && parts[1] !== 'isstarted') {
+                        if (originDomain !== document.domain && attributesWidget.domain_lhc !== originDomain && ["started","isstarted","addTag","showWidget"].indexOf(parts[1]) === -1) {
                             return;
                         }
                     }
@@ -997,6 +1024,10 @@
 
                     } else if (parts[1] == 'ready_popup') {
                         attributesWidget.popupWidget.sendParameters(chatEvents);
+
+                        // Send directly response
+                        attributesWidget.popupWidget.attributes = attributesWidget;
+                        e.source.postMessage('lhc_event:jsVars::' + JSON.stringify([attributesWidget.popupWidget.getAttributesToSent()]), e.origin);
                     } else if (parts[1] == 'isstarted') {
                         // Parent window has LHC, terminate present instance
                         attributesWidget.eventEmitter.emitEvent('terminated', []);

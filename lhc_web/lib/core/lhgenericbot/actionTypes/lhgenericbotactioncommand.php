@@ -71,6 +71,7 @@ class erLhcoreClassGenericBotActionCommand {
 
                 if (isset($filterOnline['user_id'])) {
                     $chat->user_id = (int)$filterOnline['user_id'];
+                    $chat->tslasign = time();
                 }
 
                 if ($chat->transfer_if_na == 1) {
@@ -79,7 +80,8 @@ class erLhcoreClassGenericBotActionCommand {
 
                 // We do not have to set this
                 // Because it triggers auto responder of not replying
-                // $chat->last_op_msg_time = time();
+                // Since 4.29 it will not trigger as we have a check for that now
+                $chat->last_op_msg_time = time();
                 $chat->updateThis();
 
                 // We have to reset auto responder
@@ -575,10 +577,18 @@ class erLhcoreClassGenericBotActionCommand {
 
         } elseif ($action['content']['command'] == 'chatvariable') {
 
+            $db = ezcDbInstance::get();
+
+            try {
+                $db->beginTransaction();
+
+                $chat->syncAndLock('chat_variables');
+                unset($chat->chat_variables_array);
+
                 $variablesArray = (array)$chat->chat_variables_array;
 
                 if (isset($params['replace_array']) && is_array($params['replace_array'])) {
-                    $variablesAppend = @str_replace(array_keys($params['replace_array']),array_values($params['replace_array']),$action['content']['payload']);
+                    $variablesAppend = @str_replace(array_keys($params['replace_array']), array_values($params['replace_array']), $action['content']['payload']);
                 } else {
                     $variablesAppend = $action['content']['payload'];
                 }
@@ -594,7 +604,7 @@ class erLhcoreClassGenericBotActionCommand {
                         }
 
                         if (isset($value)) {
-                             $variablesArray[$key] = $value;
+                            $variablesArray[$key] = $value;
                         } elseif (isset($variablesArray[$key])) {
                             unset($variablesArray[$key]);
                         }
@@ -605,10 +615,17 @@ class erLhcoreClassGenericBotActionCommand {
                 $chat->chat_variables_array = $variablesArray;
 
                 if (isset($action['content']['update_right_column']) && $action['content']['update_right_column'] == true) {
-                    $chat->operation_admin .= "lhinst.updateVoteStatus(".$chat->id.");";
+                    $chat->operation_admin .= "lhinst.updateVoteStatus(" . $chat->id . ");";
                 }
 
-                $chat->saveThis();
+                $chat->updateThis(array('update' => array('operation_admin', 'chat_variables')));
+
+                $db->commit();
+
+            } catch (Exception $e) {
+                $db->rollback();
+                throw $e;
+            }
 
         } elseif ($action['content']['command'] == 'setchatattribute') {
 

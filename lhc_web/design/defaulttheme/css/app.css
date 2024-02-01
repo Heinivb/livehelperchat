@@ -83,16 +83,19 @@ a.link {
 	z-index:9999;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 768px) {
     .chat-main-left-column.col-xl-8 .toolbar-chat,
     .chat-main-left-column.col-xl-8 .form-send-textarea,
+    .chat-main-left-column.col-xl-8 .generic-small-res-hide,
     .dashboard-height .chat-main-left-column.col-xl-8 .message-block,
+    .dashboard-height .chat-main-left-column.col-xl-8 .user-is-typing,
     .chat-main-left-column.col-xl-8 .canned-message-holder{
         display: none!important;
     }
     .dashboard-height .chat-main-left-column.col-xl-8{
         height: 0px;
     }
+
     .chat-main-right-column{
         height: 98%;
     }
@@ -1735,6 +1738,13 @@ input[type="file"]{
     opacity: 1;
 }
 
+
+.survey-star-item:focus-visible svg{
+    color: green;
+    opacity: 1;
+}
+
+
 .mx170{
     max-height:170px;
     overflow:auto;
@@ -1809,6 +1819,14 @@ a:not([href]){
     overflow: visible !important;
 }
 
+.view-chat-column{
+    flex: 0 0 20%;
+}
+
+.dashboard-height #middle-column-page > div > .row > #view-content.col {
+    width: 80%;
+}
+
 html {
     height: 100%;
 }
@@ -1824,15 +1842,14 @@ html {
     top: 4px;
 }
 
-/*.dashboard-height #middle-column-page > div,*/
-.dashboard-height #middle-column-page,
+.dashboard-height #page-content-wrapper > .row,
 .dashboard-height #page-content-wrapper,
-.dashboard-height #wrapper{
-    /*-ms-flex-direction: column!important;
-    flex-direction: column!important;*/
-    display: flex!important;
-    flex-grow: 1!important;
+.dashboard-height #wrapper,
+.dashboard-height #middle-column-page
+{
+    height: 100%;
 }
+
 
 .dashboard-height #tabs{
     padding-top:15px;
@@ -1859,6 +1876,7 @@ html {
 .dashboard-height  #tabs > .tab-content > .tab-pane.active > .row{
     flex-grow: 1!important;
     display: flex!important;
+    height: 100%;
 }
 
 .dashboard-height .chat-main-left-column{
@@ -1918,30 +1936,35 @@ html {
 }
 
 .dashboard-height #page-content-wrapper > .row{
-    display: flex!important;
-    flex-grow: 1!important;
-    flex-direction: column;
+
 }
 
 .dashboard-height #middle-column-page > div{
     display: flex!important;
     flex-grow: 1!important;
     flex-direction: column;
+    height: 100%;
 }
 
 .dashboard-height #middle-column-page > div > .row{
     display: flex!important;
     flex-grow: 1!important;
+    height: 100%;
  }
 
 
 .dashboard-height #middle-column-page > div > .row > .col{
     display: flex!important;
     flex-grow: 1!important;
+    height: 100%;
 }
 
 .dashboard-panels .card-header .title-card-header{
     font-size: 14px;
+}
+
+.dashboard-panels .expand-actions{
+    display: none;
 }
 
 .card-header{

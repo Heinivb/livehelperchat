@@ -7,7 +7,7 @@
     </div>
     <div class="col-6">
         <div class="form-group">
-            <label><a class="live-help-tooltip" data-placement="top" title="" data-bs-toggle="tooltip" data-original-title="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','If you enter alias make sure you pass this string as argument for a department. Otherwise argument will be ignored.');?>"><i class="material-icons">&#xE887;</i></a>
+            <label><a class="live-help-tooltip" data-bs-placement="top" title="" data-bs-toggle="tooltip" data-bs-title="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','If you enter alias make sure you pass this string as argument for a department. Otherwise argument will be ignored.');?>"><i class="material-icons">&#xE887;</i></a>
 
                 <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Alias for argument. No spaces or slashes.');?></label>
             <input type="text" maxlength="50" <?php if (!erLhcoreClassUser::instance()->hasAccessTo('lhdepartment','managealias')) : ?>disabled<?php endif;?>  ng-non-bindable class="form-control form-control-sm" name="Alias" value="<?php echo htmlspecialchars($departament->alias);?>" />
@@ -282,6 +282,8 @@
 				    <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Additional e-mail address address to inform about closed chats, to this e-mail will be send all notifications about closed chats');?></label> 
 				    <input type="text" ng-non-bindable class="form-control form-control-sm" name="inform_close_all_email" value="<?php echo htmlspecialchars($departament->inform_close_all_email);?>" />
 				</div>
+
+                <p><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','E-mail is sent in the following order 1. To e-mail template recipient if filled 2. Department e-mail 3. First system operator');?></p>
 				
 			</div>
 			
@@ -318,6 +320,7 @@
 				
 				<div class="form-group">			
 				    <label><input type="checkbox" name="off_op_exec" value="on" <?php if (isset($departament->bot_configuration_array['off_op_exec']) && $departament->bot_configuration_array['off_op_exec'] == 1) : ?>checked="checked"<?php endif;?> /> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Transfer immediately to this department if current department has no online operators?');?></label><br>
+				    <label><input type="checkbox" name="off_op_work_hours" value="on" <?php if (isset($departament->bot_configuration_array['off_op_work_hours']) && $departament->bot_configuration_array['off_op_work_hours'] == 1) : ?>checked="checked"<?php endif;?> /> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Transfer immediately to this department if it is outside work hour?');?></label><br>
 				    <label><input type="checkbox" name="ru_on_transfer" value="on" <?php if (isset($departament->bot_configuration_array['ru_on_transfer']) && $departament->bot_configuration_array['ru_on_transfer'] == 1) : ?>checked="checked"<?php endif;?> /> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Reset assigned user on chat transfer?');?></label><br>
                     <label><input type="checkbox" name="off_if_online" value="on" <?php if (isset($departament->bot_configuration_array['off_if_online']) && $departament->bot_configuration_array['off_if_online'] == 1) : ?>checked="checked"<?php endif;?> /> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Automatic transfer is disabled if there is online operators');?></label><br>
                     <label><input type="checkbox" name="nc_cb_execute" value="on" <?php if ($departament->nc_cb_execute == 1) : ?>checked="checked"<?php endif;?> /> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Execute new chat logic again for recipient department?');?></label><br>
@@ -484,6 +487,7 @@
 		$('#custom_date_from, #custom_date_to').fdatepicker({
 			format: 'yyyy-mm-dd'
 		});
-        $('.live-help-tooltip').tooltip();
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 	});
 </script>

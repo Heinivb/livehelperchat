@@ -11,7 +11,7 @@ class erLhcoreClassGenericBotActionIframe{
         if (isset($action['content']['body_html']) && !empty($action['content']['body_html']))
         {
 
-            $metaMessage['content']['iframe'] = ['body_html' => $action['content']['body_html']];
+            $metaMessage['content']['iframe'] = ['body_html' => erLhcoreClassGenericBotWorkflow::translateMessage($action['content']['body_html'], array('chat' => $chat, 'args' => $params))];
 
             if (isset($action['content']['payload_css']) && $action['content']['payload_css'] != '') {
                 $metaMessage['content']['iframe']['payload_css'] = json_decode($action['content']['payload_css'],true);
@@ -22,7 +22,7 @@ class erLhcoreClassGenericBotActionIframe{
             }
 
             if (isset($action['content']['payload_js_source']) && $action['content']['payload_js_source'] != '') {
-                $metaMessage['content']['iframe']['payload_js_source'] = $action['content']['payload_js_source'];
+                $metaMessage['content']['iframe']['payload_js_source'] = erLhcoreClassGenericBotWorkflow::translateMessage($action['content']['payload_js_source'], array('chat' => $chat, 'args' => $params));
             }
 
             if (isset($action['content']['iframe_options']) && !empty($action['content']['iframe_options'])) {
@@ -44,7 +44,11 @@ class erLhcoreClassGenericBotActionIframe{
                 $msg->name_support = erLhcoreClassGenericBotWorkflow::getDefaultNick($chat);
             }
             $msg->user_id = isset($params['override_user_id']) && $params['override_user_id'] > 0 ? (int)$params['override_user_id'] : -2;
-            $msg->time = time() + 1;
+            $msg->time = time();
+
+            if (erLhcoreClassGenericBotWorkflow::$setBotFlow === false) {
+                $msg->time += 1;
+            }
 
             if (!isset($params['do_not_save']) || $params['do_not_save'] == false) {
                 erLhcoreClassChat::getSession()->save($msg);

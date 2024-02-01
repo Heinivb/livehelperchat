@@ -6,9 +6,9 @@ $ViewList = array();
 
 $ViewList['adminchat'] = array(
     'params' => array('chat_id'),
-    'uparams' => array('remember','arg'),
+    'uparams' => array('remember','arg','ol'),
     'functions' => array( 'use' ),
-    'multiple_arguments' => array('arg')
+    'multiple_arguments' => array('arg','ol')
 );
 
 $ViewList['getchatdata'] = array(
@@ -105,7 +105,7 @@ $ViewList['updateattribute'] = array(
 
 $ViewList['updatejsvars'] = array(
 		'params' => array(),
-		'uparams' => array('hash','hash_resume','vid'),
+		'uparams' => array('hash','hash_resume','vid','userinit'),
 );
 
 $ViewList['logevent'] = array(
@@ -244,6 +244,7 @@ $ViewList['delete'] = array(
 $ViewList['syncadmininterface'] = array(
     'params' => array(),
     'uparams' => array(
+        'bcs',
         'oopu',
         'oopugroups',
         'subjectd',
@@ -278,11 +279,18 @@ $ViewList['loadinitialdata'] = array(
 
 $ViewList['list'] = array(
     'params' => array(),
-    'uparams' => array('timefromts','transfer_happened','phone','not_invitation','proactive_chat','view','dropped_chat','abandoned_chat','country_ids','has_unread_op_messages','cls_us','export','chat_status_ids','cf','with_bot','no_operator','has_operator','without_bot','bot_ids','ip','department_ids','department_group_ids','user_ids','group_ids','subject_id','anonymized','una','chat_duration_from','chat_duration_till','wait_time_from','wait_time_till','chat_id','nick','email','timefrom','timeto','department_id','user_id','print','xls','fbst','chat_status','hum','product_id','timefrom','timefrom_seconds','timefrom_minutes','timefrom_hours','timeto', 'timeto_minutes', 'timeto_seconds', 'timeto_hours', 'department_group_id', 'group_id', 'invitation_id',
+    'uparams' => array('sortby','timefromts','transfer_happened','phone','not_invitation','proactive_chat','view','dropped_chat','abandoned_chat','country_ids','has_unread_op_messages','cls_us','export','chat_status_ids','cf','with_bot','no_operator','has_operator','without_bot','bot_ids','ip','department_ids','department_group_ids','user_ids','group_ids','subject_id','anonymized','una','chat_duration_from','chat_duration_till','wait_time_from','wait_time_till','chat_id','nick','email','timefrom','timeto','department_id','user_id','print','xls','fbst','chat_status','hum','product_id','timefrom','timefrom_seconds','timefrom_minutes','timefrom_hours','timeto', 'timeto_minutes', 'timeto_seconds', 'timeto_hours', 'department_group_id', 'group_id', 'invitation_id',
         'country_ids',
         'region',
         'iwh_ids',
-        'theme_ids'
+        'theme_ids',
+        'frt_from',
+        'frt_till',
+        'mart_from',
+        'mart_till',
+        'aart_till',
+        'aart_from',
+        'ipp'
         ),
     'functions' => array( 'use' ),
     'multiple_arguments' => array(
@@ -513,13 +521,19 @@ $ViewList['start'] = array (
 
 $ViewList['begin'] = array (
     'params' => array(),
-    'uparams' => array('sound','id','hash','department','theme','mobile','vid','identifier','inv','survey','priority','operator','leaveamessage','mode','bot','scope'),
+    'uparams' => array('sound','id','hash','department','theme','mobile','vid','identifier','inv','survey','priority','operator','leaveamessage','mode','bot','scope','fs','trigger'),
 	'multiple_arguments' => array('department')
 );
 
 $ViewList['modal'] = array (
     'params' => array(),
-    'uparams' => array('sound','id','hash','department','theme','mobile','vid','identifier','inv','survey','priority','operator','leaveamessage','mode','bot','scope'),
+    'uparams' => array('sound','id','hash','department','theme','mobile','vid','identifier','inv','survey','priority','operator','leaveamessage','mode','bot','scope','fs','trigger'),
+	'multiple_arguments' => array('department')
+);
+
+$ViewList['demo'] = array (
+    'params' => array(),
+    'uparams' => array('sound','id','hash','department','theme','mobile','vid','identifier','inv','survey','priority','operator','leaveamessage','mode','bot','scope','fs','trigger'),
 	'multiple_arguments' => array('department')
 );
 
@@ -653,12 +667,16 @@ $ViewList['syncandsoundesetting'] = array(
 
 $ViewList['cannedmsg'] = array(
     'params' => array(),
-    'uparams' => array('action','id','csfr','message','title','fmsg','department_id','subject_id','tab','user_id','timefrom','timeto','sortby'),
+    'uparams' => array('action','id','csfr','message','title','fmsg','department_id','subject_id','tab','user_id','timefrom','timeto','sortby','export','used_freq','group_ids','user_ids','department_group_ids','department_ids'),
     'functions' => array( 'explorecannedmsg' ),
     'multiple_arguments' => array(
         'department_id',
         'subject_id',
-        'user_id'
+        'user_id',
+        'department_ids',
+        'department_group_ids',
+        'user_ids',
+        'group_ids',
     )
 );
 
@@ -772,6 +790,7 @@ $FunctionList['editprevious'] = array('explain' => 'Allow operator to edit his p
 $FunctionList['editpreviousop'] = array('explain' => 'Allow operator to edit other operators previous messages');
 $FunctionList['editpreviouvis'] = array('explain' => 'Allow operator to edit visitors previous messages');
 $FunctionList['impersonate'] = array('explain' => 'Allow operator to impersonate another operator on joining chat window');
+$FunctionList['whispermode'] = array('explain' => 'Allow operator to use whisper mode');
 $FunctionList['allowtransfertoanydep'] = array('explain' => 'Allow operator to transfer chat to any department.');
 $FunctionList['list_all_chats'] = array('explain' => 'Allow operator to list all chats independently of operator and status.');
 $FunctionList['list_my_chats'] = array('explain' => 'Allow operator to list chats he is owner');
@@ -780,5 +799,7 @@ $FunctionList['use_unhidden_phone'] = array('explain' => 'Allow operator to see 
 $FunctionList['chat_see_email'] = array('explain' => 'Allow operator to see e-mail of the visitor');
 $FunctionList['chat_see_unhidden_email'] = array('explain' => 'Allow operator to see full e-mail address of the visitor');
 $FunctionList['see_sensitive_information'] = array('explain' => 'Allow operator to see sensitive information in the messages');
+$FunctionList['my_chats_filter'] = array('explain' => 'Allow operator to see department filter for my active pending chats widget');
+$FunctionList['allowopenclosedchats'] = array('explain' => 'Allow operator to open closed chats');
 
 ?>

@@ -65,7 +65,10 @@ class erLhcoreClassDepartament{
 	   			'delay_lm' => new ezcInputFormDefinitionElement(
 	   					ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 5)
 	   			),
-	   			'OnlineHoursActive' => new ezcInputFormDefinitionElement(
+	   			'hide_survey_bot' => new ezcInputFormDefinitionElement(
+	   					ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+	   			),
+                'OnlineHoursActive' => new ezcInputFormDefinitionElement(
 	   					ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
 	   			),
 	   			'Disabled' => new ezcInputFormDefinitionElement(
@@ -81,6 +84,9 @@ class erLhcoreClassDepartament{
 	   					ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
 	   			),
 	   			'off_op_exec' => new ezcInputFormDefinitionElement(
+	   					ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+	   			),
+                'off_op_work_hours' => new ezcInputFormDefinitionElement(
 	   					ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
 	   			),
                 'ru_on_transfer' => new ezcInputFormDefinitionElement(
@@ -381,7 +387,13 @@ class erLhcoreClassDepartament{
 		   	} else {
                 $botConfiguration['off_op_exec'] = 0;
 		   	}
-		   	
+
+		   	if ( $form->hasValidData( 'off_op_work_hours' ) && $form->off_op_work_hours == true) {
+		   		$botConfiguration['off_op_work_hours'] = 1;
+		   	} else {
+                $botConfiguration['off_op_work_hours'] = 0;
+		   	}
+
 		   	if ( $form->hasValidData( 'ru_on_transfer' ) && $form->ru_on_transfer == true )
 		   	{
 		   		$botConfiguration['ru_on_transfer'] = 1;
@@ -659,6 +671,12 @@ class erLhcoreClassDepartament{
            $botConfiguration['bot_only_offline'] = true;
        } else {
            $botConfiguration['bot_only_offline'] = false;
+       }
+
+       if ( $form->hasValidData( 'hide_survey_bot' ) ) {
+           $botConfiguration['hide_survey_bot'] = true;
+       } else {
+           $botConfiguration['hide_survey_bot'] = false;
        }
 
        if ( $form->hasValidData( 'bot_foh' ) ) {

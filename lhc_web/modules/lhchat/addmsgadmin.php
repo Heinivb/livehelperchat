@@ -32,23 +32,37 @@ if (trim($form->msg) != '')
 	        $ignoreMessage = false;
 	        $returnBody = '';
 	        $customArgs = array();
-            $whisper = isset($_POST['whisper']);
+            $whisper = isset($_POST['whisper']) && erLhcoreClassUser::instance()->hasAccessTo('lhchat','whispermode');
             $asChatOwner = isset($_POST['mode_write']) && $_POST['mode_write'] == 'op' && $Chat->user_id > 0 && $Chat->user_id != $messageUserId && erLhcoreClassUser::instance()->hasAccessTo('lhchat','impersonate');
 
 	        if (!$whisper && strpos($msgText, '!') === 0) {
+
+                $lastMessageId = $Chat->last_msg_id;
+
 	            $statusCommand = erLhcoreClassChatCommand::processCommand(array('user' => $userData, 'msg' => $msgText, 'chat' => & $Chat));
 	            if ($statusCommand['processed'] === true) {
 	                $messageUserId = -1; // Message was processed set as internal message
-	                
+
+                    // Find a new possible bot messages and trigger message added events for third party integrations
+                    $botMessages = erLhcoreClassModelmsg::getList(array('filterin' => ['user_id' => [($Chat->user_id > 0 ? $Chat->user_id : -2), -2]],'filter' => array( 'chat_id' => $Chat->id), 'filtergt' => array('id' => $lastMessageId)));
+
+                    foreach ($botMessages as $botMessage) {
+                        erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.web_add_msg_admin', array(
+                            'chat' => & $Chat,
+                            'msg' => $botMessage,
+                            'no_auto_events' => true    // Some triggers updates last message and webhooks them self sends this event, we want to avoid that
+                        ));
+                    }
+
 	                $rawMessage = !isset($statusCommand['raw_message']) ? $msgText : $statusCommand['raw_message'];
 	                
 	                $msgText = trim('[b]'.$userData->name_support.'[/b]: '.$rawMessage .' '. ($statusCommand['process_status'] != '' ? '|| '.$statusCommand['process_status'] : ''));
-	                
+
 	                if (isset($statusCommand['ignore']) && $statusCommand['ignore'] == true) {
 	                    $ignoreMessage = true;
                         if (isset($statusCommand['last_message'])) {
                             $msg = $statusCommand['last_message'];
-                            if (is_object($msg)){
+                            if (is_object($msg)) {
                                 $Chat->last_msg_id = $msg->id;
                                 $Chat->updateThis(['update' => ['last_msg_id']]);
                             }
@@ -228,7 +242,7 @@ if (trim($form->msg) != '')
                     if ($userData->invisible_mode == 0 && erLhcoreClassChat::hasAccessToWrite($Chat)) {
                         $Chat->status = erLhcoreClassModelChat::STATUS_BOT_CHAT;
 
-                        $Chat->pnd_time = time();
+                        $Chat->pnd_time = time() - 2;
                         $Chat->wait_time = 1;
 
                         $Chat->score = $Chat->score + 1;

@@ -159,7 +159,10 @@ class erLhcoreClassChatHelper
                     $params['chat']->wait_time = time() - ($params['chat']->pnd_time > 0 ? $params['chat']->pnd_time : $params['chat']->time);
                 }
 
-                $params['chat']->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($params['chat'], true);
+                $params['chat']->cls_time = time();
+
+                \LiveHelperChat\Helpers\ChatDuration::setChatTimes($params['chat']);
+
                 $params['chat']->has_unread_messages = 0;
                 $params['chat']->operation_admin = '';
 
@@ -182,8 +185,12 @@ class erLhcoreClassChatHelper
 
                 $msg->msg = ((isset($params['bot']) && $params['bot'] == true) ? erTranslationClassLhTranslation::getInstance()->getTranslation('chat/closechatadmin', 'Bot') : (string) $msg->name_support) . ' ' . erTranslationClassLhTranslation::getInstance()->getTranslation('chat/closechatadmin', 'has closed the chat!');
 
+                if (isset($params['append_message'])) {
+                    $msg->msg .= $params['append_message'];
+                }
+                
                 $params['chat']->last_user_msg_time = $msg->time = time();
-                $params['chat']->cls_time = time();
+
                 // $params['chat']->session_score = 0;
                 $params['chat']->is_visitor_initiate = 1;
 
@@ -277,7 +284,7 @@ class erLhcoreClassChatHelper
         
             if ($chat->status != erLhcoreClassModelChat::STATUS_CLOSED_CHAT) {
                 $chat->status = erLhcoreClassModelChat::STATUS_CLOSED_CHAT;
-                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
+                \LiveHelperChat\Helpers\ChatDuration::setChatTimes($chat);
                 $chat->cls_time = time();
 
                 $msg = new erLhcoreClassModelmsg();

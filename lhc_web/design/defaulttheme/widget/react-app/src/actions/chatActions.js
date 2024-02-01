@@ -300,7 +300,7 @@ export function getCaptcha(dispatch, form, obj) {
 export function submitOnlineForm(obj) {
     return function(dispatch) {
         dispatch({type: "ONLINE_SUBMITTING"});
-        axios.post(window.lhcChat['base_url'] + "widgetrestapi/submitonline", obj, defaultHeaders)
+        axios.post(window.lhcChat['base_url'] + "widgetrestapi/submitonline", obj, {withCredentials: true, headers : {'Content-Type': 'application/x-www-form-urlencoded'}})
         .then((response) => {
 
             // If validation contains invalid captcha update it instantly
@@ -508,7 +508,15 @@ export function parseScript(domNode, inst, obj, dispatch, getState) {
             if (typeof attr['data-bot-args'] !== 'undefined') {
                 args = JSON.parse(attr['data-bot-args']);
             }
-            helperFunctions.emitEvent(attr['data-bot-emit'],[args]);
+            if (attr['data-bot-emit-parent']) {
+                if (attr['data-bot-emit'] == 'minWidget') {
+                    inst.props.dispatch(minimizeWidget());
+                } else {
+                    helperFunctions.sendMessageParent(attr['data-bot-emit'],[args]);
+                }
+            } else {
+                helperFunctions.emitEvent(attr['data-bot-emit'],[args]);
+            }
         } else if (attr['data-bot-event']) {
             inst.props[attr['data-bot-event']]();
         } else {
@@ -669,8 +677,12 @@ function checkErrorCounter() {
    }
 }
 
-export function addMessage(obj) {
+export function addMessage(obj, ignoreAdd) {
     return function(dispatch, getState) {
+
+        if (!ignoreAdd) {
+            dispatch({type: "ADD_MSG_TO_STORE", data: obj.msg});
+        }
 
         if (syncStatus.add_msg == true) {
             syncStatus.add_msg_pending.push(obj);
@@ -726,7 +738,7 @@ export function addMessage(obj) {
                     syncStatus.add_msg = false;
                     // There is pending message to be added
                     if (syncStatus.add_msg_pending.length > 0) {
-                        addMessage(syncStatus.add_msg_pending.shift())(dispatch, getState);
+                        addMessage(syncStatus.add_msg_pending.shift(), true)(dispatch, getState);
                     }
                 }
             })
@@ -765,7 +777,7 @@ export function addMessage(obj) {
                         syncStatus.add_msg = false;
 
                         // Try to send message again
-                        addMessage(obj)(dispatch, getState);
+                        addMessage(obj, true)(dispatch, getState);
                     }
                 }
 

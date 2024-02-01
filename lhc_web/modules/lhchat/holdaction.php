@@ -153,6 +153,10 @@ try {
 
     echo json_encode(array('error' => false, 'hold' => $hold, 'msg' => $msgStatus));
 
+    if (isset($holdMessageSet) && $holdMessageSet === true) {
+        erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.web_add_msg_admin', array('msg' => & $msg, 'chat' => & $chat, 'ou' => null));
+    }
+
 } catch (Exception $e) {
     $db->rollback();
     echo json_encode(array('error' => true, 'msg' => $e->getMessage()));

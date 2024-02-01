@@ -25,6 +25,7 @@ $content = '';
 $ott = '';
 $LastMessageID = 0;
 $firstOperatorMessageId = 0;
+$firstVisitorMessageId = 0;
 $userOwner = true;
 $saveChat = false;
 $operation = '';
@@ -54,7 +55,11 @@ if (is_object($chat) && $chat->hash === $requestPayload['hash'])
                 (
                     $chat->transfer_timeout_ts < (time()-$chat->transfer_timeout_ac)
                 ) || (
-                    ($department = $chat->department) && $offlineDepartmentOperators = true && $department !== false && isset($department->bot_configuration_array['off_op_exec']) && $department->bot_configuration_array['off_op_exec'] == 1 && erLhcoreClassChat::isOnline($chat->dep_id,false, array('exclude_bot' => true, 'exclude_online_hours' => true)) === false
+                    ($department = $chat->department) && $offlineDepartmentOperators = true && $department !== false &&
+                        (
+                            (isset($department->bot_configuration_array['off_op_exec']) && $department->bot_configuration_array['off_op_exec'] == 1 && erLhcoreClassChat::isOnline($chat->dep_id,false, array('exclude_bot' => true, 'exclude_online_hours' => true)) === false) ||
+                            (isset($department->bot_configuration_array['off_op_work_hours']) && $department->bot_configuration_array['off_op_work_hours'] == 1 && erLhcoreClassChat::isOnline($chat->dep_id,false, array('exclude_bot' => true, 'ignore_user_status' => true)) === false)
+                        )
                 )
             ) ) {
 
@@ -126,7 +131,7 @@ if (is_object($chat) && $chat->hash === $requestPayload['hash'])
 
 				        foreach ($Messages as $msg) {
 
-                            if ($firstOperatorMessageId == 0 && ($msg['user_id'] > 0 || $msg['user_id'] == -2) && strpos($content,'id="msg-'.$msg['id'].'"') !== false) {
+                            if (($firstOperatorMessageId == 0 || (isset($requestPayload['lmgsid']) && (int)$requestPayload['lmgsid'] == 0 && isset($requestPayload['new_chat']) && $requestPayload['new_chat'] == false)) && ($msg['user_id'] > 0 || $msg['user_id'] == -2) && strpos($content,'id="msg-'.$msg['id'].'"') !== false) {
                                 $firstOperatorMessageId = $msg['id'];
                             }
 
@@ -140,6 +145,11 @@ if (is_object($chat) && $chat->hash === $requestPayload['hash'])
 
 				        	if ($msg['user_id'] == 0) {
                                 $visitorTotalMessages++;
+
+                                if ($firstVisitorMessageId == 0) {
+                                    $firstVisitorMessageId = $msg['id'];
+                                }
+
                             } else {
                                 $operatorTotalMessages++;
                             }
@@ -199,7 +209,14 @@ if (is_object($chat) && $chat->hash === $requestPayload['hash'])
 
             if (($chat->has_unread_op_messages == 1 && isset($requestPayload['active_widget']) && $requestPayload['active_widget'] === true) || (isset($requestPayload['lmgsid']) && isset($Messages) && count($Messages) > 0)) {
                 if (isset($requestPayload['active_widget']) && $requestPayload['active_widget'] === true) {
-                    $db->query('UPDATE `lh_msg` SET `del_st` = 3 WHERE `chat_id` = ' . (int)$chat->id . ' AND `del_st` IN (0,1,2) AND (`user_id` > 0 OR `user_id` = -2)');
+
+                    // Sometimes lock happens. We can ignore those. As this is not a major thing.
+                    try {
+                        $db->query('UPDATE `lh_msg` SET `del_st` = 3 WHERE `chat_id` = ' . (int)$chat->id . ' AND `del_st` IN (0,1,2) AND (`user_id` > 0 OR `user_id` = -2)');
+                    } catch (Exception $e) {
+
+                    }
+
                     if ($chat->status_sub_sub == erLhcoreClassModelChat::STATUS_SUB_SUB_MSG_DELIVERED) {
                         $chat->status_sub_sub = erLhcoreClassModelChat::STATUS_SUB_SUB_DEFAULT;
                         $updateFields[] = 'status_sub_sub';
@@ -207,7 +224,14 @@ if (is_object($chat) && $chat->hash === $requestPayload['hash'])
                     }
                     erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.messages_read',array('chat' => & $chat));
                 } else {
-                    $db->query('UPDATE `lh_msg` SET `del_st` = 2 WHERE `chat_id` = ' . (int)$chat->id . ' AND `del_st` IN (0,1) AND (`user_id` > 0 OR `user_id` = -2)');
+
+                    // Sometimes lock happens. We can ignore those. As this is not a major thing.
+                    try {
+                        $db->query('UPDATE `lh_msg` SET `del_st` = 2 WHERE `chat_id` = ' . (int)$chat->id . ' AND `del_st` IN (0,1) AND (`user_id` > 0 OR `user_id` = -2)');
+                    } catch (Exception $e) {
+
+                    }
+
                     if ($chat->status_sub_sub == erLhcoreClassModelChat::STATUS_SUB_SUB_DEFAULT) {
                         $chat->status_sub_sub = erLhcoreClassModelChat::STATUS_SUB_SUB_MSG_DELIVERED;
                         $updateFields[] = 'status_sub_sub';
@@ -284,7 +308,13 @@ if ($operatorTotalMessages > 0) {
 }
 
 $responseArray['message_id'] = (int)$LastMessageID;
-$responseArray['message_id_first'] = (int)$firstOperatorMessageId;
+
+if (isset($requestPayload['lfmsgid']) && (int)$requestPayload['lfmsgid'] > 0) {
+    $responseArray['message_id_first'] = max($firstVisitorMessageId,$requestPayload['lfmsgid']); // We want to scroll to first visitor message
+} else {
+    $responseArray['message_id_first'] = isset($operatorIdLast) && $operatorIdLast == 0 ? 0 : (int)$firstOperatorMessageId;
+}
+
 $responseArray['messages'] = trim($content);
 
 echo erLhcoreClassChat::safe_json_encode($responseArray);

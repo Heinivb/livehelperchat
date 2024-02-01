@@ -2,6 +2,8 @@
 
 class erLhcoreClassChatWebhookIncoming {
 
+    public static $staticErrors = [];
+    public static $chatInstance = null;
     public static function processEvent($incomingWebhook, array $payload) {
 
         $conditions = $incomingWebhook->conditions_array;
@@ -60,8 +62,12 @@ class erLhcoreClassChatWebhookIncoming {
             foreach ($conditionsPairs as $conditionsPair) {
                 $conditionsPairData = explode('=',$conditionsPair);
 
+                $exists = false;
+
                 if ($conditionsPairData[1] === 'false') {
                     $conditionsPairData[1] = false;
+                } elseif ($conditionsPairData[1] === '__exists__') {
+                    $exists = true;
                 } elseif ($conditionsPairData[1] === 'true') {
                     $conditionsPairData[1] = true;
                 } elseif (strpos($conditionsPairData[1], ',') !== false) {
@@ -73,6 +79,10 @@ class erLhcoreClassChatWebhookIncoming {
 
                 if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
                     $typeMessage = 'unknown';
+                }
+
+                if ($messageData['found'] === true && $exists == true) {
+                    $typeMessage = 'attachments';
                 }
             }
 
@@ -90,8 +100,12 @@ class erLhcoreClassChatWebhookIncoming {
                 foreach ($conditionsPairs as $conditionsPair) {
                     $conditionsPairData = explode('=',$conditionsPair);
 
+                    $exists = false;
+
                     if ($conditionsPairData[1] === 'false') {
                         $conditionsPairData[1] = false;
+                    } elseif ($conditionsPairData[1] === '__exists__') {
+                        $exists = true;
                     } elseif ($conditionsPairData[1] === 'true') {
                         $conditionsPairData[1] = true;
                     } elseif (strpos($conditionsPairData[1], ',') !== false) {
@@ -103,6 +117,10 @@ class erLhcoreClassChatWebhookIncoming {
 
                     if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
                         $typeMessage = 'unknown';
+                    }
+
+                    if ($messageData['found'] === true && $exists === true) {
+                        $typeMessage = 'img';
                     }
                 }
 
@@ -121,8 +139,12 @@ class erLhcoreClassChatWebhookIncoming {
                 foreach ($conditionsPairs as $conditionsPair) {
                     $conditionsPairData = explode('=',$conditionsPair);
 
+                    $exists = false;
+
                     if ($conditionsPairData[1] === 'false') {
                         $conditionsPairData[1] = false;
+                    } elseif ($conditionsPairData[1] === '__exists__') {
+                        $exists = true;
                     } elseif ($conditionsPairData[1] === 'true') {
                         $conditionsPairData[1] = true;
                     } elseif (strpos($conditionsPairData[1], ',') !== false) {
@@ -134,6 +156,10 @@ class erLhcoreClassChatWebhookIncoming {
 
                     if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
                         $typeMessage = 'unknown';
+                    }
+
+                    if ($messageData['found'] === true && $exists == true) {
+                        $typeMessage = 'img_2';
                     }
                 }
 
@@ -152,8 +178,12 @@ class erLhcoreClassChatWebhookIncoming {
                 foreach ($conditionsPairs as $conditionsPair) {
                     $conditionsPairData = explode('=',$conditionsPair);
 
+                    $exists = false;
+
                     if ($conditionsPairData[1] === 'false') {
                         $conditionsPairData[1] = false;
+                    } elseif ($conditionsPairData[1] === '__exists__') {
+                        $exists = true;
                     } elseif ($conditionsPairData[1] === 'true') {
                         $conditionsPairData[1] = true;
                     } elseif (strpos($conditionsPairData[1], ',') !== false) {
@@ -165,6 +195,10 @@ class erLhcoreClassChatWebhookIncoming {
 
                     if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
                         $typeMessage = 'unknown';
+                    }
+
+                    if ($messageData['found'] === true && $exists == true) {
+                        $typeMessage = 'img_3';
                     }
                 }
 
@@ -183,8 +217,12 @@ class erLhcoreClassChatWebhookIncoming {
                 foreach ($conditionsPairs as $conditionsPair) {
                     $conditionsPairData = explode('=',$conditionsPair);
 
+                    $exists = false;
+
                     if ($conditionsPairData[1] === 'false') {
                         $conditionsPairData[1] = false;
+                    } elseif ($conditionsPairData[1] === '__exists__') {
+                        $exists = true;
                     } elseif ($conditionsPairData[1] === 'true') {
                         $conditionsPairData[1] = true;
                     } elseif (strpos($conditionsPairData[1], ',') !== false) {
@@ -197,11 +235,93 @@ class erLhcoreClassChatWebhookIncoming {
                     if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
                         $typeMessage = 'unknown';
                     }
+
+                    if ($messageData['found'] === true && $exists == true) {
+                        $typeMessage = 'img_4';
+                    }
                 }
 
                 if ($typeMessage == 'img_4') {
                     $msgBody = $conditions['msg_img_4'];
                     $conditionsOperator = isset($conditions['msg_cond_img_4_op']) ? $conditions['msg_cond_img_4_op'] : "";
+                }
+            }
+        }
+
+        if ($typeMessage == 'unknown')
+        {
+            if (isset($conditions['msg_cond_img_5']) && $conditions['msg_cond_img_5'] != "") {
+                $typeMessage = 'img_5';
+                $conditionsPairs = explode("||",$conditions['msg_cond_img_5']);
+                foreach ($conditionsPairs as $conditionsPair) {
+                    $conditionsPairData = explode('=',$conditionsPair);
+
+                    $exists = false;
+
+                    if ($conditionsPairData[1] === 'false') {
+                        $conditionsPairData[1] = false;
+                    } elseif ($conditionsPairData[1] === '__exists__') {
+                        $exists = true;
+                    } elseif ($conditionsPairData[1] === 'true') {
+                        $conditionsPairData[1] = true;
+                    } elseif (strpos($conditionsPairData[1], ',') !== false) {
+                        $conditionsPairData[1] = explode(',', $conditionsPairData[1]);
+                    }
+
+                    $messageData = erLhcoreClassGenericBotActionRestapi::extractAttribute($payloadMessage, $conditionsPairData[0], '.');
+                    $messageValue = $messageData['value'];
+
+                    if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
+                        $typeMessage = 'unknown';
+                    }
+
+                    if ($messageData['found'] === true && $exists == true) {
+                        $typeMessage = 'img_5';
+                    }
+                }
+
+                if ($typeMessage == 'img_5') {
+                    $msgBody = $conditions['msg_img_5'];
+                    $conditionsOperator = isset($conditions['msg_cond_img_5_op']) ? $conditions['msg_cond_img_5_op'] : "";
+                }
+            }
+        }
+
+        if ($typeMessage == 'unknown')
+        {
+            if (isset($conditions['msg_cond_img_6']) && $conditions['msg_cond_img_6'] != "") {
+                $typeMessage = 'img_6';
+                $conditionsPairs = explode("||",$conditions['msg_cond_img_6']);
+                foreach ($conditionsPairs as $conditionsPair) {
+                    $conditionsPairData = explode('=',$conditionsPair);
+
+                    $exists = false;
+
+                    if ($conditionsPairData[1] === 'false') {
+                        $conditionsPairData[1] = false;
+                    } elseif ($conditionsPairData[1] === '__exists__') {
+                        $exists = true;
+                    } elseif ($conditionsPairData[1] === 'true') {
+                        $conditionsPairData[1] = true;
+                    } elseif (strpos($conditionsPairData[1], ',') !== false) {
+                        $conditionsPairData[1] = explode(',', $conditionsPairData[1]);
+                    }
+
+                    $messageData = erLhcoreClassGenericBotActionRestapi::extractAttribute($payloadMessage, $conditionsPairData[0], '.');
+                    $messageValue = $messageData['value'];
+
+                    if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
+                        $typeMessage = 'unknown';
+                    }
+
+                    if ($messageData['found'] === true && $exists == true) {
+                        $typeMessage = 'img_6';
+                    }
+                }
+
+                if ($typeMessage == 'img_6') {
+                    $msgBody = $conditions['msg_img_6'];
+                    $conditionsOperator = isset($conditions['msg_cond_img_6_op']) ? $conditions['msg_cond_img_6_op'] : "";
                 }
             }
         }
@@ -216,8 +336,12 @@ class erLhcoreClassChatWebhookIncoming {
                 foreach ($conditionsPairs as $conditionsPair) {
                     $conditionsPairData = explode('=', $conditionsPair);
 
+                    $exists = false;
+
                     if ($conditionsPairData[1] === 'false') {
                         $conditionsPairData[1] = false;
+                    } elseif ($conditionsPairData[1] === '__exists__') {
+                        $exists = true;
                     } elseif ($conditionsPairData[1] === 'true') {
                         $conditionsPairData[1] = true;
                     } elseif (strpos($conditionsPairData[1], ',') !== false) {
@@ -230,6 +354,11 @@ class erLhcoreClassChatWebhookIncoming {
                     if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
                         $typeMessage = 'unknown';
                     }
+
+                    if ($messageData['found'] === true && $exists == true) {
+                        $typeMessage = 'text';
+                    }
+
                 }
 
                 if ($typeMessage == 'text') {
@@ -318,8 +447,11 @@ class erLhcoreClassChatWebhookIncoming {
                 foreach ($conditionsPairs as $conditionsPair) {
                     $conditionsPairData = explode('=', $conditionsPair);
 
+                    $exists = false;
                     if ($conditionsPairData[1] === 'false') {
                         $conditionsPairData[1] = false;
+                    } elseif ($conditionsPairData[1] === '__exists__') {
+                        $exists = true;
                     } elseif ($conditionsPairData[1] === 'true') {
                         $conditionsPairData[1] = true;
                     } elseif (strpos($conditionsPairData[1], ',') !== false) {
@@ -331,6 +463,27 @@ class erLhcoreClassChatWebhookIncoming {
 
                     if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
                         $typeMessage = 'unknown';
+                    } elseif (isset($conditions['msg_btn_cond_payload_1']) && $conditions['msg_btn_cond_payload_1'] != "") {
+                        $startsWithOptions = explode(',',str_replace(' ','',$conditions['msg_btn_cond_payload_1']));
+                        $messageData = erLhcoreClassGenericBotActionRestapi::extractAttribute($payloadMessage, $buttonBody, '.');
+                        if ($messageData['found'] == true && $messageData['value'] != '') {
+                            $validStartOption = false;
+                            foreach ($startsWithOptions as $startsWithOption) {
+                                if (strpos($messageData['value'], $startsWithOption) === 0) {
+                                    $validStartOption = true;
+                                    break;
+                                }
+                            }
+                            if ($validStartOption === false) {
+                                $typeMessage = 'unknown';
+                            }
+                        } else {
+                            $typeMessage = 'unknown';
+                        }
+                    }
+
+                    if ($messageData['found'] === true && $exists == true) {
+                        $typeMessage = 'button';
                     }
                 }
 
@@ -368,6 +521,23 @@ class erLhcoreClassChatWebhookIncoming {
 
                     if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
                         $typeMessage = 'unknown';
+                    } elseif (isset($conditions['msg_btn_cond_payload_2']) && $conditions['msg_btn_cond_payload_2'] != "") {
+                        $startsWithOptions = explode(',',str_replace(' ','',$conditions['msg_btn_cond_payload_2']));
+                        $messageData = erLhcoreClassGenericBotActionRestapi::extractAttribute($payloadMessage, $buttonBody, '.');
+                        if ($messageData['found'] == true && $messageData['value'] != '') {
+                            $validStartOption = false;
+                            foreach ($startsWithOptions as $startsWithOption) {
+                                if (strpos($messageData['value'], $startsWithOption) === 0) {
+                                    $validStartOption = true;
+                                    break;
+                                }
+                            }
+                            if ($validStartOption === false) {
+                                $typeMessage = 'unknown';
+                            }
+                        } else {
+                            $typeMessage = 'unknown';
+                        }
                     }
                 }
 
@@ -405,6 +575,23 @@ class erLhcoreClassChatWebhookIncoming {
 
                     if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
                         $typeMessage = 'unknown';
+                    } elseif (isset($conditions['msg_btn_cond_payload_3']) && $conditions['msg_btn_cond_payload_3'] != "") {
+                        $startsWithOptions = explode(',',str_replace(' ','',$conditions['msg_btn_cond_payload_3']));
+                        $messageData = erLhcoreClassGenericBotActionRestapi::extractAttribute($payloadMessage, $buttonBody, '.');
+                        if ($messageData['found'] == true && $messageData['value'] != '') {
+                            $validStartOption = false;
+                            foreach ($startsWithOptions as $startsWithOption) {
+                                if (strpos($messageData['value'], $startsWithOption) === 0) {
+                                    $validStartOption = true;
+                                    break;
+                                }
+                            }
+                            if ($validStartOption === false) {
+                                $typeMessage = 'unknown';
+                            }
+                        } else {
+                            $typeMessage = 'unknown';
+                        }
                     }
                 }
 
@@ -425,8 +612,11 @@ class erLhcoreClassChatWebhookIncoming {
                 foreach ($conditionsPairs as $conditionsPair) {
                     $conditionsPairData = explode('=', $conditionsPair);
 
+                    $exists = false;
                     if ($conditionsPairData[1] === 'false') {
                         $conditionsPairData[1] = false;
+                    } elseif ($conditionsPairData[1] === '__exists__') {
+                        $exists = true;
                     } elseif ($conditionsPairData[1] === 'true') {
                         $conditionsPairData[1] = true;
                     } elseif (strpos($conditionsPairData[1], ',') !== false) {
@@ -439,6 +629,11 @@ class erLhcoreClassChatWebhookIncoming {
                     if ($messageData['found'] === true && (is_array($conditionsPairData[1]) && !in_array($messageValue, $conditionsPairData[1])) || (!is_array($conditionsPairData[1]) && !(isset($messageValue) && $messageValue == $conditionsPairData[1]))) {
                         $typeMessage = 'unknown';
                     }
+
+                    if ($messageData['found'] === true && $exists == true) {
+                        $typeMessage = 'text';
+                    }
+
                 }
             } else {
                 $typeMessage = 'text';
@@ -476,9 +671,23 @@ class erLhcoreClassChatWebhookIncoming {
 
         $chatIdExternal2 = self::extractAttribute('chat_id_2',$conditions,$payloadMessage);
 
-        $chatIdExternal = self::extractAttribute('chat_id',$conditions,$payloadMessage);
+        $chat_id_original = $conditions['chat_id'];
+        foreach (explode('|||',$chat_id_original) as $chat_id) {
+            $conditions['chat_id'] = $chat_id;
+            $chatIdExternal = self::extractAttribute('chat_id',$conditions,$payloadMessage);
+            if ($chatIdExternal != '') {
+                break;
+            }
+        }
 
         if ($chatIdExternal == '') {
+            foreach (explode('|||',$chat_id_original) as $chat_id) {
+                $conditions['chat_id'] = $chat_id;
+                $chatIdExternal = self::extractAttribute('chat_id',$conditions,$payloadAll);
+                if ($chatIdExternal != '') {
+                    break;
+                }
+            }
             $chatIdExternal = self::extractAttribute('chat_id',$conditions,$payloadAll);
         }
 
@@ -576,7 +785,7 @@ class erLhcoreClassChatWebhookIncoming {
                         }
                     }
 
-                    if ($typeMessage == 'img' || $typeMessage == 'img_2' || $typeMessage == 'img_3' || $typeMessage == 'img_4' || $typeMessage == 'attachments') {
+                    if ($typeMessage == 'img' || $typeMessage == 'img_2' || $typeMessage == 'img_3' || $typeMessage == 'img_4' || $typeMessage == 'img_5' || $typeMessage == 'img_6' || $typeMessage == 'attachments') {
                         if (isset($conditions['msg_cond_' . $typeMessage . '_url_decode']) && $conditions['msg_cond_' . $typeMessage . '_url_decode'] != '') {
                             $file = self::parseFilesDecode(array(
                                 'msg' => $payloadMessage,
@@ -587,7 +796,8 @@ class erLhcoreClassChatWebhookIncoming {
                                 'incoming_webhook' => $incomingWebhook,
                                 'remote_request_headers' => (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content'] : ''),
                                 'is_remote_location' =>  (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_location']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_location'] : ''),
-                                'file_name_attr' => (isset($conditions['msg_cond_' . $typeMessage . '_file_name']) ? $conditions['msg_cond_' . $typeMessage . '_file_name'] : '')
+                                'file_name_attr' => (isset($conditions['msg_cond_' . $typeMessage . '_file_name']) ? $conditions['msg_cond_' . $typeMessage . '_file_name'] : ''),
+                                'file_size_attr' => (isset($conditions['msg_cond_' . $typeMessage . '_file_size']) ? $conditions['msg_cond_' . $typeMessage . '_file_size'] : '')
                             ), $chat);
 
                             if (!empty($file)) {
@@ -605,6 +815,18 @@ class erLhcoreClassChatWebhookIncoming {
                                 }
                             }
 
+                            $headers = [];
+                            if ((isset($conditions['msg_cond_' . $typeMessage . '_url_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_headers_content'] : '')) {
+                                $paramsHeader = $payloadMessage;
+                                $paramsHeader['incoming_webhook'] = $incomingWebhook;
+                                $paramsHeader['incoming_webhook'] ->chat = $chat;
+                                $headersParsed = self::extractMessageBody(trim($conditions['msg_cond_' . $typeMessage . '_url_headers_content']), $paramsHeader);
+                                $headersItems = explode("\n",trim($headersParsed));
+                                foreach ($headersItems as $header) {
+                                    $headers[] = $header;
+                                }
+                            }
+
                             $file = self::parseFiles(
                                 self::extractAttribute(
                                     'msg_cond_' . $typeMessage . '_body',
@@ -612,7 +834,7 @@ class erLhcoreClassChatWebhookIncoming {
                                     $payloadMessage,
                                     (isset($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']]) ? $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] : '')),
                                 $chat,
-                                [],
+                                $headers,
                                 $overrideAttributes
                             );
 
@@ -633,6 +855,8 @@ class erLhcoreClassChatWebhookIncoming {
                         }
                     }
 
+                    $last_user_msg_time = $chat->last_user_msg_time;
+
                     $msg = new erLhcoreClassModelmsg();
                     $msg->msg = self::extractMessageBody($msgBody, $payloadMessage);
                     $msg->chat_id = $chat->id;
@@ -651,6 +875,19 @@ class erLhcoreClassChatWebhookIncoming {
 
                         $chat->last_user_msg_time = $msg->time;
                         $chat->last_msg_id = $msg->id;
+                    }
+
+                    if (!empty(self::$staticErrors)) {
+                        foreach (self::$staticErrors as $staticError) {
+                            $msgError = new erLhcoreClassModelmsg();
+                            $msgError->msg = $staticError;
+                            $msgError->chat_id = $chat->id;
+                            $msgError->name_support = erLhcoreClassGenericBotWorkflow::getDefaultNick($chat);
+                            $msgError->user_id = -2;
+                            $msgError->time = time() + 1;
+                            erLhcoreClassChat::getSession()->save($msgError);
+                            $chat->last_msg_id = $msgError->id;
+                        }
                     }
 
                     if ($renotify == true) {
@@ -712,11 +949,13 @@ class erLhcoreClassChatWebhookIncoming {
 
                         $responder = $chat->auto_responder->auto_responder;
 
-                        if ($chat->status !== erLhcoreClassModelChat::STATUS_BOT_CHAT && is_object($responder) && $responder->offline_message != '' && !erLhcoreClassChat::isOnline($chat->dep_id, false, array(
-                                'online_timeout' => (int)erLhcoreClassModelChatConfig::fetch('sync_sound_settings')->data['online_timeout'],
-                                'ignore_user_status' => (int)erLhcoreClassModelChatConfig::fetch('ignore_user_status')->current_value,
-                                'exclude_bot' => true
-                            ))) {
+                        $isOnline = erLhcoreClassChat::isOnline($chat->dep_id, false, array(
+                            'online_timeout' => (int)erLhcoreClassModelChatConfig::fetch('sync_sound_settings')->data['online_timeout'],
+                            'ignore_user_status' => (int)erLhcoreClassModelChatConfig::fetch('ignore_user_status')->current_value,
+                            'exclude_bot' => true
+                        ));
+
+                        if ($chat->status !== erLhcoreClassModelChat::STATUS_BOT_CHAT && is_object($responder) && $responder->offline_message != '' && $isOnline === false) {
                             if (!isset($chatVariables['iwh_timeout']) || $chatVariables['iwh_timeout'] < time() - (int)259200) {
                                 $chatVariables['iwh_timeout'] = time();
                                 $chat->chat_variables_array = $chatVariables;
@@ -731,14 +970,40 @@ class erLhcoreClassChatWebhookIncoming {
                                 erLhcoreClassChat::getSession()->save($msgResponder);
 
                                 $chat->last_msg_id = $msgResponder->id;
+                            }
+                        } elseif ($renotify == true && $chat->status !== erLhcoreClassModelChat::STATUS_BOT_CHAT && is_object($responder) && $responder->wait_message != '' && $isOnline === true) {
 
+                            $chatVariables['iwh_timeout'] = time();
+                            $chat->chat_variables_array = $chatVariables;
+                            $chat->chat_variables = json_encode($chatVariables);
 
+                            $msgResponder = new erLhcoreClassModelmsg();
+                            $msgResponder->msg = trim($responder->wait_message);
+                            $msgResponder->chat_id = $chat->id;
+                            $msgResponder->name_support = $responder->operator != '' ? $responder->operator : erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat', 'Live Support');
+                            $msgResponder->user_id = -2;
+                            $msgResponder->time = time() + 1;
+                            erLhcoreClassChat::getSession()->save($msgResponder);
+
+                            $chat->last_msg_id = $msgResponder->id;
+                        }
+
+                        if ($chat->status_sub != erLhcoreClassModelChat::STATUS_SUB_ON_HOLD && $chat->auto_responder !== false) {
+                            if ($chat->auto_responder->active_send_status != 0 && $last_user_msg_time < $chat->last_op_msg_time) {
+                                $chat->auto_responder->active_send_status = 0;
+                                $chat->auto_responder->saveThis();
                             }
                         }
                     }
 
-                    if ($chat->nick == 'Visitor' || $chat->nick == '') {
-                        $chat->nick = self::extractAttribute('nick', $conditions, $payloadMessage, $chat->nick);
+                    if (($chat->nick == 'Visitor' || $chat->nick == '') && isset($conditions['nick']) && $conditions['nick'] != '') {
+                        $nick_params = explode('|||',$conditions['nick']);
+                        $nickParts = [];
+                        foreach ($nick_params as $nick_param) {
+                            $conditions['nick'] = $nick_param;
+                            $nickParts[] = self::extractAttribute('nick', $conditions, $payloadMessage, '');
+                        }
+                        $chat->nick = trim(implode(' ',array_filter($nickParts)));
                     }
 
                     if (isset($conditions['nick_pregmatch']) && $conditions['nick_pregmatch'] != '' && $chat->nick != 'Visitor') {
@@ -759,6 +1024,12 @@ class erLhcoreClassChatWebhookIncoming {
                         if ($ip != '' && $chat->ip != $ip) {
                             $chat->ip = $ip;
                             erLhcoreClassModelChat::detectLocation($chat, "");
+                        }
+
+                        $country_code = self::extractAttribute('country_code', $conditions, $payloadMessage, $chat->country_code);
+                        
+                        if (!empty($country_code)) {
+                            $chat->country_code = strtolower($country_code);
                         }
                     }
 
@@ -888,13 +1159,15 @@ class erLhcoreClassChatWebhookIncoming {
 
                     erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.messages_added_passive', array(
                         'chat' => & $chat,
-                        'msg' => $msg
+                        'msg' => $msg,
+                        'source' => 'webhook'
                     ));
 
                     // If operator has closed a chat we need force back office sync
                     erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.nodjshelper_notify_delay', array(
                         'chat' => & $chat,
-                        'msg' => $msg
+                        'msg' => $msg,
+                        'source' => 'webhook'
                     ));
 
                     if ($renotify == true) {
@@ -902,9 +1175,12 @@ class erLhcoreClassChatWebhookIncoming {
                         erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.restart_chat',array(
                             'chat' => & $chat,
                             'msg' => $msg,
+                            'source' => 'webhook'
                         ));
                     }
                 }
+
+                self::$chatInstance = $chat;
 
             } else {
 
@@ -915,7 +1191,20 @@ class erLhcoreClassChatWebhookIncoming {
                     // Save chat
                     $chat = new erLhcoreClassModelChat();
 
-                    $chat->nick = self::extractAttribute('nick', $conditions, $payloadMessage, 'Visitor');
+                    $chat->nick = 'Visitor';
+
+                    if (isset($conditions['nick']) && $conditions['nick'] != '') {
+                        $nick_params = explode('|||',$conditions['nick']);
+                        $nickParts = [];
+                        foreach ($nick_params as $nick_param) {
+                            $conditions['nick'] = $nick_param;
+                            $nickParts[] = self::extractAttribute('nick', $conditions, $payloadMessage, '');
+                        }
+                        $nickPotentional = trim(implode(' ',array_filter($nickParts)));
+                        if (!empty($nickPotentional)) {
+                            $chat->nick = $nickPotentional;
+                        }
+                    }
 
                     // Perhaps it's first level attribute
                     if ($chat->nick == 'Visitor') {
@@ -938,6 +1227,12 @@ class erLhcoreClassChatWebhookIncoming {
                             $chat->ip = $ip;
                             erLhcoreClassModelChat::detectLocation($chat, "");
                         }
+
+                        $country_code = self::extractAttribute('country_code', $conditions, $payloadMessage, $chat->country_code);
+
+                        if (!empty($country_code)) {
+                            $chat->country_code = strtolower($country_code);
+                        }
                     }
 
                     $chat->time = time();
@@ -952,11 +1247,23 @@ class erLhcoreClassChatWebhookIncoming {
                     $chatVariables = [];
 
                     if (isset($conditions['add_field_value']) && $conditions['add_field_value'] != '') {
-                        $chatVariables['iwh_field'] = self::extractAttribute('add_field_value', $conditions, $payloadMessage, '');
+                        $field_params = explode('|||',$conditions['add_field_value']);
+                        $nickParts = [];
+                        foreach ($field_params as $nick_param) {
+                            $conditions['add_field_value'] = $nick_param;
+                            $nickParts[] = self::extractAttribute('add_field_value', $conditions, $payloadMessage, '');
+                        }
+                        $nickPotentional = trim(implode(' ',array_filter($nickParts)));
+                        if (!empty($nickPotentional)) {
+                            $chatVariables['iwh_field'] = $nickPotentional;
+                        }
                     }
 
                     if (isset($conditions['add_field_2_value']) && $conditions['add_field_2_value'] != '') {
                         $chatVariables['iwh_field_2'] = self::extractAttribute('add_field_2_value', $conditions, $payloadMessage, '');
+                        if (empty($chatVariables['iwh_field_2']) && isset($_GET[$conditions['add_field_2_value']])) {
+                            $chatVariables['iwh_field_2'] = (string)$_GET[$conditions['add_field_2_value']];
+                        }
                     }
 
                     if (!empty($chatVariables)) {
@@ -971,7 +1278,7 @@ class erLhcoreClassChatWebhookIncoming {
                         'chat' => & $chat
                     ));
 
-                    if ($typeMessage == 'img' || $typeMessage == 'img_2' || $typeMessage == 'img_3' || $typeMessage == 'img_4' || $typeMessage == 'attachments') {
+                    if ($typeMessage == 'img' || $typeMessage == 'img_2' || $typeMessage == 'img_3' || $typeMessage == 'img_4' || $typeMessage == 'img_5' || $typeMessage == 'img_6' || $typeMessage == 'attachments') {
                         if (isset($conditions['msg_cond_' . $typeMessage . '_url_decode']) && $conditions['msg_cond_' . $typeMessage . '_url_decode'] != '') {
                             $file = self::parseFilesDecode(array(
                                 'msg' => $payloadMessage,
@@ -982,19 +1289,45 @@ class erLhcoreClassChatWebhookIncoming {
                                 'incoming_webhook' => $incomingWebhook,
                                 'remote_request_headers' => (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_headers_content'] : ''),
                                 'is_remote_location' =>  (isset($conditions['msg_cond_' . $typeMessage . '_url_remote_location']) ? $conditions['msg_cond_' . $typeMessage . '_url_remote_location'] : ''),
-                                'file_name_attr' => (isset($conditions['msg_cond_' . $typeMessage . '_file_name']) ? $conditions['msg_cond_' . $typeMessage . '_file_name'] : '')
+                                'file_name_attr' => (isset($conditions['msg_cond_' . $typeMessage . '_file_name']) ? $conditions['msg_cond_' . $typeMessage . '_file_name'] : ''),
+                                'file_size_attr' => (isset($conditions['msg_cond_' . $typeMessage . '_file_size']) ? $conditions['msg_cond_' . $typeMessage . '_file_size'] : '')
                             ), $chat);
                             if (!empty($file)) {
                                 $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] = $file;
                             }
                         } else if (isset($conditions['msg_' . $typeMessage . '_download']) && $conditions['msg_' . $typeMessage . '_download'] == true) {
+
+                            $overrideAttributes = [];
+
+                            if ((isset($conditions['msg_cond_' . $typeMessage . '_file_name']) ? $conditions['msg_cond_' . $typeMessage . '_file_name'] : '')){
+                                $fileNameAttribute = erLhcoreClassGenericBotActionRestapi::extractAttribute($payloadMessage, $conditions['msg_cond_' . $typeMessage . '_file_name'], '.');
+                                if ($fileNameAttribute['found'] == true && is_string($fileNameAttribute['value']) && $fileNameAttribute['value'] !='') {
+                                    $overrideAttributes['upload_name'] = $fileNameAttribute['value'];
+                                }
+                            }
+
+                            $headers = [];
+                            if ((isset($conditions['msg_cond_' . $typeMessage . '_url_headers_content']) ? $conditions['msg_cond_' . $typeMessage . '_url_headers_content'] : '')) {
+                                $paramsHeader = $payloadMessage;
+                                $paramsHeader['incoming_webhook'] = $incomingWebhook;
+                                $paramsHeader['incoming_webhook'] ->chat = $chat;
+                                $headersParsed = self::extractMessageBody(trim($conditions['msg_cond_' . $typeMessage . '_url_headers_content']), $paramsHeader);
+                                $headersItems = explode("\n",trim($headersParsed));
+                                foreach ($headersItems as $header) {
+                                    $headers[] = $header;
+                                }
+                            }
+
                             $file = self::parseFiles(
                                 self::extractAttribute(
                                     'msg_cond_' . $typeMessage . '_body',
                                     $conditions,
                                     $payloadMessage,
                                     (isset($payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']]) ? $payloadMessage[$conditions['msg_cond_' . $typeMessage . '_body']] : '')),
-                                $chat);
+                                $chat,
+                                $headers,
+                                $overrideAttributes);
+
                             if (!empty($file)) {
                                 self::array_set_value($payloadMessage, $conditions['msg_cond_' . $typeMessage . '_body'], $file);
                             }
@@ -1065,6 +1398,19 @@ class erLhcoreClassChatWebhookIncoming {
                     if ($msg->id > 0) {
                         $chat->last_msg_id = $msg->id;
                         $chat->last_user_msg_time = $msg->time;
+                    }
+
+                    if (!empty(self::$staticErrors)) {
+                        foreach (self::$staticErrors as $staticError) {
+                            $msgError = new erLhcoreClassModelmsg();
+                            $msgError->msg = $staticError;
+                            $msgError->chat_id = $chat->id;
+                            $msgError->name_support = erLhcoreClassGenericBotWorkflow::getDefaultNick($chat);
+                            $msgError->user_id = -2;
+                            $msgError->time = time() + 1;
+                            erLhcoreClassChat::getSession()->save($msgError);
+                            $chat->last_msg_id = $msgError->id;
+                        }
                     }
 
                     $chat->incoming_chat = $eChat;
@@ -1191,17 +1537,20 @@ class erLhcoreClassChatWebhookIncoming {
 
                     if ($chat->status !== erLhcoreClassModelChat::STATUS_BOT_CHAT)
                     {
-                        if ($responder->offline_message != '' && !erLhcoreClassChat::isOnline($chat->dep_id, false, array(
-                                'online_timeout' => (int) erLhcoreClassModelChatConfig::fetch('sync_sound_settings')->data['online_timeout'],
-                                'ignore_user_status' => (int)erLhcoreClassModelChatConfig::fetch('ignore_user_status')->current_value,
-                                'exclude_bot' => true
-                            ))) {
+                        $isOnline = erLhcoreClassChat::isOnline($chat->dep_id, false, array(
+                            'online_timeout' => (int) erLhcoreClassModelChatConfig::fetch('sync_sound_settings')->data['online_timeout'],
+                            'ignore_user_status' => (int)erLhcoreClassModelChatConfig::fetch('ignore_user_status')->current_value,
+                            'exclude_bot' => true
+                        ));
+
+                        if ($responder->offline_message != '' && $isOnline === false) {
                             $msg = new erLhcoreClassModelmsg();
                             $msg->msg = trim($responder->offline_message);
                             $msg->chat_id = $chat->id;
                             $msg->name_support = $responder->operator != '' ? $responder->operator : erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Live Support');
                             $msg->user_id = -2;
                             $msg->time = time() + 1;
+                            $msg->meta_msg = '{"content":{"attr_options":{"wh_delay":4}}}';
                             erLhcoreClassChat::getSession()->save($msg);
 
                             $messageResponder = $msg;
@@ -1213,6 +1562,33 @@ class erLhcoreClassChatWebhookIncoming {
                             $chatVariables['iwh_timeout'] = time();
                             $chat->chat_variables_array = $chatVariables;
                             $chat->chat_variables = json_encode($chatVariables);
+
+                        } elseif ($responder->wait_message != '' && $isOnline === true) {
+
+                            $chatVariables['iwh_timeout'] = time();
+                            $chat->chat_variables_array = $chatVariables;
+                            $chat->chat_variables = json_encode($chatVariables);
+
+                            $msg = new erLhcoreClassModelmsg();
+                            $msg->msg = trim($responder->wait_message);
+                            $msg->chat_id = $chat->id;
+                            $msg->name_support = $responder->operator != '' ? $responder->operator : erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat', 'Live Support');
+                            $msg->user_id = -2;
+                            $msg->time = time() + 1;
+                            $msg->meta_msg = '{"content":{"attr_options":{"wh_delay":4}}}';
+
+                            erLhcoreClassChat::getSession()->save($msg);
+
+                            $messageResponder = $msg;
+
+                            if ($chat->last_msg_id < $msg->id) {
+                                $chat->last_msg_id = $msg->id;
+                            }
+
+                            $chatVariables['iwh_timeout'] = time();
+                            $chat->chat_variables_array = $chatVariables;
+                            $chat->chat_variables = json_encode($chatVariables);
+
                         }
                     }
                 }
@@ -1248,9 +1624,9 @@ class erLhcoreClassChatWebhookIncoming {
                     'chat' => & $chat,
                     'msg' => $msg
                 ));
+
+                self::$chatInstance = $chat;
             }
-
-
 
         } catch (Exception $e) {
             $db->rollback();
@@ -1356,6 +1732,7 @@ class erLhcoreClassChatWebhookIncoming {
                 erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.web_add_msg_admin', array(
                     'chat' => & $chat,
                     'msg' => $botMessage,
+                    'source'=> 'webhook',
                     'no_auto_events' => true    // Some triggers updates last message and webhooks them self sends this event, we want to avoid that
                 ));
             }
@@ -1384,12 +1761,24 @@ class erLhcoreClassChatWebhookIncoming {
 
         return str_replace(array_keys($userData),array_values($userData), $body);
     }
-    
+
     public static function parseFiles($url, $chat, $headers = [], $overrideAttributes = []) {
+
+        $fileData = (array)erLhcoreClassModelChatConfig::fetch('file_configuration')->data;
+
+        if ((isset($fileData['active_user_upload']) && $fileData['active_user_upload'] == true) || (isset($chatVariables['lhc_fu']) && $chatVariables['lhc_fu'] == 1)) {
+            if (isset($overrideAttributes['file_size']) && is_numeric($overrideAttributes['file_size']) && $overrideAttributes['file_size'] > $fileData['fs_max']*1024) {
+                self::$staticErrors[] = erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','File is to big! Maximum') . ' - ' .$fileData['fs_max'] . ' Kb.';
+                return erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','File is to big!') . ' ' . round($overrideAttributes['file_size'] / 1024, 2) . ' Kb.';
+            }
+        } else {
+            self::$staticErrors[] = erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','File upload is not for this chat!');
+            return erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','File upload is not enabled for the visitor!');
+        }
 
         if (!is_array($url)) {
 
-            $mediaContent = erLhcoreClassModelChatOnlineUser::executeRequest(str_replace(' ','%20',trim($url)), $headers);
+            $mediaContent = erLhcoreClassModelChatOnlineUser::executeRequest(str_replace(' ','%20',trim($url)), $headers, ['timeout' => 60]);
 
             // File name
             $partsFilename = explode('/',strtok($url, '?'));
@@ -1535,12 +1924,17 @@ class erLhcoreClassChatWebhookIncoming {
 
     public static function parseFilesDecode($params, $chat) {
 
+        // Set chat for internal variables
+        $params['incoming_webhook']->chat = $chat;
+
+        $params['msg']['incoming_webhook'] = $params['incoming_webhook'];
+
         $bodyPOST = self::extractMessageBody($params['body_post'], $params['msg'], true);
         $headers = [];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -1552,6 +1946,7 @@ class erLhcoreClassChatWebhookIncoming {
         }
 
         curl_setopt($ch, CURLOPT_URL, self::extractMessageBody($params['url'], $params['msg']));
+
         @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
         if (isset($params['request_headers']) && trim($params['request_headers']) != '') {
@@ -1570,7 +1965,9 @@ class erLhcoreClassChatWebhookIncoming {
 
         $responseBody = json_decode($content,true);
 
-        $bodyRaw = erLhcoreClassGenericBotActionRestapi::extractAttribute($responseBody, $params['response_location'], '.');
+        $responseLocationArguments = explode('||',$params['response_location']);
+
+        $bodyRaw = erLhcoreClassGenericBotActionRestapi::extractAttribute($responseBody, $responseLocationArguments[0], '.');
 
         if ($bodyRaw['found'] == 1) {
             if (isset($params['is_remote_location']) && $params['is_remote_location'] == true) {
@@ -1586,6 +1983,18 @@ class erLhcoreClassChatWebhookIncoming {
                     }
                 }
 
+                if (isset($params['file_size_attr']) && $params['file_size_attr'] != '') {
+                    $fileNameAttribute = erLhcoreClassGenericBotActionRestapi::extractAttribute($params['msg'], $params['file_size_attr'], '.');
+                    if ($fileNameAttribute['found'] == true && is_numeric($fileNameAttribute['value']) && $fileNameAttribute['value'] !='') {
+                        $overrideAttributes['file_size'] = $fileNameAttribute['value'];
+                    }
+                }
+
+                if (isset($responseLocationArguments[1]) && !empty($responseLocationArguments[1])){
+                    $responseLocationArguments[1] = str_replace('{{response}}',$bodyRaw['value'],$responseLocationArguments[1]);
+                    $bodyRaw['value'] = self::extractMessageBody($responseLocationArguments[1], $params['msg'], false);
+                }
+
                 return self::parseFiles($bodyRaw['value'], $chat, explode("\n",trim($headersParsed)), $overrideAttributes);
             } else {
                 $parts = explode(',',$bodyRaw['value']);
@@ -1599,6 +2008,9 @@ class erLhcoreClassChatWebhookIncoming {
                 $returnArray['body'] = base64_decode($bodyEncoded);
                 return self::parseFiles($returnArray, $chat);
             }
+        } else {
+            self::$staticErrors[] = erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','There was a problem with your uploaded file!');
+            return erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Media attribute could not be found or there was an error:') . ' ' . $content;
         }
 
         return null;

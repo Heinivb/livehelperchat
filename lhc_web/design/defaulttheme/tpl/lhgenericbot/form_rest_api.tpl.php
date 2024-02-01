@@ -26,7 +26,10 @@
 
 <input type="hidden" name="configuration" value="{{lhcrestapi.getJSON()}}" />
 
-<button class="btn btn-secondary" ng-click="lhcrestapi.addParameter()" type="button"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('genericbot/restapi','Add request');?></button>
+
+<button class="btn btn-secondary btn-sm" ng-click="lhcrestapi.addParameter()" type="button"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('genericbot/restapi','Add request');?></button>
+
+<span><a href="#" onclick="lhc.revealModal({'url':WWW_DIR_JAVASCRIPT+'genericbot/help/cannedreplacerules?rest_api=1'});"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('genericbot/restapi','Explore');?></a> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('genericbot/restapi','possible chat attributes directly.');?></span>
 
 <div ng-repeat="param in lhcrestapi.parameters" class="mt-2">
 
@@ -259,15 +262,17 @@
                 </div>
 
                 <hr>
-                
                 <div class="form-group">
                     <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('genericbot/restapi','Sub URL for file');?></label>
                     <input type="text" class="form-control form-control-sm" ng-model="param.suburl_file" placeholder="" value="" />
                 </div>
-
                 <div class="form-group">
                     <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('genericbot/restapi','If you are sending file you can have a different body content')?></label>
                     <textarea rows="10" class="form-control form-control-sm" ng-model="param.body_raw_file"></textarea>
+                </div>
+                <div class="form-group">
+                    <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('genericbot/restapi','Convert to multipart/form-data if one of those API is used. Post the file using multipart/form-data in the usual way that files are uploaded via the browser.');?> E.g mp3_m4a,tgs,file_api,image_api,video_api</label>
+                    <input type="text" class="form-control form-control-sm" ng-model="param.suburl_file_convert" placeholder="mp3_m4a,tgs,file_api,image_api,video_api" value="" />
                 </div>
 
             </div>

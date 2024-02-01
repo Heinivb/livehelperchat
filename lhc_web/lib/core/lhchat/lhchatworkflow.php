@@ -17,7 +17,11 @@ class erLhcoreClassChatWorkflow {
             $msg->name_support = $name_support;
             $msg->user_id = -2;
             $msg->time = time();
-            erLhcoreClassChat::getSession()->save($msg);
+
+            \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $chat));
+            erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('ignore_times' => true,'msg' => & $msg, 'chat' => & $chat));
+
+            $msg->saveThis();
 
             if ($chat->last_msg_id < $msg->id) {
                 $chat->last_msg_id = $msg->id;
@@ -257,7 +261,7 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = time() - ($chat->pnd_time > 0 ? $chat->pnd_time : $chat->time);
                 }
 
-                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
+                \LiveHelperChat\Helpers\ChatDuration::setChatTimes($chat);
                 $chat->cls_time = time();
                 $chat->session_score = 0;
                 $chat->has_unread_messages = 0;
@@ -299,7 +303,7 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = time() - ($chat->pnd_time > 0 ? $chat->pnd_time : $chat->time);
                 }
 
-                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
+                \LiveHelperChat\Helpers\ChatDuration::setChatTimes($chat);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->updateThis();
@@ -342,7 +346,7 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = time() - ($chat->pnd_time > 0 ? $chat->pnd_time : $chat->time);
                 }
 
-                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
+                \LiveHelperChat\Helpers\ChatDuration::setChatTimes($chat);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->updateThis();
@@ -385,7 +389,7 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = time() - ($chat->pnd_time > 0 ? $chat->pnd_time : $chat->time);
                 }
 
-                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
+                \LiveHelperChat\Helpers\ChatDuration::setChatTimes($chat);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->updateThis();
@@ -429,7 +433,7 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = 1;
                 }
 
-                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
+                \LiveHelperChat\Helpers\ChatDuration::setChatTimes($chat);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->updateThis();
@@ -476,7 +480,7 @@ class erLhcoreClassChatWorkflow {
                     $chat->wait_time = time() - ($chat->pnd_time > 0 ? $chat->pnd_time : $chat->time);
                 }
 
-                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
+                \LiveHelperChat\Helpers\ChatDuration::setChatTimes($chat);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->updateThis();
@@ -562,7 +566,7 @@ class erLhcoreClassChatWorkflow {
                     }
                 }
 
-                $chat->chat_duration = \LiveHelperChat\Helpers\ChatDuration::getChatDurationToUpdateChatID($chat, true);
+                \LiveHelperChat\Helpers\ChatDuration::setChatTimes($chat);
                 $chat->cls_time = time();
                 $chat->has_unread_messages = 0;
                 $chat->session_score = 0;
@@ -943,7 +947,56 @@ class erLhcoreClassChatWorkflow {
             // Set proper message by language
             $cannedMsg->setMessageByChatLocale($chat->chat_locale);
 
+            $replaceCustomArgs = [];
+
+            foreach (['msg','fallback_msg'] as $metaMsg) {
+                $matchesMessage = [];
+                preg_match_all('/\{[A-Za-z0-9\_]+\}/is',$cannedMsg->{$metaMsg}, $matchesMessage);
+                if (isset($matchesMessage[0]) && !empty($matchesMessage[0])) {
+                    foreach ($matchesMessage[0] as $replaceItem) {
+                        if (key_exists($replaceItem,$replaceArray) == false) {
+                            $replaceCustomArgs[] = $replaceItem;
+                        }
+                    }
+                }
+            }
+
+            $replaceCustomArgs = array_unique($replaceCustomArgs);
+
+            if (!empty($replaceCustomArgs)) {
+
+                $identifiers = [];
+                $identifiersApplied = [];
+                foreach ($replaceCustomArgs as $replaceArg) {
+                    $identifiers[] = str_replace(['{','}'],'', $replaceArg);
+                }
+
+                $replaceRules = erLhcoreClassModelCannedMsgReplace::getList(array(
+                        'sort' => 'repetitiveness DESC', // Default translation will be the last one if more than one same identifier is found
+                        'limit' => false,
+                        'filterin' => array('identifier' => $identifiers))
+                );
+
+                foreach ($replaceRules as $replaceRule) {
+                    if ($replaceRule->is_active && !in_array($replaceRule->identifier,$identifiersApplied)) {
+                        $replaceArray['{' . $replaceRule->identifier . '}'] = $replaceRule->getValueReplace(['chat' => $chat, 'user' => $chat->user]);
+                        $identifiersApplied[] = $replaceRule->identifier;
+                    }
+                }
+            }
+
             $cannedMsg->setReplaceData($replaceArray);
+
+            if (strpos($cannedMsg->msg, '{args.') !== false) {
+                $matchesValues = array();
+                preg_match_all('~\{args\.((?:[^\{\}\}]++|(?R))*)\}~', $cannedMsg->msg, $matchesValues);
+                if (!empty($matchesValues[0])) {
+                    foreach ($matchesValues[0] as $indexElement => $elementValue) {
+                        $valueAttribute = erLhcoreClassGenericBotActionRestapi::extractAttribute(array('user' => $cannedMsg->user, 'chat' => $chat), $matchesValues[1][$indexElement], '.');
+                        $cannedMsg->msg = str_replace($elementValue, $valueAttribute['found'] == true ? $valueAttribute['value'] : '', $cannedMsg->msg);
+                    }
+                }
+            }
 
             $msg = new erLhcoreClassModelmsg();
             $msg->msg = $cannedMsg->msg_to_user;

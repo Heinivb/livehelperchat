@@ -2,6 +2,42 @@
   <context>
     <name>listchatconfig</name>
     <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source/>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>How long we should wait before we inform operator about unanswered chat.</source>
       <translation>Скільки часу ми маємо чекати, перш ніж повідомимо оператора про чат без відповіді.</translation>
     </message>
@@ -413,6 +449,10 @@
       <translation>Відмінити</translation>
     </message>
     <message>
+      <source>Test masking rules</source>
+      <translation>Тест правил маскування</translation>
+    </message>
+    <message>
       <source>Edit</source>
       <translation>Редагувати</translation>
     </message>
@@ -558,6 +598,10 @@
   <context>
     <name>abstract/widgettheme</name>
     <message>
+      <source>Hide message time from visitor</source>
+      <translation>Приховати час повідомлення від відвідувача</translation>
+    </message>
+    <message>
       <source>Welcome message</source>
       <translation>Вітальне повідомлення</translation>
     </message>
@@ -686,8 +730,20 @@
       <translation>Перегляд</translation>
     </message>
     <message>
-      <source>Download theme</source>
-      <translation>Завантажити тему</translation>
+      <source>Conditions</source>
+      <translation>Умови</translation>
+    </message>
+    <message>
+      <source>E.g 5, means there have to be 5 pending chats in the queue and I am 6 in the queue.</source>
+      <translation>Наприклад, 5 означає, що в черзі має бути 5 чатів, які очікують на розгляд, і я 6 у черзі.</translation>
+    </message>
+    <message>
+      <source>OR</source>
+      <translation>АБО</translation>
+    </message>
+    <message>
+      <source>Messaging</source>
+      <translation>Повідомлення</translation>
     </message>
     <message>
       <source>Status widget style</source>
@@ -810,6 +866,26 @@
       <translation>Можна передати як аргумент</translation>
     </message>
     <message>
+      <source>Choose department to test</source>
+      <translation>Оберіть відділ для тестування</translation>
+    </message>
+    <message>
+      <source>Download theme</source>
+      <translation>Завантажити тему</translation>
+    </message>
+    <message>
+      <source>Some changes might take effect after you save a widget theme!</source>
+      <translation>Деякі зміни можуть набути чинності після збереження теми віджету!</translation>
+    </message>
+    <message>
+      <source>Clear cookies and reload</source>
+      <translation>Очистити кукі та оновити</translation>
+    </message>
+    <message>
+      <source>Reload</source>
+      <translation>Оновити</translation>
+    </message>
+    <message>
       <source>Default</source>
       <translation>По замовчуванню</translation>
     </message>
@@ -828,6 +904,14 @@
     <message>
       <source>General</source>
       <translation>Загальне</translation>
+    </message>
+    <message>
+      <source>Themes which will be edited all at once.</source>
+      <translation>Теми, які редагуватимуться всі одночасно.</translation>
+    </message>
+    <message>
+      <source>Department group departments does not have any themes assigned to them.</source>
+      <translation>Відділи групи відділів не мають тем, призначених для них.</translation>
     </message>
     <message>
       <source>Bubble background color</source>
@@ -1018,12 +1102,28 @@
       <translation>Вимкніть скидання автовідповідача, якщо відвідувач був перенаправлений на опитування</translation>
     </message>
     <message>
+      <source>Departments</source>
+      <translation>Відділи</translation>
+    </message>
+    <message>
       <source>Do not send messages to pending chat if chat is assigned to operator.</source>
       <translation>Не надсилайте повідомлення в очікуваний чат, якщо чат призначено оператору.</translation>
     </message>
     <message>
       <source>This auto responder applies only to proactive invitations.</source>
       <translation>Цей автовідповідач застосовується лише до активних запрошень.</translation>
+    </message>
+    <message>
+      <source>How many pending chats have to be in the queue (not counting started chat) for pending chat messaging to be activated.</source>
+      <translation>Скільки незавершених чатів має бути в черзі (не враховуючи розпочатий чат), щоб активувати незавершені повідомлення чату.</translation>
+    </message>
+    <message>
+      <source>Minimum pending chats for pending messaging to be activated</source>
+      <translation>Мінімальна кількість незавершених чатів для активації незавершених повідомлень</translation>
+    </message>
+    <message>
+      <source>Time zone</source>
+      <translation>Часовий пояс</translation>
     </message>
     <message>
       <source>If variable is not passed should we keep previously recorded value?</source>
@@ -1130,6 +1230,10 @@
       <translation>Вимкнути попередній перегляд чату</translation>
     </message>
     <message>
+      <source>Allow visitor return to chat even if it was closed.</source>
+      <translation>Дозволити відвідувачам повернутися до чату, навіть якщо він був закритий.</translation>
+    </message>
+    <message>
       <source>Disable chat download</source>
       <translation>Вимкнути завантаження чату</translation>
     </message>
@@ -1214,8 +1318,12 @@
       <translation>Приховати кнопку закриття</translation>
     </message>
     <message>
-      <source>Hide message time from visitor</source>
-      <translation>Приховати час повідомлення від відвідувача</translation>
+      <source>Message time visible for</source>
+      <translation>Час відображення повідомлення для</translation>
+    </message>
+    <message>
+      <source>Message time placement</source>
+      <translation>Час розміщення повідомлення</translation>
     </message>
     <message>
       <source>Use modern look. It is used only in older widget.</source>
@@ -1354,6 +1462,10 @@
       <translation>Спеціальний HTML перед стандартним заголовком віджета</translation>
     </message>
     <message>
+      <source>Custom html after widget content</source>
+      <translation>Користувацький HTML після вмісту віджету</translation>
+    </message>
+    <message>
       <source>Operator intro message. You can wrap custom HTML with [html][/html] bbcode</source>
       <translation>Вступне повідомлення оператора. Ви можете обернути власний HTML за допомогою [html][/html] bbcode</translation>
     </message>
@@ -1378,6 +1490,10 @@
       <translation>Спеціальний HTML перед стандартним заголовком статусу віджета</translation>
     </message>
     <message>
+      <source>Custom html after chat status</source>
+      <translation>Спеціальний html після статусу чату</translation>
+    </message>
+    <message>
       <source>Start chat button text, standard chat</source>
       <translation>Текст кнопки «Почати чат», стандартний чат</translation>
     </message>
@@ -1396,6 +1512,14 @@
     <message>
       <source>Title of the end chat icon</source>
       <translation>Назва значка завершення чату</translation>
+    </message>
+    <message>
+      <source>Switch to default widget position</source>
+      <translation>Перемкнути на типову позицію віджету</translation>
+    </message>
+    <message>
+      <source>Switch to full height widget position</source>
+      <translation>Перемкніться на позицію віджета повної висоти</translation>
     </message>
     <message>
       <source>Start chat button text, bot chat</source>
@@ -1694,6 +1818,14 @@
       <translation>Дозволити відвідувачеві змінювати розмір шрифту</translation>
     </message>
     <message>
+      <source>Use system timezone instead of a visitor. Visitor TZ will be overriden with system a system one.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Print button as a message as soon visitor clicks a button.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Show go to survey button on chat close</source>
       <translation>Показати кнопку перейти до опитування при закритті чату</translation>
     </message>
@@ -1810,6 +1942,18 @@
       <translation>Позиція кнопки закрити в режимі вбудовування</translation>
     </message>
     <message>
+      <source>Viewport settings</source>
+      <translation>Налаштування видимої області</translation>
+    </message>
+    <message>
+      <source>Date format if message is on different day</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Date format if message is on same day</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>New message text</source>
       <translation>Новий текст повідомлення</translation>
     </message>
@@ -1828,6 +1972,10 @@
   </context>
   <context>
     <name>abstract/proactivechatinvitation</name>
+    <message>
+      <source>Javascript variable value</source>
+      <translation>Значення змінної Javascript</translation>
+    </message>
     <message>
       <source>If department is online and visitor starts a chat and is waiting for some to accept chat. This will be initial message he will get.</source>
       <translation>Якщо відділ онлайн і відвідувач починає чат і чекає, поки хтось прийме чат. Це буде початкове повідомлення, яке він отримає.</translation>
@@ -1977,8 +2125,44 @@
       <translation>Час вийшов. [1]</translation>
     </message>
     <message>
-      <source>Default on hold message</source>
-      <translation>Повідомлення на утриманні за замовчуванням</translation>
+      <source>Timeout. [2]</source>
+      <translation>Час вийшов. [2]</translation>
+    </message>
+    <message>
+      <source>Timeout. [3]</source>
+      <translation>Час вийшов. [3]</translation>
+    </message>
+    <message>
+      <source>Timeout. [4]</source>
+      <translation>Час вийшов. [4]</translation>
+    </message>
+    <message>
+      <source>Timeout. [5]</source>
+      <translation>Час вийшов. [5]</translation>
+    </message>
+    <message>
+      <source>Default on hold message. Use ||| to separate random messages.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Message for timeout [1]. Use ||| to separate random messages.</source>
+      <translation>Повідомлення для тайм-ауту [1]. Використовуйте ||| для розділення випадкових повідомлень.</translation>
+    </message>
+    <message>
+      <source>Message for timeout [2]. Use ||| to separate random messages.</source>
+      <translation>Повідомлення для тайм-ауту [2]. Використовуйте ||| для розділення випадкових повідомлень.</translation>
+    </message>
+    <message>
+      <source>Message for timeout [3]. Use ||| to separate random messages.</source>
+      <translation>Повідомлення для тайм-ауту [3]. Використовуйте ||| для розділення випадкових повідомлень.</translation>
+    </message>
+    <message>
+      <source>Message for timeout [4]. Use ||| to separate random messages.</source>
+      <translation>Повідомлення для тайм-ауту [4]. Використовуйте ||| для розділення випадкових повідомлень.</translation>
+    </message>
+    <message>
+      <source>Message for timeout [5]. Use ||| to separate random messages.</source>
+      <translation>Повідомлення для тайм-ауту [5]. Використовуйте ||| для розділення випадкових повідомлень.</translation>
     </message>
     <message>
       <source>Message for timeout [1]</source>
@@ -2001,32 +2185,36 @@
       <translation>Повідомлення про час очікування [5]</translation>
     </message>
     <message>
-      <source>Timeout. [2]</source>
-      <translation>Час вийшов. [2]</translation>
+      <source>Message for timeout [1], use ||| to separate random messages.</source>
+      <translation>Повідомлення про час очікування [1], використовуйте ||| для розділення випадкових повідомлень.</translation>
     </message>
     <message>
-      <source>Timeout. [3]</source>
-      <translation>Час вийшов. [3]</translation>
+      <source>Message for timeout [2], use ||| to separate random messages.</source>
+      <translation>Повідомлення про час очікування [2], використовуйте ||| для розділення випадкових повідомлень.</translation>
     </message>
     <message>
-      <source>Timeout. [4]</source>
-      <translation>Час вийшов. [4]</translation>
+      <source>Message for timeout [3], use ||| to separate random messages.</source>
+      <translation>Повідомлення про час очікування [3], використовуйте ||| для розділення випадкових повідомлень.</translation>
     </message>
     <message>
-      <source>Timeout. [5]</source>
-      <translation>Час вийшов. [5]</translation>
+      <source>Message for timeout [4], use ||| to separate random messages.</source>
+      <translation>Повідомлення про час очікування [4], використовуйте ||| для розділення випадкових повідомлень.</translation>
     </message>
     <message>
-      <source>Message to visitor on chat close</source>
-      <translation>Повідомлення відвідувачеві після закриття чату</translation>
+      <source>Message for timeout [5], use ||| to separate random messages.</source>
+      <translation>Повідомлення про час очікування [5], використовуйте ||| для розділення випадкових повідомлень.</translation>
     </message>
     <message>
-      <source>Message to visitor if department is offline</source>
-      <translation>Повідомлення відвідувачеві, якщо відділ не в мережі</translation>
+      <source>Message to visitor on chat close. Use ||| to separate random messages.</source>
+      <translation>Повідомлення відвідувачу при закритті чату. Використовуйте ||| для розділення випадкових повідомлень.</translation>
     </message>
     <message>
-      <source>Message to visitor if operator speaks same language as visitor.</source>
-      <translation>Повідомлення відвідувачеві, якщо оператор розмовляє тією ж мовою, що й відвідувач.</translation>
+      <source>Message to visitor if department is offline. Use ||| to separate random messages.</source>
+      <translation>Повідомлення відвідувачу, якщо відділ офлайн. Використовуйте ||| для розділення випадкових повідомлень.</translation>
+    </message>
+    <message>
+      <source>Message to visitor if operator speaks same language as visitor. Use ||| to separate random messages.</source>
+      <translation>Повідомлення відвідувачу, якщо оператор говорить тією ж мовою, що й відвідувач. Використовуйте ||| для розділення випадкових повідомлень.</translation>
     </message>
     <message>
       <source>Icon name</source>
@@ -2065,8 +2253,12 @@
       <translation>Режим піктограм</translation>
     </message>
     <message>
-      <source>Visible in chat list</source>
-      <translation>Видно в списку чату</translation>
+      <source>Visible in the widget chat lists</source>
+      <translation>Відображається у списках чату віджетів</translation>
+    </message>
+    <message>
+      <source>Visible standard chat list</source>
+      <translation>Видимий стандартний список чату</translation>
     </message>
     <message>
       <source>Has popup information</source>
@@ -2085,6 +2277,26 @@
       <translation>Відображається в списку відвідувачів онлайн</translation>
     </message>
     <message>
+      <source>Remove permanently matched content</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Place you replacement pattern here.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Pattern for replacement</source>
+      <translation>Шаблон для заміни</translation>
+    </message>
+    <message>
+      <source>Message to visitor after posting sensitive information</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Auto reply warning if visitor is posting information to agent which does not have permission to view sensitive data.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Department rule to apply</source>
       <translation>Правило відділу, яке слід застосувати</translation>
     </message>
@@ -2097,6 +2309,18 @@
       <translation>Очікуване значення змінної</translation>
     </message>
     <message>
+      <source>Destination department by brand role</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Change department only if present department role is</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Condition is always checked independently of transfer method. Department or Department brand role.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Set chat priority to</source>
       <translation>Установити пріоритет чату на</translation>
     </message>
@@ -2105,8 +2329,8 @@
       <translation>Пріоритет правила</translation>
     </message>
     <message>
-      <source>Javascript variable value</source>
-      <translation>Значення змінної Javascript</translation>
+      <source>Javascript/Cookie variable value</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Variable identifier</source>
@@ -2205,12 +2429,20 @@
       <translation>Призначити показаному оператору</translation>
     </message>
     <message>
+      <source>Use default auto responder if available</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Show everytime it is matched</source>
       <translation>Показувати щоразу, коли збігається</translation>
     </message>
     <message>
       <source>Show invitation next time even if a customer started a chat</source>
       <translation>Показати запрошення наступного разу, навіть якщо клієнт розпочав чат</translation>
+    </message>
+    <message>
+      <source>Lock department. The department will be the one that was set when the invitation was issued.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Requires phone</source>
@@ -2401,6 +2633,10 @@
       <translation>Зашифровано</translation>
     </message>
     <message>
+      <source>Website cookie</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Chat variables</source>
       <translation>Змінні чату</translation>
     </message>
@@ -2431,6 +2667,10 @@
     <message>
       <source>Subject</source>
       <translation>Тема</translation>
+    </message>
+    <message>
+      <source>Messages content protection</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -2482,6 +2722,10 @@
     <message>
       <source>Type your message to the user</source>
       <translation>Введіть ваше повідомлення користувачу</translation>
+    </message>
+    <message>
+      <source>You can paste usernames separated by a new line.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Open full widget for the visitor</source>
@@ -3026,6 +3270,46 @@
       <translation>Виберіть подію</translation>
     </message>
     <message>
+      <source>Department filter</source>
+      <translation>Фільтр відділу</translation>
+    </message>
+    <message>
+      <source>Click to remove</source>
+      <translation>Натисніть, щоб видалити</translation>
+    </message>
+    <message>
+      <source>Choose department</source>
+      <translation>Виберіть відділ</translation>
+    </message>
+    <message>
+      <source>Date range from</source>
+      <translation>Діапазон дат від</translation>
+    </message>
+    <message>
+      <source>Hour and minute from</source>
+      <translation>Години й хвилини від</translation>
+    </message>
+    <message>
+      <source>Select hour</source>
+      <translation>Виберіть годину</translation>
+    </message>
+    <message>
+      <source>Select minute</source>
+      <translation>Виберіть хвилину</translation>
+    </message>
+    <message>
+      <source>Select seconds</source>
+      <translation>Виберіть секунди</translation>
+    </message>
+    <message>
+      <source>Date range to</source>
+      <translation>Діапазон дат до</translation>
+    </message>
+    <message>
+      <source>Hour and minute to</source>
+      <translation>Години й хвилини до</translation>
+    </message>
+    <message>
       <source>Object ID</source>
       <translation>ID об&apos;єкту</translation>
     </message>
@@ -3038,6 +3322,18 @@
       <translation>Джерело</translation>
     </message>
     <message>
+      <source>Message body</source>
+      <translation>Тіло повідомлення</translation>
+    </message>
+    <message>
+      <source>Search</source>
+      <translation>Пошук</translation>
+    </message>
+    <message>
+      <source>Debug chat attributes</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Exclude personal responses</source>
       <translation>Виключити особисті відповіді</translation>
     </message>
@@ -3046,16 +3342,20 @@
       <translation>ID користувача</translation>
     </message>
     <message>
-      <source>Search</source>
-      <translation>Пошук</translation>
+      <source>Delete all items</source>
+      <translation>Видалити всі елементи</translation>
     </message>
     <message>
-      <source>Department filter</source>
-      <translation>Фільтр відділу</translation>
+      <source>Left to delete</source>
+      <translation type="unfinished"/>
     </message>
     <message>
-      <source>Choose department</source>
-      <translation>Виберіть відділ</translation>
+      <source>Start deletion</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>records will be deleted.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Disable</source>
@@ -3064,6 +3364,14 @@
     <message>
       <source>Enabled</source>
       <translation>Увімкнено</translation>
+    </message>
+    <message>
+      <source>Assign selected department to canned messages</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Remove selected department from canned messages</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Save</source>
@@ -3098,6 +3406,30 @@
       <translation>Тема</translation>
     </message>
     <message>
+      <source>Usage frequency in the last 31 days</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Any times</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Zero times</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Once</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>One or more</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Sort by</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>CSV</source>
       <translation>CSV</translation>
     </message>
@@ -3106,24 +3438,16 @@
       <translation>Імпорт</translation>
     </message>
     <message>
-      <source>Date range from</source>
-      <translation>Діапазон дат від</translation>
-    </message>
-    <message>
-      <source>Hour and minute from</source>
-      <translation>Години й хвилини від</translation>
-    </message>
-    <message>
-      <source>Date range to</source>
-      <translation>Діапазон дат до</translation>
-    </message>
-    <message>
-      <source>Hour and minute to</source>
-      <translation>Години й хвилини до</translation>
+      <source>Department group</source>
+      <translation>Група відділу</translation>
     </message>
     <message>
       <source>Generate</source>
       <translation>Згенерувати</translation>
+    </message>
+    <message>
+      <source>Choose department group</source>
+      <translation>Виберіть групу відділів</translation>
     </message>
     <message>
       <source>Include content</source>
@@ -3206,28 +3530,24 @@
       <translation>Телефон</translation>
     </message>
     <message>
-      <source>Department group</source>
-      <translation>Група відділу</translation>
-    </message>
-    <message>
       <source>Advanced search</source>
       <translation>Розширений пошук</translation>
     </message>
     <message>
-      <source>Select hour</source>
-      <translation>Виберіть годину</translation>
-    </message>
-    <message>
-      <source>Select minute</source>
-      <translation>Виберіть хвилину</translation>
-    </message>
-    <message>
-      <source>Select seconds</source>
-      <translation>Виберіть секунди</translation>
-    </message>
-    <message>
       <source>Wait time</source>
       <translation>Час очікування</translation>
+    </message>
+    <message>
+      <source>More than</source>
+      <translation>Більш ніж</translation>
+    </message>
+    <message>
+      <source>seconds</source>
+      <translation>секунди</translation>
+    </message>
+    <message>
+      <source>Less than</source>
+      <translation>Менше ніж</translation>
     </message>
     <message>
       <source>Vote status</source>
@@ -3338,6 +3658,18 @@
       <translation>IP</translation>
     </message>
     <message>
+      <source>First response time (agent)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Max response time (agent)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Average response time (agent)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Has unread messages</source>
       <translation>Є непрочитані повідомлення</translation>
     </message>
@@ -3378,6 +3710,42 @@
       <translation>Передача відбулася</translation>
     </message>
     <message>
+      <source>Newest first (default)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Oldest first</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Last interactions first</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Last interactions last</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>20 items per page</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>40 items per page</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>60 items per page</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>80 items per page</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>100 items per page</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Print</source>
       <translation>Друк</translation>
     </message>
@@ -3400,10 +3768,6 @@
     <message>
       <source>Reset</source>
       <translation>Скинути</translation>
-    </message>
-    <message>
-      <source>Choose department group</source>
-      <translation>Виберіть групу відділів</translation>
     </message>
     <message>
       <source>Choose status</source>
@@ -3478,6 +3842,10 @@
       <translation>Пошук користувача. Відображаються перші 50 користувачів.</translation>
     </message>
     <message>
+      <source>Brand members</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Transfer to bot only if department is offline</source>
       <translation>Перенесіть до бота, лише якщо відділ офлайн</translation>
     </message>
@@ -3520,6 +3888,10 @@
     <message>
       <source>File name</source>
       <translation>Ім&apos;я файлу</translation>
+    </message>
+    <message>
+      <source>File id</source>
+      <translation>Ідентифікатор файлу</translation>
     </message>
     <message>
       <source>Please choose</source>
@@ -3670,18 +4042,6 @@
       <translation>Групова діаграма</translation>
     </message>
     <message>
-      <source>More than</source>
-      <translation>Більш ніж</translation>
-    </message>
-    <message>
-      <source>seconds</source>
-      <translation>секунди</translation>
-    </message>
-    <message>
-      <source>Less than</source>
-      <translation>Менше ніж</translation>
-    </message>
-    <message>
       <source>Exclude offline requests from charts</source>
       <translation>Виключити офлайн-запити з діаграм</translation>
     </message>
@@ -3802,6 +4162,10 @@
       <translation>Середній</translation>
     </message>
     <message>
+      <source>As participant</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Total number of chats</source>
       <translation>Загальна кількість чатів</translation>
     </message>
@@ -3830,6 +4194,18 @@
       <translation>Середня тривалість чату</translation>
     </message>
     <message>
+      <source>Average of first response time (agent)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Average of response time (agent)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Average of maximum response time (agent)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Include hours (from, to)</source>
       <translation>Включити години (від, до)</translation>
     </message>
@@ -3856,6 +4232,14 @@
     <message>
       <source>JSON</source>
       <translation>JSON</translation>
+    </message>
+    <message>
+      <source>Choose department you want to add</source>
+      <translation>Виберіть відділ, який хочете додати</translation>
+    </message>
+    <message>
+      <source>Choose department group you want to add</source>
+      <translation>Виберіть групу відділів, яку потрібно додати</translation>
     </message>
     <message>
       <source>Disable operators</source>
@@ -3969,64 +4353,16 @@
       <translation>Зніміть прапорець</translation>
     </message>
     <message>
-      <source>Main</source>
-      <translation>Головне</translation>
-    </message>
-    <message>
-      <source>Add translation</source>
-      <translation>Додати переклад</translation>
-    </message>
-    <message>
-      <source>Search for language. Enter * to see all.</source>
-      <translation>Пошук мови. Enter * для всіх.</translation>
-    </message>
-    <message>
-      <source>Edit</source>
-      <translation>Редагувати</translation>
-    </message>
-    <message>
-      <source>Identifier, use it like {identifier} in canned responses, or bot</source>
-      <translation>Ідентифікатор, використовуйте його як {identifier} у стандартних відповідях або бот</translation>
-    </message>
-    <message>
-      <source>Default</source>
-      <translation>За замовчуванням</translation>
-    </message>
-    <message>
-      <source>Add combination</source>
-      <translation>Додайте комбінацію</translation>
+      <source>If you do not select a custom or default auto-responder, proactive chats will not have an auto-responder assigned.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Activity period</source>
       <translation>Період діяльності</translation>
     </message>
     <message>
-      <source>Default value</source>
-      <translation>Значення за замовчуванням</translation>
-    </message>
-    <message>
-      <source>Tab custom name</source>
-      <translation>Користувацька назва вкладки</translation>
-    </message>
-    <message>
-      <source>Value</source>
-      <translation>Значення</translation>
-    </message>
-    <message>
-      <source>Priority</source>
-      <translation>Пріоритет</translation>
-    </message>
-    <message>
-      <source>Rules with highest priority will be checked first</source>
-      <translation>Правила з найвищим пріоритетом будуть перевірені першими</translation>
-    </message>
-    <message>
-      <source>Advanced filtering</source>
-      <translation>Розширена фільтрація</translation>
-    </message>
-    <message>
-      <source>Add condition</source>
-      <translation>Додати умову</translation>
+      <source>click to expand</source>
+      <translation>натисніть, щоб розгорнути</translation>
     </message>
     <message>
       <source>You can make this canned message available only for certain period of times.</source>
@@ -4063,6 +4399,70 @@
     <message>
       <source>Active to</source>
       <translation>Активний до</translation>
+    </message>
+    <message>
+      <source>Main</source>
+      <translation>Головне</translation>
+    </message>
+    <message>
+      <source>Add translation</source>
+      <translation>Додати переклад</translation>
+    </message>
+    <message>
+      <source>Search for language. Enter * to see all.</source>
+      <translation>Пошук мови. Enter * для всіх.</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>Редагувати</translation>
+    </message>
+    <message>
+      <source>Identifier, use it like {identifier} in canned responses, or bot</source>
+      <translation>Ідентифікатор, використовуйте його як {identifier} у стандартних відповідях або бот</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>За замовчуванням</translation>
+    </message>
+    <message>
+      <source>Add combination</source>
+      <translation>Додайте комбінацію</translation>
+    </message>
+    <message>
+      <source>Default value</source>
+      <translation>Значення за замовчуванням</translation>
+    </message>
+    <message>
+      <source>Tab custom name</source>
+      <translation>Користувацька назва вкладки</translation>
+    </message>
+    <message>
+      <source>Value</source>
+      <translation>Значення</translation>
+    </message>
+    <message>
+      <source>Put a custom value here</source>
+      <translation>Введіть тут спеціальне значення</translation>
+    </message>
+    <message>
+      <source>Priority</source>
+      <translation>Пріоритет</translation>
+    </message>
+    <message>
+      <source>Rules with highest priority will be checked first</source>
+      <translation>Правила з найвищим пріоритетом будуть перевірені першими</translation>
+    </message>
+    <message>
+      <source>Conditions</source>
+      <translation>Умови</translation>
+    </message>
+    <message>
+      <source>Advanced filtering</source>
+      <translation>Розширена фільтрація</translation>
+    </message>
+    <message>
+      <source>Add condition</source>
+      <translation>Додати умову</translation>
     </message>
     <message>
       <source>Replaceable variables</source>
@@ -4107,6 +4507,14 @@
     <message>
       <source>Auto send</source>
       <translation>Авто відправка</translation>
+    </message>
+    <message>
+      <source>Updated at</source>
+      <translation>Оновлено о</translation>
+    </message>
+    <message>
+      <source>Created at</source>
+      <translation>Створено в</translation>
     </message>
     <message>
       <source>Edit message</source>
@@ -4197,6 +4605,10 @@
       <translation>Фрагмент HTML</translation>
     </message>
     <message>
+      <source>On expire delete canned message</source>
+      <translation>Після закінчення терміну видалення стандартного повідомлення</translation>
+    </message>
+    <message>
       <source>Tag&apos;s</source>
       <translation>Теги</translation>
     </message>
@@ -4207,14 +4619,6 @@
     <message>
       <source>Canned messages</source>
       <translation>Підготовлені повідомлення</translation>
-    </message>
-    <message>
-      <source>Created at</source>
-      <translation>Створено в</translation>
-    </message>
-    <message>
-      <source>Updated at</source>
-      <translation>Оновлено о</translation>
     </message>
     <message>
       <source>Edit canned message</source>
@@ -4395,6 +4799,10 @@
       <translation>Редагувати відділ</translation>
     </message>
     <message>
+      <source>Edit brand</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Edit department group</source>
       <translation>Редагувати групу відділів</translation>
     </message>
@@ -4485,6 +4893,10 @@
     <message>
       <source>Survey</source>
       <translation>Опитування</translation>
+    </message>
+    <message>
+      <source>Design</source>
+      <translation>Дизайн</translation>
     </message>
     <message>
       <source>Work hours/work days logic is active</source>
@@ -4655,6 +5067,10 @@
       <translation>Додаткова адреса електронної пошти для інформування про закриті чати, на цю електронну пошту будуть надсилатися всі повідомлення про закриті чати</translation>
     </message>
     <message>
+      <source>E-mail is sent in the following order 1. To e-mail template recipient if filled 2. Department e-mail 3. First system operator</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>To what department chat should be transferred if it is not accepted</source>
       <translation>До якого відділу передати чат, якщо він не прийнятий</translation>
     </message>
@@ -4669,6 +5085,10 @@
     <message>
       <source>Transfer immediately to this department if current department has no online operators?</source>
       <translation>Негайно перевести в цей відділ, якщо в поточному відділі немає онлайн-операторів?</translation>
+    </message>
+    <message>
+      <source>Transfer immediately to this department if it is outside work hour?</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Reset assigned user on chat transfer?</source>
@@ -4715,12 +5135,76 @@
       <translation>Жоден</translation>
     </message>
     <message>
+      <source>Click to remove</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Role</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Departments</source>
       <translation>Відділи</translation>
     </message>
     <message>
       <source>Maximum pending chats</source>
       <translation>Максимальна кількість незавершених чатів</translation>
+    </message>
+    <message>
+      <source>Individual theme is picked only if one department is passed. Theme determination happens in the following order.</source>
+      <translation>Індивідуальна тема вибирається лише за умови проходження однієї кафедри. Визначення теми відбувається в такому порядку.</translation>
+    </message>
+    <message>
+      <source>Check for passed theme</source>
+      <translation>Перевірити пройдену тему</translation>
+    </message>
+    <message>
+      <source>Check for individual theme</source>
+      <translation>Перевірити індивідуальну тему</translation>
+    </message>
+    <message>
+      <source>Check for default department theme</source>
+      <translation>Перевірте тему відділу за замовчуванням</translation>
+    </message>
+    <message>
+      <source>Check for global default theme</source>
+      <translation>Перевірте глобальну тему за замовчуванням</translation>
+    </message>
+    <message>
+      <source>Individual theme</source>
+      <translation>Індивідуальна тема</translation>
+    </message>
+    <message>
+      <source>Default theme applied per department</source>
+      <translation>Тема за умовчанням застосована для кожного відділу</translation>
+    </message>
+    <message>
+      <source>This theme is set from</source>
+      <translation>Ця тема встановлена ​​з</translation>
+    </message>
+    <message>
+      <source>Default theme</source>
+      <translation>Тема за замовчуванням</translation>
+    </message>
+    <message>
+      <source>section and checking As default department theme.</source>
+      <translation>і встановіть прапорець як тему відділу за замовчуванням.</translation>
+    </message>
+    <message>
+      <source>Theme global</source>
+      <translation>Тема глобальна</translation>
+    </message>
+    <message>
+      <source>If you are using only</source>
+      <translation>Якщо ви використовуєте лише</translation>
+    </message>
+    <message>
+      <source>option and you have more than one server you might get inconsistent theme pickup. Apply</source>
+      <translation>і у вас є більше одного сервера, ви можете отримати непослідовний вибір теми. Застосувати</translation>
+    </message>
+    <message>
+      <source>to department as default or choose individual theme.</source>
+      <translation>у відділ за замовчуванням або виберіть окрему тему.</translation>
     </message>
     <message>
       <source>E-mail</source>
@@ -4745,6 +5229,10 @@
     <message>
       <source>Exception groups to apply</source>
       <translation>Групи винятків для застосування</translation>
+    </message>
+    <message>
+      <source>Identifier</source>
+      <translation>Ідентифікатор</translation>
     </message>
     <message>
       <source>Nick, what should be operator nick. E.g Support Bot</source>
@@ -4803,10 +5291,6 @@
       <translation>Для автоматичного перекладу ми повинні знати, яка основна мова бота. З цієї мови ми будемо перекладати повідомлення бота.</translation>
     </message>
     <message>
-      <source>Identifier</source>
-      <translation>Ідентифікатор</translation>
-    </message>
-    <message>
       <source>Translation</source>
       <translation>Переклад</translation>
     </message>
@@ -4855,6 +5339,10 @@
       <translation>Редагувати відділ</translation>
     </message>
     <message>
+      <source>Brands</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Departments groups</source>
       <translation>Групи відділів</translation>
     </message>
@@ -4865,6 +5353,164 @@
     <message>
       <source>Edit a group chat</source>
       <translation>Редагувати груповий чат</translation>
+    </message>
+  </context>
+  <context>
+    <name>abstract/message_protection</name>
+    <message>
+      <source>Add an e-mail masking</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Add a credit card masking</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Replaces all numbers in the message</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Add a preg match sample</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>New rule per row.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Rule ||| Replace symbol</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Sample</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Test masking</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Message to test against</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Rules to test</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Output</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Test</source>
+      <translation type="unfinished"/>
+    </message>
+  </context>
+  <context>
+    <name>user/edit</name>
+    <message>
+      <source>Application default Time Zone</source>
+      <translation>Часовий пояс програми за замовчуванням</translation>
+    </message>
+    <message>
+      <source>Photo</source>
+      <translation>Фото</translation>
+    </message>
+    <message>
+      <source>Server default time zone</source>
+      <translation>Часовий пояс сервера за замовчуванням</translation>
+    </message>
+    <message>
+      <source>Edit user</source>
+      <translation>Редагувати користувача</translation>
+    </message>
+    <message>
+      <source>Do not enter a password unless you want to change it</source>
+      <translation>Не вводьте пароль, якщо ви не хочете його змінити</translation>
+    </message>
+    <message>
+      <source>Username</source>
+      <translation>Користувач</translation>
+    </message>
+    <message>
+      <source>Password</source>
+      <translation>Пароль</translation>
+    </message>
+    <message>
+      <source>Repeat the new password</source>
+      <translation>Повторіть новий пароль</translation>
+    </message>
+    <message>
+      <source>E-mail</source>
+      <translation>E-mail</translation>
+    </message>
+    <message>
+      <source>Chat nickname</source>
+      <translation>Нік у чаті</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Ім&apos;я</translation>
+    </message>
+    <message>
+      <source>Surname</source>
+      <translation>Прізвище</translation>
+    </message>
+    <message>
+      <source>Save</source>
+      <translation>Зберегти</translation>
+    </message>
+    <message>
+      <source>Update</source>
+      <translation>Оновити</translation>
+    </message>
+    <message>
+      <source>Cancel</source>
+      <translation>Відмінити</translation>
+    </message>
+    <message>
+      <source>User time zone</source>
+      <translation>Часовий пояс користувача</translation>
+    </message>
+    <message>
+      <source>Choose</source>
+      <translation>Виберіть</translation>
+    </message>
+    <message>
+      <source>Application default time zone</source>
+      <translation>Часовий пояс програми за замовчуванням</translation>
+    </message>
+    <message>
+      <source>Wrong email address</source>
+      <translation>Неправильна адреса електронної пошти</translation>
+    </message>
+    <message>
+      <source>Invalid CSRF token!</source>
+      <translation>Недійсний маркер CSRF!</translation>
+    </message>
+    <message>
+      <source>Password reset requested by</source>
+      <translation>Запит на скидання пароля</translation>
+    </message>
+    <message>
+      <source>System configuration</source>
+      <translation>Системні налаштування</translation>
+    </message>
+    <message>
+      <source>Users</source>
+      <translation>Користувачі</translation>
+    </message>
+    <message>
+      <source>User edit</source>
+      <translation>Редагування користувача</translation>
+    </message>
+    <message>
+      <source>Invalid email address</source>
+      <translation>Невірна адреса електронної пошти</translation>
+    </message>
+    <message>
+      <source>Invalid chat!</source>
+      <translation>Недійсний чат!</translation>
     </message>
   </context>
   <context>
@@ -5160,6 +5806,14 @@
       <translation>Завершіть чат</translation>
     </message>
     <message>
+      <source>Switch to Classic</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Switch to Column</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>You</source>
       <translation>Ви</translation>
     </message>
@@ -5256,6 +5910,30 @@
       <translation>Ваш запит не було оброблено, як очікувалося, але не хвилюйтеся, це була не ваша вина. Надішліть запит повторно. Якщо у вас виникла така ж проблема, вам потрібно буде зв’язатися з нами іншим способом.</translation>
     </message>
     <message>
+      <source>File is to big! Maximum</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>File is to big!</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>File upload is not for this chat!</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>File upload is not enabled for the visitor!</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>There was a problem with your uploaded file!</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Media attribute could not be found or there was an error:</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Invalid file extension</source>
       <translation>Недійсне розширення файлу</translation>
     </message>
@@ -5266,6 +5944,10 @@
     <message>
       <source>File too big!</source>
       <translation>Файл завеликий!</translation>
+    </message>
+    <message>
+      <source>Please complete previous process!</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Chat was transferred to operator!</source>
@@ -5376,6 +6058,10 @@
       <translation>Залиште групу, ви все одно можете приєднатися, коли захочете.</translation>
     </message>
     <message>
+      <source>Provided survey does not exists!</source>
+      <translation>Надане опитування не існує!</translation>
+    </message>
+    <message>
       <source>You cannot send messages to this chat. Chat has been closed.</source>
       <translation>Ви не можете надсилати повідомлення в цей чат. Чат закрито.</translation>
     </message>
@@ -5400,6 +6086,10 @@
       <translation>Надіслати на електронну пошту</translation>
     </message>
     <message>
+      <source>Send a message</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Start a chat with us!</source>
       <translation>Почніть розмову з нами!</translation>
     </message>
@@ -5422,6 +6112,18 @@
     <message>
       <source>Change language</source>
       <translation>Змінити мову</translation>
+    </message>
+    <message>
+      <source>Next 〉</source>
+      <translation>Далі 〉</translation>
+    </message>
+    <message>
+      <source>〈 Back</source>
+      <translation>〈 Назад</translation>
+    </message>
+    <message>
+      <source>Submit</source>
+      <translation>Надіслати</translation>
     </message>
     <message>
       <source>This chat is closed now. You can close window.</source>
@@ -5450,6 +6152,10 @@
     <message>
       <source>No internet connection.</source>
       <translation>Немає підключення до Інтернету.</translation>
+    </message>
+    <message>
+      <source>Visitor is typing</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Please choose!</source>
@@ -5481,6 +6187,18 @@
     <message>
       <source>Bottom left</source>
       <translation>Унизу зліва</translation>
+    </message>
+    <message>
+      <source>Always enabled</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Enabled on mobile</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Always off</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Bottom right corner of the screen</source>
@@ -5919,6 +6637,14 @@
       <translation>Вихідний код із посиланням</translation>
     </message>
     <message>
+      <source>Theme, you can choose multiple to show random one.</source>
+      <translation>Ви можете вибрати кілька тем, щоб відобразити випадкову.</translation>
+    </message>
+    <message>
+      <source>As default department theme</source>
+      <translation>Як тема відділу за замовчуванням</translation>
+    </message>
+    <message>
       <source>Show a leave a message form when there are no online operators</source>
       <translation>Показати форму залишення повідомлення, коли немає онлайн-операторів</translation>
     </message>
@@ -5954,28 +6680,16 @@
       <translation>Закрити</translation>
     </message>
     <message>
+      <source>Allow operator to see your page content?</source>
+      <translation>Дозволити оператору бачити вміст сторінки?</translation>
+    </message>
+    <message>
       <source>Open in a new window</source>
       <translation>Відкрити в новому вікні</translation>
     </message>
     <message>
       <source>Minimize/Restore</source>
       <translation>Згорнути/Відновити</translation>
-    </message>
-    <message>
-      <source>Our staff are always ready to help!</source>
-      <translation>Наші співробітники завжди готові допомогти!</translation>
-    </message>
-    <message>
-      <source>Live help is online...</source>
-      <translation>Адміністратор в мережі...</translation>
-    </message>
-    <message>
-      <source>Need help?</source>
-      <translation>Потрібна допомога?</translation>
-    </message>
-    <message>
-      <source>Allow operator to see your page content?</source>
-      <translation>Дозволити оператору бачити вміст сторінки?</translation>
     </message>
     <message>
       <source>New messages</source>
@@ -5986,8 +6700,20 @@
       <translation>Жива допомога</translation>
     </message>
     <message>
+      <source>Live help is online...</source>
+      <translation>Адміністратор в мережі...</translation>
+    </message>
+    <message>
       <source>Live help is offline...</source>
       <translation>Адміністратор не в мережі...</translation>
+    </message>
+    <message>
+      <source>Need help?</source>
+      <translation>Потрібна допомога?</translation>
+    </message>
+    <message>
+      <source>Our staff are always ready to help!</source>
+      <translation>Наші співробітники завжди готові допомогти!</translation>
     </message>
     <message>
       <source>Screen shared, click to finish</source>
@@ -5999,6 +6725,597 @@
     <message>
       <source>Are you sure?</source>
       <translation>Ви впевнені?</translation>
+    </message>
+  </context>
+  <context>
+    <name>chat/onlineusers</name>
+    <message>
+      <source>Your request takes to long. Please contact your administrator and send him url from your browser.</source>
+      <translation>Ваш запит триває довго. Будь ласка, зверніться до свого адміністратора та надішліть йому URL-адресу зі свого браузера.</translation>
+    </message>
+    <message>
+      <source>GEO detection configuration</source>
+      <translation>Конфігурація виявлення GEO</translation>
+    </message>
+    <message>
+      <source>Map location</source>
+      <translation>Розташування на мапі</translation>
+    </message>
+    <message>
+      <source>Test GEO</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>GEO Enabled</source>
+      <translation>GEO увімкнено</translation>
+    </message>
+    <message>
+      <source>Use this service</source>
+      <translation>Використовувати цей сервіс</translation>
+    </message>
+    <message>
+      <source>API Key</source>
+      <translation>API ключ</translation>
+    </message>
+    <message>
+      <source>Use mod_geoip2</source>
+      <translation>Використовуйте mod_geoip2</translation>
+    </message>
+    <message>
+      <source>Country code server variable</source>
+      <translation>Змінна сервера коду країни</translation>
+    </message>
+    <message>
+      <source>Country name server variable</source>
+      <translation>Змінна сервера імен країни</translation>
+    </message>
+    <message>
+      <source>City name server variable</source>
+      <translation>Змінна сервера імен міста</translation>
+    </message>
+    <message>
+      <source>Region name server variable</source>
+      <translation>Змінна сервера імен регіону</translation>
+    </message>
+    <message>
+      <source>Latitude variable</source>
+      <translation>Змінна широта</translation>
+    </message>
+    <message>
+      <source>Longitude variable</source>
+      <translation>Змінна довгота</translation>
+    </message>
+    <message>
+      <source>Use http://ip-api.com</source>
+      <translation>Використовуйте http://ip-api.com</translation>
+    </message>
+    <message>
+      <source>Use https://www.abstractapi.com/ip-geolocation-api</source>
+      <translation>Використовуйте https://www.abstractapi.com/ip-geolocation-api</translation>
+    </message>
+    <message>
+      <source>Use MaxMind, does not depend on any third party remote service</source>
+      <translation>Використовуйте MaxMind, не залежить від сторонніх віддалених служб</translation>
+    </message>
+    <message>
+      <source>You can download city/country database from.</source>
+      <translation>Ви можете завантажити базу даних міста/країни.</translation>
+    </message>
+    <message>
+      <source>bcmath php extension detected</source>
+      <translation>Виявлено розширення bcmath php</translation>
+    </message>
+    <message>
+      <source>Location of city database. Make sure you uploaded file in this location.</source>
+      <translation>Розташування бази даних міста. Переконайтеся, що ви завантажили файл у цьому місці.</translation>
+    </message>
+    <message>
+      <source>User country based detection, faster</source>
+      <translation>Швидше виявлення на основі країни користувача</translation>
+    </message>
+    <message>
+      <source>File exists</source>
+      <translation>Файл існує</translation>
+    </message>
+    <message>
+      <source>File does not exists</source>
+      <translation>Файл не існує</translation>
+    </message>
+    <message>
+      <source>User city based detection, slower</source>
+      <translation>Виявлення на основі міста користувача, повільніше</translation>
+    </message>
+    <message>
+      <source>Use PHP-GeoIP module</source>
+      <translation>Використовуйте модуль PHP-GeoIP</translation>
+    </message>
+    <message>
+      <source>Support for PHP-GeoIP detected</source>
+      <translation>Виявлено підтримку PHP-GeoIP</translation>
+    </message>
+    <message>
+      <source>Requests will be comming from</source>
+      <translation>Запити надходитимуть від</translation>
+    </message>
+    <message>
+      <source>Username</source>
+      <translation>Користувач</translation>
+    </message>
+    <message>
+      <source>IP, if your site remote IP is different from detected one, please provide correct remote IP address</source>
+      <translation>IP, якщо віддалений IP вашого сайту відрізняється від виявленого, вкажіть правильну віддалену IP-адресу</translation>
+    </message>
+    <message>
+      <source>Save</source>
+      <translation>Зберегти</translation>
+    </message>
+    <message>
+      <source>Drag a marker where you want to have map centered by default. Zoom is also saved.</source>
+      <translation>Перетягніть маркер туди, де ви хочете розмістити карту по центру за замовчуванням. Масштаб також збережено.</translation>
+    </message>
+    <message>
+      <source>Google Maps API key, saved automatically. After pasting the key, refresh the page.</source>
+      <translation>Ключ API Карт Google, збережений автоматично. Після вставки ключа оновіть сторінку.</translation>
+    </message>
+    <message>
+      <source>Test</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Settings updated</source>
+      <translation>Налаштування оновлено</translation>
+    </message>
+    <message>
+      <source>Send message</source>
+      <translation>Відправити повідомлення</translation>
+    </message>
+    <message>
+      <source>Chat list</source>
+      <translation>Список чату</translation>
+    </message>
+    <message>
+      <source>Dashboard</source>
+      <translation>Головна панель</translation>
+    </message>
+    <message>
+      <source>City</source>
+      <translation>Місто</translation>
+    </message>
+    <message>
+      <source>Lat.</source>
+      <translation>Дов.</translation>
+    </message>
+    <message>
+      <source>Lon.</source>
+      <translation>Шир.</translation>
+    </message>
+    <message>
+      <source>Time zone</source>
+      <translation>Часовий пояс</translation>
+    </message>
+    <message>
+      <source>Identifier</source>
+      <translation>Ідентифікатор</translation>
+    </message>
+    <message>
+      <source>Nick</source>
+      <translation>Нікнейм</translation>
+    </message>
+    <message>
+      <source>Additional information</source>
+      <translation>Додаткова інформація</translation>
+    </message>
+    <message>
+      <source>Last activity</source>
+      <translation>Остання активність</translation>
+    </message>
+    <message>
+      <source>ago</source>
+      <translation>тому</translation>
+    </message>
+    <message>
+      <source>On page</source>
+      <translation>На сторінці</translation>
+    </message>
+    <message>
+      <source>Yes</source>
+      <translation>Так</translation>
+    </message>
+    <message>
+      <source>No</source>
+      <translation>Ні</translation>
+    </message>
+    <message>
+      <source>User does not have any message from operator</source>
+      <translation>Користувач не має повідомлень від оператора</translation>
+    </message>
+    <message>
+      <source>User have not seen message from operator, or message window still open.</source>
+      <translation>Користувач не бачив повідомлення від оператора, або вікно повідомлення все ще відкрите.</translation>
+    </message>
+    <message>
+      <source>User has seen message from operator.</source>
+      <translation>Користувач бачив повідомлення від оператора.</translation>
+    </message>
+    <message>
+      <source>User is chatting</source>
+      <translation>Користувач в чаті</translation>
+    </message>
+    <message>
+      <source>User is not having any chat right now</source>
+      <translation>Користувач зараз не спілкується в чаті</translation>
+    </message>
+    <message>
+      <source>Operator</source>
+      <translation>Оператор</translation>
+    </message>
+    <message>
+      <source>has send message to user</source>
+      <translation>надіслав повідомлення користувачеві</translation>
+    </message>
+    <message>
+      <source>No one has send any message to user yet</source>
+      <translation>Ще ніхто не надсилав жодного повідомлення користувачеві</translation>
+    </message>
+    <message>
+      <source>First visit</source>
+      <translation>Перший візит</translation>
+    </message>
+    <message>
+      <source>Last visit</source>
+      <translation>Останній візит</translation>
+    </message>
+    <message>
+      <source>Total visits</source>
+      <translation>Всього відвідувань</translation>
+    </message>
+    <message>
+      <source>time(s) invitation logic was applied</source>
+      <translation>було застосовано логіку запрошення</translation>
+    </message>
+    <message>
+      <source>Pageviews</source>
+      <translation>Перегляди</translation>
+    </message>
+    <message>
+      <source>Total pageviews</source>
+      <translation>Загальна кількість переглядів сторінок</translation>
+    </message>
+    <message>
+      <source>Time on site</source>
+      <translation>Час на місці</translation>
+    </message>
+    <message>
+      <source>Total time on site</source>
+      <translation>Загальний час перебування на сайті</translation>
+    </message>
+    <message>
+      <source>Current page</source>
+      <translation>Поточна сторінка</translation>
+    </message>
+    <message>
+      <source>Came from</source>
+      <translation>Прийшов з</translation>
+    </message>
+    <message>
+      <source>Are you sure?</source>
+      <translation>Ви впевнені?</translation>
+    </message>
+    <message>
+      <source>Clear list</source>
+      <translation>Очистити список</translation>
+    </message>
+    <message>
+      <source>User tracking is disabled, enable it at</source>
+      <translation>Відстеження користувачів вимкнено, увімкніть його в</translation>
+    </message>
+    <message>
+      <source>Chat configuration</source>
+      <translation>Налаштування чату</translation>
+    </message>
+    <message>
+      <source>Online visitors list</source>
+      <translation>Список онлайн відвідувачів</translation>
+    </message>
+    <message>
+      <source>Online visitors on map</source>
+      <translation>Онлайн відвідувачі на карті</translation>
+    </message>
+    <message>
+      <source>Preview chat</source>
+      <translation>Попередній перегляд чату</translation>
+    </message>
+    <message>
+      <source>Visits</source>
+      <translation>Відвідування</translation>
+    </message>
+    <message>
+      <source>New</source>
+      <translation>Новий</translation>
+    </message>
+    <message>
+      <source>has sent a message to the user</source>
+      <translation>надіслав повідомлення користувачеві</translation>
+    </message>
+    <message>
+      <source>Seen</source>
+      <translation>Переглянуто</translation>
+    </message>
+    <message>
+      <source>Unseen</source>
+      <translation>Непереглянуто</translation>
+    </message>
+    <message>
+      <source>Page</source>
+      <translation>Сторінка</translation>
+    </message>
+    <message>
+      <source>From</source>
+      <translation>Від</translation>
+    </message>
+    <message>
+      <source>Enable/Disable sound about new visitor</source>
+      <translation>Увімкнути/вимкнути звук про нового відвідувача</translation>
+    </message>
+    <message>
+      <source>Enable/Disable browser notifications about new visitor</source>
+      <translation>Увімкнути/вимкнути сповіщення браузера про нового відвідувача</translation>
+    </message>
+    <message>
+      <source>Online visitors</source>
+      <translation>Онлайн відвідувачі</translation>
+    </message>
+    <message>
+      <source>User has message from operator</source>
+      <translation>Користувач має повідомлення від оператора</translation>
+    </message>
+    <message>
+      <source>Marker timeout before it dissapears from map</source>
+      <translation>Час очікування маркера, перш ніж він зникне з карти</translation>
+    </message>
+    <message>
+      <source>seconds</source>
+      <translation>секунди</translation>
+    </message>
+    <message>
+      <source>minute</source>
+      <translation>хвилина</translation>
+    </message>
+    <message>
+      <source>minutes</source>
+      <translation>хвилини</translation>
+    </message>
+    <message>
+      <source>online users</source>
+      <translation>онлайн користувачі</translation>
+    </message>
+    <message>
+      <source>Show only connected</source>
+      <translation>Показати лише підключені</translation>
+    </message>
+    <message>
+      <source>Group list by</source>
+      <translation>Згрупувати список по</translation>
+    </message>
+    <message>
+      <source>Group by</source>
+      <translation>Згрупувати по</translation>
+    </message>
+    <message>
+      <source>User country</source>
+      <translation>Країна користувача</translation>
+    </message>
+    <message>
+      <source>Page title</source>
+      <translation>Назва сторінки</translation>
+    </message>
+    <message>
+      <source>Referrer</source>
+      <translation>Відправник</translation>
+    </message>
+    <message>
+      <source>Department</source>
+      <translation>Відділ</translation>
+    </message>
+    <message>
+      <source>Refresh list every</source>
+      <translation>Оновити список кожні</translation>
+    </message>
+    <message>
+      <source>second</source>
+      <translation>секунда</translation>
+    </message>
+    <message>
+      <source>Show visitors who visited site in the past</source>
+      <translation>Показати відвідувачів, які відвідували сайт у минулому</translation>
+    </message>
+    <message>
+      <source>hour</source>
+      <translation>година</translation>
+    </message>
+    <message>
+      <source>day</source>
+      <translation>день</translation>
+    </message>
+    <message>
+      <source>days</source>
+      <translation>днів</translation>
+    </message>
+    <message>
+      <source>Max records to return</source>
+      <translation>Максимальна кількість записів для повернення</translation>
+    </message>
+    <message>
+      <source>Visitor local time</source>
+      <translation>Локальний час відвідувача</translation>
+    </message>
+    <message>
+      <source>By user status on site</source>
+      <translation>За статусом користувача на сайті</translation>
+    </message>
+    <message>
+      <source>Action</source>
+      <translation>Дія</translation>
+    </message>
+    <message>
+      <source>User has not seen a message from the operator, or the message window is still open.</source>
+      <translation>Користувач не бачив повідомлення від оператора, або вікно повідомлення все ще відкрите.</translation>
+    </message>
+    <message>
+      <source>User has seen the message from the operator.</source>
+      <translation>Користувач бачив повідомлення від оператора.</translation>
+    </message>
+    <message>
+      <source>User does not have any messages from the operator</source>
+      <translation>Користувач не має жодних повідомлень від оператора</translation>
+    </message>
+    <message>
+      <source>Chat</source>
+      <translation>Чат</translation>
+    </message>
+    <message>
+      <source>Returning</source>
+      <translation>Повернення</translation>
+    </message>
+    <message>
+      <source>Start a chat</source>
+      <translation>Почніть чат</translation>
+    </message>
+    <message>
+      <source>+20 (More than 20 seconds spend on site) 20 (Less than 20 seconds spend on site)</source>
+      <translation>+20 (більше 20 секунд провести на сайті) 20 (менше 20 секунд провести на сайті)</translation>
+    </message>
+    <message>
+      <source>In progress...</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Visitor country</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Select country</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Visited in the past</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Never had a chat</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Usernames (*.csv)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Upload usernames in CSV format</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Files upload for users is active</source>
+      <translation>Завантаження файлів для користувачів активне</translation>
+    </message>
+    <message>
+      <source>Allow visitor to choose only one file for the upload</source>
+      <translation>Дозволити відвідувачеві вибрати лише один файл для завантаження</translation>
+    </message>
+    <message>
+      <source>Files upload for operators is active</source>
+      <translation>Завантаження файлів для операторів активне</translation>
+    </message>
+    <message>
+      <source>Remove meta information from images</source>
+      <translation>Видаліть мета-інформацію із зображень</translation>
+    </message>
+    <message>
+      <source>Uploaded files from visitors are scanned</source>
+      <translation>Завантажені файли відвідувачів скануються</translation>
+    </message>
+    <message>
+      <source>Voice messages for visitors is active</source>
+      <translation>Голосові повідомлення для відвідувачів активні</translation>
+    </message>
+    <message>
+      <source>Voice messages for operators is active</source>
+      <translation>Голосові повідомлення для операторів активні</translation>
+    </message>
+    <message>
+      <source>If you do not choose any department from below we will track all departments.</source>
+      <translation>Якщо ви не виберете жоден відділ знизу, ми відстежимо всі відділи.</translation>
+    </message>
+    <message>
+      <source>Country code variable does not exist!</source>
+      <translation>Змінна коду країни не існує!</translation>
+    </message>
+    <message>
+      <source>Country name variable does not exist!</source>
+      <translation>Змінна назви країни не існує!</translation>
+    </message>
+    <message>
+      <source>Please enter city variable!</source>
+      <translation>Будь ласка, введіть змінну міста!</translation>
+    </message>
+    <message>
+      <source>Please enter latitude variable!</source>
+      <translation>Будь ласка, введіть змінну широти!</translation>
+    </message>
+    <message>
+      <source>Please enter longitude variable!</source>
+      <translation>Будь ласка, введіть змінну довготи!</translation>
+    </message>
+    <message>
+      <source>Please enter API Key!</source>
+      <translation>Будь ласка введіть API ключ!</translation>
+    </message>
+    <message>
+      <source>Setting service provider failed, please check that your service provider allows you to make requests to remote pages!</source>
+      <translation>Помилка налаштування постачальника послуг, будь ласка, переконайтеся, що ваш постачальник послуг дозволяє робити запити на віддалені сторінки!</translation>
+    </message>
+    <message>
+      <source>MaxMind city file does not exists!</source>
+      <translation>Файл міста MaxMind не існує!</translation>
+    </message>
+    <message>
+      <source>MaxMind country file does not exists!</source>
+      <translation>Файл країни MaxMind не існує!</translation>
+    </message>
+    <message>
+      <source>Setting service provider failed, please check that MaxMind database files exists!</source>
+      <translation>Помилка налаштування постачальника послуг, будь ласка, перевірте, чи існують файли бази даних MaxMind!</translation>
+    </message>
+    <message>
+      <source>Please enter the API key!</source>
+      <translation>Будь ласка введіть API ключ!</translation>
+    </message>
+    <message>
+      <source>Please enter the API username!</source>
+      <translation>Будь ласка, введіть ім&apos;я користувача API!</translation>
+    </message>
+    <message>
+      <source>Please enter IP!</source>
+      <translation>Будь ласка введіть IP!</translation>
+    </message>
+    <message>
+      <source>Setting service provider failed, please check that your service provider allows you to make requests to remote pages and your API key and username is correct!</source>
+      <translation>Помилка налаштування постачальника послуг, будь ласка, перевірте, чи ваш постачальник послуг дозволяє робити запити до віддалених сторінок, а ключ API та ім’я користувача правильні!</translation>
+    </message>
+    <message>
+      <source>Setting service provider failed, please check that your service provider allows you to make requests to remote pages and your API key is correct!</source>
+      <translation>Помилка налаштування постачальника послуг, будь ласка, переконайтеся, що ваш постачальник послуг дозволяє робити запити до віддалених сторінок і ваш ключ API правильний!</translation>
+    </message>
+    <message>
+      <source>Setting service provider failed, please check that you have installed php-GeoIP module and GeoIPCity.dat file is available!</source>
+      <translation>Помилка налаштування постачальника послуг, перевірте, чи встановлено модуль php-GeoIP та доступний файл GeoIPCity.dat!</translation>
+    </message>
+    <message>
+      <source>Please choose a service provider!</source>
+      <translation>Будь ласка, виберіть постачальника послуг!</translation>
+    </message>
+    <message>
+      <source>Online users</source>
+      <translation>Онлайн користувачі</translation>
     </message>
   </context>
   <context>
@@ -6057,6 +7374,10 @@
     <message>
       <source>New</source>
       <translation>Новий</translation>
+    </message>
+    <message>
+      <source>Conditions</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Import</source>
@@ -6412,6 +7733,10 @@
       <translation>Слід</translation>
     </message>
     <message>
+      <source>Average response time (agent)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Additional data</source>
       <translation>Додаткові дані</translation>
     </message>
@@ -6540,6 +7865,14 @@
       <translation>E-mail</translation>
     </message>
     <message>
+      <source>First response time (agent)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Max response time (agent)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Online profile</source>
       <translation>Онлайн профіль</translation>
     </message>
@@ -6660,6 +7993,10 @@
       <translation>Включіть мета-повідомлення</translation>
     </message>
     <message>
+      <source>Include bot messages</source>
+      <translation>Додайте повідомлення бота</translation>
+    </message>
+    <message>
       <source>Messages</source>
       <translation>Повідомлення</translation>
     </message>
@@ -6736,6 +8073,18 @@
       <translation>ID відвідувача</translation>
     </message>
     <message>
+      <source>Previous item</source>
+      <translation>Попередній елемент</translation>
+    </message>
+    <message>
+      <source>Next item</source>
+      <translation>Наступний пункт</translation>
+    </message>
+    <message>
+      <source>Use Alt+↑↓ arrows to navigate in the list.</source>
+      <translation>Використовуйте стрілки Alt+↑↓ ​​для навігації в списку.</translation>
+    </message>
+    <message>
       <source>Please enter a URL</source>
       <translation>Будь ласка введіть URL</translation>
     </message>
@@ -6752,6 +8101,10 @@
       <translation>Перенаправити користувача на іншу URL</translation>
     </message>
     <message>
+      <source>Information</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Sending...</source>
       <translation>Надсилання...</translation>
     </message>
@@ -6762,6 +8115,10 @@
     <message>
       <source>Mobile</source>
       <translation>Мобільний</translation>
+    </message>
+    <message>
+      <source>Offline message</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Auto responder got error</source>
@@ -6806,6 +8163,10 @@
     <message>
       <source>Hold added!</source>
       <translation>Утримати додано!</translation>
+    </message>
+    <message>
+      <source>No permission</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Form data not valid</source>
@@ -6888,113 +8249,6 @@
     <message>
       <source>Form</source>
       <translation>Форма</translation>
-    </message>
-  </context>
-  <context>
-    <name>user/edit</name>
-    <message>
-      <source>Application default Time Zone</source>
-      <translation>Часовий пояс програми за замовчуванням</translation>
-    </message>
-    <message>
-      <source>Photo</source>
-      <translation>Фото</translation>
-    </message>
-    <message>
-      <source>Server default time zone</source>
-      <translation>Часовий пояс сервера за замовчуванням</translation>
-    </message>
-    <message>
-      <source>Edit user</source>
-      <translation>Редагувати користувача</translation>
-    </message>
-    <message>
-      <source>Do not enter a password unless you want to change it</source>
-      <translation>Не вводьте пароль, якщо ви не хочете його змінити</translation>
-    </message>
-    <message>
-      <source>Username</source>
-      <translation>Користувач</translation>
-    </message>
-    <message>
-      <source>Password</source>
-      <translation>Пароль</translation>
-    </message>
-    <message>
-      <source>Repeat the new password</source>
-      <translation>Повторіть новий пароль</translation>
-    </message>
-    <message>
-      <source>E-mail</source>
-      <translation>E-mail</translation>
-    </message>
-    <message>
-      <source>Chat nickname</source>
-      <translation>Нік у чаті</translation>
-    </message>
-    <message>
-      <source>Name</source>
-      <translation>Ім&apos;я</translation>
-    </message>
-    <message>
-      <source>Surname</source>
-      <translation>Прізвище</translation>
-    </message>
-    <message>
-      <source>Save</source>
-      <translation>Зберегти</translation>
-    </message>
-    <message>
-      <source>Update</source>
-      <translation>Оновити</translation>
-    </message>
-    <message>
-      <source>Cancel</source>
-      <translation>Відмінити</translation>
-    </message>
-    <message>
-      <source>User time zone</source>
-      <translation>Часовий пояс користувача</translation>
-    </message>
-    <message>
-      <source>Choose</source>
-      <translation>Виберіть</translation>
-    </message>
-    <message>
-      <source>Application default time zone</source>
-      <translation>Часовий пояс програми за замовчуванням</translation>
-    </message>
-    <message>
-      <source>Wrong email address</source>
-      <translation>Неправильна адреса електронної пошти</translation>
-    </message>
-    <message>
-      <source>Invalid CSRF token!</source>
-      <translation>Недійсний маркер CSRF!</translation>
-    </message>
-    <message>
-      <source>Password reset requested by</source>
-      <translation>Запит на скидання пароля</translation>
-    </message>
-    <message>
-      <source>System configuration</source>
-      <translation>Системні налаштування</translation>
-    </message>
-    <message>
-      <source>Users</source>
-      <translation>Користувачі</translation>
-    </message>
-    <message>
-      <source>User edit</source>
-      <translation>Редагування користувача</translation>
-    </message>
-    <message>
-      <source>Invalid email address</source>
-      <translation>Невірна адреса електронної пошти</translation>
-    </message>
-    <message>
-      <source>Invalid chat!</source>
-      <translation>Недійсний чат!</translation>
     </message>
   </context>
   <context>
@@ -7371,6 +8625,10 @@
     <message>
       <source>Italic</source>
       <translation>Курсив</translation>
+    </message>
+    <message>
+      <source>Strikethrough</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Please enter link to an image</source>
@@ -7835,24 +9093,48 @@
       <translation>Окремі відділи</translation>
     </message>
     <message>
-      <source>Assign as operator</source>
-      <translation>Призначити оператором</translation>
+      <source>New</source>
+      <translation>Новий</translation>
     </message>
     <message>
-      <source>Exclude from auto assignment workflow</source>
-      <translation>Виключити з процесу автоматичного призначення</translation>
+      <source>Edit</source>
+      <translation>Редагувати</translation>
+    </message>
+    <message>
+      <source>Alias nick</source>
+      <translation>Псевдонім нік</translation>
+    </message>
+    <message>
+      <source>Avatar</source>
+      <translation>Аватар</translation>
+    </message>
+    <message>
+      <source>Profile picture</source>
+      <translation>Зображення профілю</translation>
     </message>
     <message>
       <source>Read only</source>
       <translation>Лише для читання</translation>
     </message>
     <message>
-      <source>Assign in read only mode</source>
-      <translation>Призначити в режимі лише читання</translation>
+      <source>Exclude from auto assignment workflow</source>
+      <translation>Виключити з процесу автоматичного призначення</translation>
     </message>
     <message>
-      <source>Show archived departments</source>
-      <translation>Показати архівні відділи</translation>
+      <source>Assignment priority, optional, default - 0</source>
+      <translation>Пріоритет призначення, необов&apos;язковий, за замовчуванням - 0</translation>
+    </message>
+    <message>
+      <source>Min chat priority for chat being assigned by my assign priority</source>
+      <translation>Мінімальний пріоритет чату для чату, призначеного моїм пріоритетом призначення</translation>
+    </message>
+    <message>
+      <source>Max chat priority for chat being assigned by my assign priority</source>
+      <translation>Максимальний пріоритет чату для чату, призначеного моїм пріоритетом призначення</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Видалити</translation>
     </message>
     <message>
       <source>You have permission to edit departments group, but do not have permission to read them. Missing one of these permissions</source>
@@ -7883,6 +9165,46 @@
       <translation>Статус чату не зміниться після очікування відкриття чату</translation>
     </message>
     <message>
+      <source>Assign in read only mode</source>
+      <translation>Призначити в режимі лише читання</translation>
+    </message>
+    <message>
+      <source>Assign as operator</source>
+      <translation>Призначити оператором</translation>
+    </message>
+    <message>
+      <source>Agents with higher assignment priority will be assigned first to chat</source>
+      <translation>Агенти з вищим пріоритетом призначення будуть призначені першими для чату</translation>
+    </message>
+    <message>
+      <source>Min and Max chat priority for chat being assigned by my assign priority</source>
+      <translation>Мінімальний і максимальний пріоритет чату для чату, призначеного моїм пріоритетом призначення</translation>
+    </message>
+    <message>
+      <source>Department alias</source>
+      <translation>Псевдонім відділу</translation>
+    </message>
+    <message>
+      <source>Avatar builder</source>
+      <translation>Конструктор аватар</translation>
+    </message>
+    <message>
+      <source>Enter any string to generate an avatar</source>
+      <translation>Введіть будь-який рядок, щоб створити аватар</translation>
+    </message>
+    <message>
+      <source>Click to set avatar</source>
+      <translation>Натисніть, щоб встановити аватар</translation>
+    </message>
+    <message>
+      <source>Photo alias</source>
+      <translation>Псевдонім фотографії</translation>
+    </message>
+    <message>
+      <source>Photo has higher priority than avatar.</source>
+      <translation>Фотографія має вищий пріоритет, ніж аватар.</translation>
+    </message>
+    <message>
       <source>Notifications</source>
       <translation>Сповіщення</translation>
     </message>
@@ -7907,6 +9229,10 @@
       <translation>ролі</translation>
     </message>
     <message>
+      <source>Department assignment could not be found!</source>
+      <translation>Призначення департаменту не знайдено!</translation>
+    </message>
+    <message>
       <source>Created</source>
       <translation>Створено</translation>
     </message>
@@ -7921,18 +9247,6 @@
     <message>
       <source>Hide quick notifications</source>
       <translation>Приховати швидкі сповіщення</translation>
-    </message>
-    <message>
-      <source>Avatar builder</source>
-      <translation>Конструктор аватар</translation>
-    </message>
-    <message>
-      <source>Enter any string to generate an avatar</source>
-      <translation>Введіть будь-який рядок, щоб створити аватар</translation>
-    </message>
-    <message>
-      <source>Click to set avatar</source>
-      <translation>Натисніть, щоб встановити аватар</translation>
     </message>
     <message>
       <source>Main</source>
@@ -8183,6 +9497,14 @@
     <message>
       <source>Sort by department</source>
       <translation>Сортувати за відділами</translation>
+    </message>
+    <message>
+      <source>More rows</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Less rows</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Has unread messages</source>
@@ -8864,6 +10186,22 @@
       <translation>Ми показуємо лише безпосередньо або групово призначені оператори.</translation>
     </message>
     <message>
+      <source>Group by operator</source>
+      <translation>Групування за оператором</translation>
+    </message>
+    <message>
+      <source>Only online</source>
+      <translation>Тільки онлайн</translation>
+    </message>
+    <message>
+      <source>Only offline</source>
+      <translation>Тільки офлайн</translation>
+    </message>
+    <message>
+      <source>Only logged</source>
+      <translation>Тільки зареєстровані</translation>
+    </message>
+    <message>
       <source>User ID</source>
       <translation>ID користувача</translation>
     </message>
@@ -8922,10 +10260,6 @@
     <message>
       <source>We show only to group assigned operators. We do not show directly to department assigned operators.</source>
       <translation>Ми показуємо лише групам призначених операторів. Ми не показуємо напряму призначеним операторам відділу.</translation>
-    </message>
-    <message>
-      <source>Group by operator</source>
-      <translation>Групування за оператором</translation>
     </message>
     <message>
       <source>Department group operators</source>
@@ -9203,6 +10537,14 @@
       <translation>Приховати/показати вкладки чату</translation>
     </message>
     <message>
+      <source>Chats I have presently opened</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Chats</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Open chats</source>
       <translation>Відкриті чати</translation>
     </message>
@@ -9454,6 +10796,10 @@
       <translation>Попередня розмова</translation>
     </message>
     <message>
+      <source>Inline survey</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Hide</source>
       <translation>Сховати</translation>
     </message>
@@ -9468,6 +10814,18 @@
     <message>
       <source>Thumbs down</source>
       <translation>Палець вниз</translation>
+    </message>
+    <message>
+      <source>Chat was assigned to chat opener event it had other agent assigned at that moment</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Opened chat by</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Hide/Show HTML Code</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Transferred to</source>
@@ -9526,6 +10884,45 @@
     <message>
       <source>Please enter text!</source>
       <translation>Будь ласка введіть текст!</translation>
+    </message>
+  </context>
+  <context>
+    <name>user/assigndepartment</name>
+    <message>
+      <source>No permission to edit!</source>
+      <translation>Немає дозволу на редагування!</translation>
+    </message>
+    <message>
+      <source>Edit department group assignment</source>
+      <translation>Редагувати призначення групи відділу</translation>
+    </message>
+    <message>
+      <source>Edit department assignment</source>
+      <translation>Редагувати призначення відділу</translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation>Додати</translation>
+    </message>
+    <message>
+      <source>Assign department</source>
+      <translation>Призначити відділ</translation>
+    </message>
+    <message>
+      <source>Assign department group</source>
+      <translation>Призначити групу відділу</translation>
+    </message>
+    <message>
+      <source>Please choose a department!</source>
+      <translation>Будь ласка, виберіть відділ!</translation>
+    </message>
+    <message>
+      <source>This department department already have been added!</source>
+      <translation>Цей відділ уже додано!</translation>
+    </message>
+    <message>
+      <source>This department already have been added!</source>
+      <translation>Цей відділ вже додано!</translation>
     </message>
   </context>
   <context>
@@ -9739,557 +11136,6 @@
     </message>
   </context>
   <context>
-    <name>chat/onlineusers</name>
-    <message>
-      <source>GEO detection configuration</source>
-      <translation>Конфігурація виявлення GEO</translation>
-    </message>
-    <message>
-      <source>Map location</source>
-      <translation>Розташування на мапі</translation>
-    </message>
-    <message>
-      <source>GEO Enabled</source>
-      <translation>GEO увімкнено</translation>
-    </message>
-    <message>
-      <source>Use this service</source>
-      <translation>Використовувати цей сервіс</translation>
-    </message>
-    <message>
-      <source>API Key</source>
-      <translation>API ключ</translation>
-    </message>
-    <message>
-      <source>Use mod_geoip2</source>
-      <translation>Використовуйте mod_geoip2</translation>
-    </message>
-    <message>
-      <source>Country code server variable</source>
-      <translation>Змінна сервера коду країни</translation>
-    </message>
-    <message>
-      <source>Country name server variable</source>
-      <translation>Змінна сервера імен країни</translation>
-    </message>
-    <message>
-      <source>City name server variable</source>
-      <translation>Змінна сервера імен міста</translation>
-    </message>
-    <message>
-      <source>Region name server variable</source>
-      <translation>Змінна сервера імен регіону</translation>
-    </message>
-    <message>
-      <source>Latitude variable</source>
-      <translation>Змінна широта</translation>
-    </message>
-    <message>
-      <source>Longitude variable</source>
-      <translation>Змінна довгота</translation>
-    </message>
-    <message>
-      <source>Use http://ip-api.com</source>
-      <translation>Використовуйте http://ip-api.com</translation>
-    </message>
-    <message>
-      <source>Use https://www.abstractapi.com/ip-geolocation-api</source>
-      <translation>Використовуйте https://www.abstractapi.com/ip-geolocation-api</translation>
-    </message>
-    <message>
-      <source>Use MaxMind, does not depend on any third party remote service</source>
-      <translation>Використовуйте MaxMind, не залежить від сторонніх віддалених служб</translation>
-    </message>
-    <message>
-      <source>You can download city/country database from.</source>
-      <translation>Ви можете завантажити базу даних міста/країни.</translation>
-    </message>
-    <message>
-      <source>bcmath php extension detected</source>
-      <translation>Виявлено розширення bcmath php</translation>
-    </message>
-    <message>
-      <source>Location of city database. Make sure you uploaded file in this location.</source>
-      <translation>Розташування бази даних міста. Переконайтеся, що ви завантажили файл у цьому місці.</translation>
-    </message>
-    <message>
-      <source>User country based detection, faster</source>
-      <translation>Швидше виявлення на основі країни користувача</translation>
-    </message>
-    <message>
-      <source>File exists</source>
-      <translation>Файл існує</translation>
-    </message>
-    <message>
-      <source>File does not exists</source>
-      <translation>Файл не існує</translation>
-    </message>
-    <message>
-      <source>User city based detection, slower</source>
-      <translation>Виявлення на основі міста користувача, повільніше</translation>
-    </message>
-    <message>
-      <source>Use PHP-GeoIP module</source>
-      <translation>Використовуйте модуль PHP-GeoIP</translation>
-    </message>
-    <message>
-      <source>Support for PHP-GeoIP detected</source>
-      <translation>Виявлено підтримку PHP-GeoIP</translation>
-    </message>
-    <message>
-      <source>Requests will be comming from</source>
-      <translation>Запити надходитимуть від</translation>
-    </message>
-    <message>
-      <source>Username</source>
-      <translation>Користувач</translation>
-    </message>
-    <message>
-      <source>IP, if your site remote IP is different from detected one, please provide correct remote IP address</source>
-      <translation>IP, якщо віддалений IP вашого сайту відрізняється від виявленого, вкажіть правильну віддалену IP-адресу</translation>
-    </message>
-    <message>
-      <source>Save</source>
-      <translation>Зберегти</translation>
-    </message>
-    <message>
-      <source>Drag a marker where you want to have map centered by default. Zoom is also saved.</source>
-      <translation>Перетягніть маркер туди, де ви хочете розмістити карту по центру за замовчуванням. Масштаб також збережено.</translation>
-    </message>
-    <message>
-      <source>Google Maps API key, saved automatically. After pasting the key, refresh the page.</source>
-      <translation>Ключ API Карт Google, збережений автоматично. Після вставки ключа оновіть сторінку.</translation>
-    </message>
-    <message>
-      <source>Settings updated</source>
-      <translation>Налаштування оновлено</translation>
-    </message>
-    <message>
-      <source>Send message</source>
-      <translation>Відправити повідомлення</translation>
-    </message>
-    <message>
-      <source>Chat list</source>
-      <translation>Список чату</translation>
-    </message>
-    <message>
-      <source>Dashboard</source>
-      <translation>Головна панель</translation>
-    </message>
-    <message>
-      <source>City</source>
-      <translation>Місто</translation>
-    </message>
-    <message>
-      <source>Lat.</source>
-      <translation>Дов.</translation>
-    </message>
-    <message>
-      <source>Lon.</source>
-      <translation>Шир.</translation>
-    </message>
-    <message>
-      <source>Time zone</source>
-      <translation>Часовий пояс</translation>
-    </message>
-    <message>
-      <source>Identifier</source>
-      <translation>Ідентифікатор</translation>
-    </message>
-    <message>
-      <source>Nick</source>
-      <translation>Нікнейм</translation>
-    </message>
-    <message>
-      <source>Additional information</source>
-      <translation>Додаткова інформація</translation>
-    </message>
-    <message>
-      <source>Last activity</source>
-      <translation>Остання активність</translation>
-    </message>
-    <message>
-      <source>ago</source>
-      <translation>тому</translation>
-    </message>
-    <message>
-      <source>On page</source>
-      <translation>На сторінці</translation>
-    </message>
-    <message>
-      <source>Yes</source>
-      <translation>Так</translation>
-    </message>
-    <message>
-      <source>No</source>
-      <translation>Ні</translation>
-    </message>
-    <message>
-      <source>User does not have any message from operator</source>
-      <translation>Користувач не має повідомлень від оператора</translation>
-    </message>
-    <message>
-      <source>User have not seen message from operator, or message window still open.</source>
-      <translation>Користувач не бачив повідомлення від оператора, або вікно повідомлення все ще відкрите.</translation>
-    </message>
-    <message>
-      <source>User has seen message from operator.</source>
-      <translation>Користувач бачив повідомлення від оператора.</translation>
-    </message>
-    <message>
-      <source>User is chatting</source>
-      <translation>Користувач в чаті</translation>
-    </message>
-    <message>
-      <source>User is not having any chat right now</source>
-      <translation>Користувач зараз не спілкується в чаті</translation>
-    </message>
-    <message>
-      <source>Operator</source>
-      <translation>Оператор</translation>
-    </message>
-    <message>
-      <source>has send message to user</source>
-      <translation>надіслав повідомлення користувачеві</translation>
-    </message>
-    <message>
-      <source>No one has send any message to user yet</source>
-      <translation>Ще ніхто не надсилав жодного повідомлення користувачеві</translation>
-    </message>
-    <message>
-      <source>First visit</source>
-      <translation>Перший візит</translation>
-    </message>
-    <message>
-      <source>Last visit</source>
-      <translation>Останній візит</translation>
-    </message>
-    <message>
-      <source>Total visits</source>
-      <translation>Всього відвідувань</translation>
-    </message>
-    <message>
-      <source>time(s) invitation logic was applied</source>
-      <translation>було застосовано логіку запрошення</translation>
-    </message>
-    <message>
-      <source>Pageviews</source>
-      <translation>Перегляди</translation>
-    </message>
-    <message>
-      <source>Total pageviews</source>
-      <translation>Загальна кількість переглядів сторінок</translation>
-    </message>
-    <message>
-      <source>Time on site</source>
-      <translation>Час на місці</translation>
-    </message>
-    <message>
-      <source>Total time on site</source>
-      <translation>Загальний час перебування на сайті</translation>
-    </message>
-    <message>
-      <source>Current page</source>
-      <translation>Поточна сторінка</translation>
-    </message>
-    <message>
-      <source>Came from</source>
-      <translation>Прийшов з</translation>
-    </message>
-    <message>
-      <source>Are you sure?</source>
-      <translation>Ви впевнені?</translation>
-    </message>
-    <message>
-      <source>Clear list</source>
-      <translation>Очистити список</translation>
-    </message>
-    <message>
-      <source>User tracking is disabled, enable it at</source>
-      <translation>Відстеження користувачів вимкнено, увімкніть його в</translation>
-    </message>
-    <message>
-      <source>Chat configuration</source>
-      <translation>Налаштування чату</translation>
-    </message>
-    <message>
-      <source>Online visitors list</source>
-      <translation>Список онлайн відвідувачів</translation>
-    </message>
-    <message>
-      <source>Online visitors on map</source>
-      <translation>Онлайн відвідувачі на карті</translation>
-    </message>
-    <message>
-      <source>Preview chat</source>
-      <translation>Попередній перегляд чату</translation>
-    </message>
-    <message>
-      <source>Visits</source>
-      <translation>Відвідування</translation>
-    </message>
-    <message>
-      <source>New</source>
-      <translation>Новий</translation>
-    </message>
-    <message>
-      <source>has sent a message to the user</source>
-      <translation>надіслав повідомлення користувачеві</translation>
-    </message>
-    <message>
-      <source>Seen</source>
-      <translation>Переглянуто</translation>
-    </message>
-    <message>
-      <source>Unseen</source>
-      <translation>Непереглянуто</translation>
-    </message>
-    <message>
-      <source>Page</source>
-      <translation>Сторінка</translation>
-    </message>
-    <message>
-      <source>From</source>
-      <translation>Від</translation>
-    </message>
-    <message>
-      <source>Enable/Disable sound about new visitor</source>
-      <translation>Увімкнути/вимкнути звук про нового відвідувача</translation>
-    </message>
-    <message>
-      <source>Enable/Disable browser notifications about new visitor</source>
-      <translation>Увімкнути/вимкнути сповіщення браузера про нового відвідувача</translation>
-    </message>
-    <message>
-      <source>Online visitors</source>
-      <translation>Онлайн відвідувачі</translation>
-    </message>
-    <message>
-      <source>User has message from operator</source>
-      <translation>Користувач має повідомлення від оператора</translation>
-    </message>
-    <message>
-      <source>Marker timeout before it dissapears from map</source>
-      <translation>Час очікування маркера, перш ніж він зникне з карти</translation>
-    </message>
-    <message>
-      <source>seconds</source>
-      <translation>секунди</translation>
-    </message>
-    <message>
-      <source>minute</source>
-      <translation>хвилина</translation>
-    </message>
-    <message>
-      <source>minutes</source>
-      <translation>хвилини</translation>
-    </message>
-    <message>
-      <source>online users</source>
-      <translation>онлайн користувачі</translation>
-    </message>
-    <message>
-      <source>Show only connected</source>
-      <translation>Показати лише підключені</translation>
-    </message>
-    <message>
-      <source>Group list by</source>
-      <translation>Згрупувати список по</translation>
-    </message>
-    <message>
-      <source>Group by</source>
-      <translation>Згрупувати по</translation>
-    </message>
-    <message>
-      <source>User country</source>
-      <translation>Країна користувача</translation>
-    </message>
-    <message>
-      <source>Page title</source>
-      <translation>Назва сторінки</translation>
-    </message>
-    <message>
-      <source>Referrer</source>
-      <translation>Відправник</translation>
-    </message>
-    <message>
-      <source>Department</source>
-      <translation>Відділ</translation>
-    </message>
-    <message>
-      <source>Refresh list every</source>
-      <translation>Оновити список кожні</translation>
-    </message>
-    <message>
-      <source>second</source>
-      <translation>секунда</translation>
-    </message>
-    <message>
-      <source>Show visitors who visited site in the past</source>
-      <translation>Показати відвідувачів, які відвідували сайт у минулому</translation>
-    </message>
-    <message>
-      <source>hour</source>
-      <translation>година</translation>
-    </message>
-    <message>
-      <source>day</source>
-      <translation>день</translation>
-    </message>
-    <message>
-      <source>days</source>
-      <translation>днів</translation>
-    </message>
-    <message>
-      <source>Max records to return</source>
-      <translation>Максимальна кількість записів для повернення</translation>
-    </message>
-    <message>
-      <source>Visitor local time</source>
-      <translation>Локальний час відвідувача</translation>
-    </message>
-    <message>
-      <source>By user status on site</source>
-      <translation>За статусом користувача на сайті</translation>
-    </message>
-    <message>
-      <source>Action</source>
-      <translation>Дія</translation>
-    </message>
-    <message>
-      <source>User has not seen a message from the operator, or the message window is still open.</source>
-      <translation>Користувач не бачив повідомлення від оператора, або вікно повідомлення все ще відкрите.</translation>
-    </message>
-    <message>
-      <source>User has seen the message from the operator.</source>
-      <translation>Користувач бачив повідомлення від оператора.</translation>
-    </message>
-    <message>
-      <source>User does not have any messages from the operator</source>
-      <translation>Користувач не має жодних повідомлень від оператора</translation>
-    </message>
-    <message>
-      <source>Chat</source>
-      <translation>Чат</translation>
-    </message>
-    <message>
-      <source>Returning</source>
-      <translation>Повернення</translation>
-    </message>
-    <message>
-      <source>Start a chat</source>
-      <translation>Почніть чат</translation>
-    </message>
-    <message>
-      <source>+20 (More than 20 seconds spend on site) 20 (Less than 20 seconds spend on site)</source>
-      <translation>+20 (більше 20 секунд провести на сайті) 20 (менше 20 секунд провести на сайті)</translation>
-    </message>
-    <message>
-      <source>Files upload for users is active</source>
-      <translation>Завантаження файлів для користувачів активне</translation>
-    </message>
-    <message>
-      <source>Allow visitor to choose only one file for the upload</source>
-      <translation>Дозволити відвідувачеві вибрати лише один файл для завантаження</translation>
-    </message>
-    <message>
-      <source>Files upload for operators is active</source>
-      <translation>Завантаження файлів для операторів активне</translation>
-    </message>
-    <message>
-      <source>Remove meta information from images</source>
-      <translation>Видаліть мета-інформацію із зображень</translation>
-    </message>
-    <message>
-      <source>Uploaded files from visitors are scanned</source>
-      <translation>Завантажені файли відвідувачів скануються</translation>
-    </message>
-    <message>
-      <source>Voice messages for visitors is active</source>
-      <translation>Голосові повідомлення для відвідувачів активні</translation>
-    </message>
-    <message>
-      <source>Voice messages for operators is active</source>
-      <translation>Голосові повідомлення для операторів активні</translation>
-    </message>
-    <message>
-      <source>If you do not choose any department from below we will track all departments.</source>
-      <translation>Якщо ви не виберете жоден відділ знизу, ми відстежимо всі відділи.</translation>
-    </message>
-    <message>
-      <source>Country code variable does not exist!</source>
-      <translation>Змінна коду країни не існує!</translation>
-    </message>
-    <message>
-      <source>Country name variable does not exist!</source>
-      <translation>Змінна назви країни не існує!</translation>
-    </message>
-    <message>
-      <source>Please enter city variable!</source>
-      <translation>Будь ласка, введіть змінну міста!</translation>
-    </message>
-    <message>
-      <source>Please enter latitude variable!</source>
-      <translation>Будь ласка, введіть змінну широти!</translation>
-    </message>
-    <message>
-      <source>Please enter longitude variable!</source>
-      <translation>Будь ласка, введіть змінну довготи!</translation>
-    </message>
-    <message>
-      <source>Please enter API Key!</source>
-      <translation>Будь ласка введіть API ключ!</translation>
-    </message>
-    <message>
-      <source>Setting service provider failed, please check that your service provider allows you to make requests to remote pages!</source>
-      <translation>Помилка налаштування постачальника послуг, будь ласка, переконайтеся, що ваш постачальник послуг дозволяє робити запити на віддалені сторінки!</translation>
-    </message>
-    <message>
-      <source>MaxMind city file does not exists!</source>
-      <translation>Файл міста MaxMind не існує!</translation>
-    </message>
-    <message>
-      <source>MaxMind country file does not exists!</source>
-      <translation>Файл країни MaxMind не існує!</translation>
-    </message>
-    <message>
-      <source>Setting service provider failed, please check that MaxMind database files exists!</source>
-      <translation>Помилка налаштування постачальника послуг, будь ласка, перевірте, чи існують файли бази даних MaxMind!</translation>
-    </message>
-    <message>
-      <source>Please enter the API key!</source>
-      <translation>Будь ласка введіть API ключ!</translation>
-    </message>
-    <message>
-      <source>Please enter the API username!</source>
-      <translation>Будь ласка, введіть ім&apos;я користувача API!</translation>
-    </message>
-    <message>
-      <source>Please enter IP!</source>
-      <translation>Будь ласка введіть IP!</translation>
-    </message>
-    <message>
-      <source>Setting service provider failed, please check that your service provider allows you to make requests to remote pages and your API key and username is correct!</source>
-      <translation>Помилка налаштування постачальника послуг, будь ласка, перевірте, чи ваш постачальник послуг дозволяє робити запити до віддалених сторінок, а ключ API та ім’я користувача правильні!</translation>
-    </message>
-    <message>
-      <source>Setting service provider failed, please check that your service provider allows you to make requests to remote pages and your API key is correct!</source>
-      <translation>Помилка налаштування постачальника послуг, будь ласка, переконайтеся, що ваш постачальник послуг дозволяє робити запити до віддалених сторінок і ваш ключ API правильний!</translation>
-    </message>
-    <message>
-      <source>Setting service provider failed, please check that you have installed php-GeoIP module and GeoIPCity.dat file is available!</source>
-      <translation>Помилка налаштування постачальника послуг, перевірте, чи встановлено модуль php-GeoIP та доступний файл GeoIPCity.dat!</translation>
-    </message>
-    <message>
-      <source>Please choose a service provider!</source>
-      <translation>Будь ласка, виберіть постачальника послуг!</translation>
-    </message>
-    <message>
-      <source>Online users</source>
-      <translation>Онлайн користувачі</translation>
-    </message>
-  </context>
-  <context>
     <name>chat/modifychat</name>
     <message>
       <source>Debug</source>
@@ -10340,6 +11186,42 @@
       <translation>Відділ</translation>
     </message>
     <message>
+      <source>Participant</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Duration</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>First response time</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Average response time</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Max response time</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Bot</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Visitor</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Duration calculation log</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Agents response times calculation log</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Chat information was updated</source>
       <translation>Інформацію про чат оновлено</translation>
     </message>
@@ -10387,6 +11269,10 @@
       <translation>Відділи обмежують групи</translation>
     </message>
     <message>
+      <source>Brands</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Time zone settings</source>
       <translation>Налаштування часового пояса</translation>
     </message>
@@ -10427,6 +11313,10 @@
       <translation>Автовідповідач</translation>
     </message>
     <message>
+      <source>BBCode configuration</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Blocking</source>
       <translation>Блокування</translation>
     </message>
@@ -10457,6 +11347,10 @@
     <message>
       <source>Commands</source>
       <translation>Команди</translation>
+    </message>
+    <message>
+      <source>Conditions</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Browse offers embed code</source>
@@ -10581,6 +11475,10 @@
     <message>
       <source>Maintenance</source>
       <translation>Обслуговування</translation>
+    </message>
+    <message>
+      <source>Messages content protection</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Mobile</source>
@@ -11049,6 +11947,10 @@
       <translation>Команди</translation>
     </message>
     <message>
+      <source>Conditions</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Bot constructor</source>
       <translation>Конструктор бота</translation>
     </message>
@@ -11102,6 +12004,22 @@
   <context>
     <name>pagelayout/pagelayout</name>
     <message>
+      <source>Newest first (default)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Oldest first</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Recently updated first</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Recently updated last</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Empty...</source>
       <translation>Порожньо...</translation>
     </message>
@@ -11150,6 +12068,10 @@
       <translation>Групові чати</translation>
     </message>
     <message>
+      <source>Grp.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Download XLS</source>
       <translation>Завантажити XLS</translation>
     </message>
@@ -11172,6 +12094,14 @@
     <message>
       <source>Soft</source>
       <translation>М&apos;який</translation>
+    </message>
+    <message>
+      <source>Taken time to render departments groups statistic</source>
+      <translation>Витрачено час на відтворення статистики груп відділів</translation>
+    </message>
+    <message>
+      <source>Taken time to render departments statistic</source>
+      <translation>Витрачено час на відображення статистики відділів</translation>
     </message>
     <message>
       <source>Number of elements in list</source>
@@ -11244,6 +12174,10 @@
     <message>
       <source>User group</source>
       <translation>Група користувачів</translation>
+    </message>
+    <message>
+      <source>Taken time to fetch information for this widget</source>
+      <translation>Знайшов час, щоб отримати інформацію для цього віджета</translation>
     </message>
     <message>
       <source>Bot chats</source>
@@ -11432,6 +12366,26 @@
       <source>System assistant</source>
       <translation>Системний помічник</translation>
     </message>
+    <message>
+      <source>Scheduled for sent!</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Have been sent!</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Delivered</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Have been seen!</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Rejected or failed!</source>
+      <translation type="unfinished"/>
+    </message>
   </context>
   <context>
     <name>chat/maintenance</name>
@@ -11466,6 +12420,10 @@
   </context>
   <context>
     <name>chat/statistic</name>
+    <message>
+      <source>Average chat duration should be calculated fo the last</source>
+      <translation>Середня тривалість чату повинна бути розрахована в останню чергу</translation>
+    </message>
     <message>
       <source>Statistic</source>
       <translation>Статистика</translation>
@@ -11521,6 +12479,18 @@
     <message>
       <source>Number of chats by user</source>
       <translation>Кількість чатів за користувачами</translation>
+    </message>
+    <message>
+      <source>Number of chats by user (participant)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Message delivery statistic (operator)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Message delivery statistic (bot)</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Number of chats by transfer operator</source>
@@ -11611,6 +12581,22 @@
       <translation>Бот і автовідповідач</translation>
     </message>
     <message>
+      <source>Sent</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Delivered</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Read</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Rejected</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Average chats</source>
       <translation>Середні чати</translation>
     </message>
@@ -11621,6 +12607,22 @@
     <message>
       <source>Download CSV</source>
       <translation>Завантажити CSV</translation>
+    </message>
+    <message>
+      <source>chat(s)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>of chat answered during working hours.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>of chats answered outside business hours.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Top 3 hours are</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>All operators statistic will be downloaded</source>
@@ -11655,8 +12657,8 @@
       <translation>Формування статистики відділу</translation>
     </message>
     <message>
-      <source>Average chat duration should be calculated fo the last</source>
-      <translation>Середня тривалість чату повинна бути розрахована в останню чергу</translation>
+      <source>Average chat duration should be calculated for the last</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>minutes</source>
@@ -11689,6 +12691,14 @@
     <message>
       <source>Average wait time should be calculated for the last</source>
       <translation>Середній час очікування буде розрахований останній</translation>
+    </message>
+    <message>
+      <source>Work hours starts at</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Work hours ends at</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Collect canned messages usage statistic</source>
@@ -11799,12 +12809,24 @@
       <translation>Нові відвідувачі</translation>
     </message>
     <message>
+      <source>Top 100 referrers for selected period</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Chatbox chats</source>
       <translation>чати Чатбокса</translation>
     </message>
     <message>
       <source>Last 24h statistics</source>
       <translation>Статистика за останні 24 години</translation>
+    </message>
+    <message>
+      <source>Bot messages delivery statistic</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Operator messages delivery statistic</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Unique</source>
@@ -11905,6 +12927,10 @@
     <message>
       <source>Cities</source>
       <translation>Міста</translation>
+    </message>
+    <message>
+      <source>Top 100 referrers</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>User agent</source>
@@ -12889,6 +13915,10 @@
       <translation>Нове відстеження подій</translation>
     </message>
     <message>
+      <source>BBCode configuration</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Default settings</source>
       <translation>Налаштування за замовчуванням</translation>
     </message>
@@ -12902,6 +13932,18 @@
     <message>
       <source>Clone</source>
       <translation>Клон</translation>
+    </message>
+    <message>
+      <source>Brands</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Brand</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Are you sure?</source>
+      <translation>Ви впевнені?</translation>
     </message>
     <message>
       <source>Departments</source>
@@ -12940,6 +13982,10 @@
       <translation>Статистика завантаження</translation>
     </message>
     <message>
+      <source>Department alias</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Yes</source>
       <translation>Так</translation>
     </message>
@@ -12954,10 +14000,6 @@
     <message>
       <source>New department</source>
       <translation>Новий відділ</translation>
-    </message>
-    <message>
-      <source>Are you sure?</source>
-      <translation>Ви впевнені?</translation>
     </message>
     <message>
       <source>Departments groups</source>
@@ -12996,8 +14038,28 @@
       <translation>Максимум чатів</translation>
     </message>
     <message>
+      <source>Online operators</source>
+      <translation>Онлайн оператори</translation>
+    </message>
+    <message>
+      <source>Offline operators</source>
+      <translation>Офлайн оператори</translation>
+    </message>
+    <message>
+      <source>Total operators</source>
+      <translation>Всього операторів</translation>
+    </message>
+    <message>
       <source>Update stats</source>
       <translation>Оновити статистику</translation>
+    </message>
+    <message>
+      <source>Edit theme</source>
+      <translation>Редагувати тему</translation>
+    </message>
+    <message>
+      <source>Themes edit</source>
+      <translation>Редагування тем</translation>
     </message>
     <message>
       <source>Departments limit groups</source>
@@ -13162,8 +14224,44 @@
       <translation>Відновити автоматичне призначення, якщо чат залишається в очікуванні протягом n секунд</translation>
     </message>
     <message>
+      <source>Assign chat by operator priority</source>
+      <translation>Призначити чату пріоритет оператора</translation>
+    </message>
+    <message>
+      <source>This has higher priority than assign chats to lower number of chats having operators</source>
+      <translation>Це має вищий пріоритет, ніж призначення чатів меншій кількості чатів із операторами</translation>
+    </message>
+    <message>
+      <source>Prioritized assignment workflow</source>
+      <translation>Пріоритетний робочий процес призначення</translation>
+    </message>
+    <message>
+      <source>Activate prioritized assignment</source>
+      <translation>Активувати пріоритетне призначення</translation>
+    </message>
+    <message>
+      <source>Assign chat by operator priority also</source>
+      <translation>Також призначте чату пріоритет оператора</translation>
+    </message>
+    <message>
+      <source>Minimum agent assignment priority</source>
+      <translation>Мінімальний пріоритет призначення агента</translation>
+    </message>
+    <message>
+      <source>Minimum chat priority for it being processed with prioritized assignment workflow</source>
+      <translation>Мінімальний пріоритет чату для його обробки з пріоритетним робочим процесом призначення</translation>
+    </message>
+    <message>
+      <source>Maximum chat priority for it being processed with prioritized assignment workflow</source>
+      <translation>Максимальний пріоритет чату для його обробки з робочим процесом призначення пріоритетів</translation>
+    </message>
+    <message>
       <source>Hide send e-mail button for operators in chat window</source>
       <translation>Приховати кнопку надсилання електронної пошти для операторів у вікні чату</translation>
+    </message>
+    <message>
+      <source>Do not show survey if chat is ended in a bot status</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -13180,12 +14278,20 @@
       <translation>Новий відділ</translation>
     </message>
     <message>
+      <source>New brand</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>New department group</source>
       <translation>Нова група відділів</translation>
     </message>
     <message>
       <source>New department limit group</source>
       <translation>Нова група обмежень відділу</translation>
+    </message>
+    <message>
+      <source>New</source>
+      <translation>Новий</translation>
     </message>
     <message>
       <source>New bot</source>
@@ -13222,10 +14328,6 @@
     <message>
       <source>Edit</source>
       <translation>Редагувати</translation>
-    </message>
-    <message>
-      <source>New</source>
-      <translation>Новий</translation>
     </message>
   </context>
   <context>
@@ -13750,6 +14852,18 @@
   <context>
     <name>genericbot/restapi</name>
     <message>
+      <source>Text like</source>
+      <translation>Текст як</translation>
+    </message>
+    <message>
+      <source>Text not like</source>
+      <translation>Текст не як</translation>
+    </message>
+    <message>
+      <source>Contains</source>
+      <translation>Містить</translation>
+    </message>
+    <message>
       <source>Name</source>
       <translation>Ім&apos;я</translation>
     </message>
@@ -13776,6 +14890,14 @@
     <message>
       <source>Add request</source>
       <translation>Новий запит</translation>
+    </message>
+    <message>
+      <source>Explore</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>possible chat attributes directly.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Delete</source>
@@ -13826,6 +14948,10 @@
       <translation>Умови</translation>
     </message>
     <message>
+      <source>Remote Message ID</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>You can put visitor message as placeholder</source>
       <translation>Ви можете поставити повідомлення відвідувача як заповнювач</translation>
     </message>
@@ -13870,18 +14996,6 @@
       <translation>Перевірте наявність змінної</translation>
     </message>
     <message>
-      <source>Text like</source>
-      <translation>Текст як</translation>
-    </message>
-    <message>
-      <source>Text not like</source>
-      <translation>Текст не як</translation>
-    </message>
-    <message>
-      <source>Contains</source>
-      <translation>Містить</translation>
-    </message>
-    <message>
       <source>Request Body</source>
       <translation>Текст запиту</translation>
     </message>
@@ -13916,6 +15030,10 @@
     <message>
       <source>If you are sending file you can have a different body content</source>
       <translation>Якщо ви надсилаєте файл, ви можете мати інший вміст</translation>
+    </message>
+    <message>
+      <source>Convert to multipart/form-data if one of those API is used. Post the file using multipart/form-data in the usual way that files are uploaded via the browser.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>You can define additional parameters user can enter in bot trigger directly.</source>
@@ -14037,9 +15155,25 @@
       <source>Value to compare</source>
       <translation>Цінність для порівняння</translation>
     </message>
+    <message>
+      <source>If you want to add custom data within each send message to its meta_data attribute you can provide response path here</source>
+      <translation type="unfinished"/>
+    </message>
   </context>
   <context>
     <name>genericbot/helpattributes</name>
+    <message>
+      <source>Chat ID to test against</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Test</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Extract chat attributes</source>
+      <translation type="unfinished"/>
+    </message>
     <message>
       <source>Page where chat started</source>
       <translation>Сторінка, на якій почався чат</translation>
@@ -14047,6 +15181,58 @@
     <message>
       <source>Referer from where visitor come to site.</source>
       <translation>Реферер, звідки відвідувач перейшов на сайт.</translation>
+    </message>
+    <message>
+      <source>Operator nick</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Visitor nick</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Visitor e-mail</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Phone</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>If you are using those vars in Rest API calls make sure you use double brackets E.g</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Chat ID to explore</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Pattern</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Test your pattern</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Explore all possible chat attributes</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Your response will appear here!</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Describes the average time the agent takes to reply a message to the visitor, it considers the whole conversation.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Describes how long the agent takes to reply the first message to the visitor, after chat acceptance.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Describes the maximum time the agent takes to reply a message to the visitor.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>You can have custom JS execution on click event. In combination with</source>
@@ -14211,6 +15397,10 @@
     <message>
       <source>Date from and to are always inclusive.</source>
       <translation>Дати від і до завжди включають.</translation>
+    </message>
+    <message>
+      <source>Chat does not exists or you do not have permission to access it!</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -15515,12 +16705,20 @@
       <translation>Відмінно</translation>
     </message>
     <message>
-      <source>Thank you for your feedback...</source>
-      <translation>Дякуємо за відповідь...</translation>
+      <source>Type here...</source>
+      <translation>Друкуйте тут...</translation>
+    </message>
+    <message>
+      <source>Thank you for your feedback!</source>
+      <translation>Спасибі за ваш відгук!</translation>
     </message>
     <message>
       <source>Please complete this short evaluation survey</source>
       <translation>Будь ласка, заповніть це коротке опитування</translation>
+    </message>
+    <message>
+      <source>Thank you for your feedback...</source>
+      <translation>Дякуємо за відповідь...</translation>
     </message>
   </context>
   <context>
@@ -15992,6 +17190,22 @@
     <message>
       <source>Save</source>
       <translation>Зберегти</translation>
+    </message>
+    <message>
+      <source>Save and edit</source>
+      <translation>Зберегти та відредагувати</translation>
+    </message>
+    <message>
+      <source>Departments you will be able to assign once you save an operator.</source>
+      <translation>Відділи, які ви зможете призначити, коли збережете оператора.</translation>
+    </message>
+    <message>
+      <source>Log request. All request will be logged</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Log exceptions. Only failed parse requests will be logged.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>System configuration</source>
@@ -16780,6 +17994,22 @@
       <translation>Експорт</translation>
     </message>
     <message>
+      <source>View is passive and is not updated in the background</source>
+      <translation>Перегляд пасивний і не оновлюється у фоновому режимі</translation>
+    </message>
+    <message>
+      <source>Make active</source>
+      <translation>Зробіть активним</translation>
+    </message>
+    <message>
+      <source>View is active and is updated in the background</source>
+      <translation>Перегляд активний і оновлюється у фоновому режимі</translation>
+    </message>
+    <message>
+      <source>Make passive</source>
+      <translation>Зробити пасивним</translation>
+    </message>
+    <message>
       <source>Delete</source>
       <translation>Видалити</translation>
     </message>
@@ -16925,6 +18155,10 @@
   <context>
     <name>chat/webhooks</name>
     <message>
+      <source>URL to put in third party Rest API service</source>
+      <translation>URL-адреса для розміщення в сторонній службі Rest API</translation>
+    </message>
+    <message>
       <source>Hooks events</source>
       <translation>Гачки події</translation>
     </message>
@@ -17041,8 +18275,8 @@
       <translation>Область застосування. Це має бути однаково для всіх реалізацій одного постачальника.</translation>
     </message>
     <message>
-      <source>URL to put in third party Rest API service</source>
-      <translation>URL-адреса для розміщення в сторонній службі Rest API</translation>
+      <source>URL to put in third party Rest API service. Append ?output=json for JSON format output.</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Icon</source>
@@ -17109,6 +18343,14 @@
       <translation>Зображення/відео 4</translation>
     </message>
     <message>
+      <source>Images/Video 5</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Images/Video 6</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Chat options</source>
       <translation>Параметри чату</translation>
     </message>
@@ -17139,6 +18381,10 @@
     <message>
       <source>IP</source>
       <translation>IP</translation>
+    </message>
+    <message>
+      <source>Country, 2 letters code</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>E-mail</source>
@@ -17205,6 +18451,10 @@
       <translation>Атрибут, який містить ім&apos;я файлу. За бажанням</translation>
     </message>
     <message>
+      <source>Attribute which holds file size. File size check will apply if defined. Optional.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Decode file options</source>
       <translation>Декодування параметрів файлу</translation>
     </message>
@@ -17241,8 +18491,20 @@
       <translation>Розташування корисного навантаження кнопки</translation>
     </message>
     <message>
+      <source>For message being considered button payload - message should have attribute value equal to</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>AND Message text has to start with</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Download image instead of using external URL</source>
       <translation>Завантажте зображення замість зовнішньої URL-адреси</translation>
+    </message>
+    <message>
+      <source>Attribute which holds file size. File size check will apply if defined. Optional. </source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Returned response is location to download image</source>
@@ -17632,8 +18894,16 @@
   <context>
     <name>abstract/survey</name>
     <message>
+      <source>ID</source>
+      <translation>ID</translation>
+    </message>
+    <message>
       <source>Name</source>
       <translation>Ім&apos;я</translation>
+    </message>
+    <message>
+      <source>Identifier</source>
+      <translation>Ідентифікатор</translation>
     </message>
     <message>
       <source>Feedback text</source>
@@ -17953,12 +19223,20 @@
       <translation>Загальна кількість чатів</translation>
     </message>
     <message>
+      <source>Total number of chats (participation)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Number of chats while online</source>
       <translation>Кількість чатів поки онлайн</translation>
     </message>
     <message>
       <source>Hours on chat (sum of chat duration)</source>
       <translation>Годин в чаті (сума тривалості чатів)</translation>
+    </message>
+    <message>
+      <source>Hours on chat (sum of chat duration (participation))</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Time online (sum of time spend online)</source>
@@ -17969,12 +19247,40 @@
       <translation>Середня кількість чатів на годину</translation>
     </message>
     <message>
+      <source>AVG number of chats per hour (participation)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Average pick-up time</source>
       <translation>Середній час прийняття</translation>
     </message>
     <message>
       <source>Average chat length</source>
       <translation>Середня тривалість чату</translation>
+    </message>
+    <message>
+      <source>Average first response time</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Average first response time (participation)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Average response time</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Average response time (participation)</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Average of maximum response time</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Average of maximum response time (participation)</source>
+      <translation type="unfinished"/>
     </message>
     <message>
       <source>Online</source>
@@ -18103,6 +19409,14 @@
       <translation>Будь ласка, введіть ідентифікатор чату!</translation>
     </message>
     <message>
+      <source>Please enter a name!</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Please enter an identifier!</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Please enter a valid from date range!</source>
       <translation>Будь ласка, введіть дійсний діапазон дат!</translation>
     </message>
@@ -18116,6 +19430,10 @@
     <message>
       <source>Please enter a department group name</source>
       <translation>Будь ласка, введіть назву групи відділів</translation>
+    </message>
+    <message>
+      <source>Please enter a brand name</source>
+      <translation type="unfinished"/>
     </message>
   </context>
   <context>
@@ -18298,6 +19616,10 @@
       <translation>Команди</translation>
     </message>
     <message>
+      <source>Conditions</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Responses for API error</source>
       <translation>Відповіді на помилку API</translation>
     </message>
@@ -18476,6 +19798,10 @@
       <translation>Команди</translation>
     </message>
     <message>
+      <source>Conditions</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
       <source>Responses for API error</source>
       <translation>Відповіді на помилку API</translation>
     </message>
@@ -18646,6 +19972,123 @@
     <message>
       <source>Deny screen share</source>
       <translation>Заборонити показ екрана</translation>
+    </message>
+  </context>
+  <context>
+    <name>bot/conditions</name>
+    <message>
+      <source>OR</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Main conditions</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Add condition</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Field</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Condition</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Value</source>
+      <translation type="unfinished"/>
+    </message>
+  </context>
+  <context>
+    <name>lhaudit/debuginvitation</name>
+    <message>
+      <source>Simplified output</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Valid invitations found</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>No valid messages were found from candidates</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Skipped because of no online operators</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Skipped because of</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Last time seen on website ago</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>conditions</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Last time had chat n minutes ago</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Attributes conditions not valid</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Message selected</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Attributes online visitor</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Time on site</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Online user output</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Raw output debug</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Proactive invitation to test against. Choose Any for auto select.</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Tag to test against. E.g. error_deposit</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Test</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Any</source>
+      <translation type="unfinished"/>
+    </message>
+  </context>
+  <context>
+    <name>system/bbcodeconfiguration</name>
+    <message>
+      <source>BBCode configuration</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Disable for visitor messages</source>
+      <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Disable for operator messages</source>
+      <translation type="unfinished"/>
     </message>
   </context>
 </TS>

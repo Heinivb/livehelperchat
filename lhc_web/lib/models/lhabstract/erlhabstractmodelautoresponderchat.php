@@ -1,5 +1,5 @@
 <?php
-
+#[\AllowDynamicProperties]
 class erLhAbstractModelAutoResponderChat
 {
 
@@ -77,7 +77,7 @@ class erLhAbstractModelAutoResponderChat
                 $msg->name_support = $this->chat->user !== false ? $this->chat->user->name_support : ($this->auto_responder->operator != '' ? $this->auto_responder->operator : erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat', 'Live Support'));
                 $msg->user_id = $this->chat->user_id > 0 ? $this->chat->user_id : - 2;
                 $msg->time = time();
-                erLhcoreClassChat::getSession()->save($msg);
+                $msg->saveThis();
 
                 \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => $this->chat));
                 erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_msg_admin_saved', array('msg' => & $msg, 'chat' => & $this->chat));
@@ -129,7 +129,7 @@ class erLhAbstractModelAutoResponderChat
                                 $this->chat->last_msg_id = $msg->id;
                             }
 
-                            erLhcoreClassChat::getSession()->save($msg);
+                            $msg->saveThis();
                         }
                     } elseif ($this->pending_send_status >= 1 && $this->pending_send_status < 5) {
                         for ($i = 5; $i >= 2; $i --) {
@@ -149,9 +149,9 @@ class erLhAbstractModelAutoResponderChat
                                     $msg->time = time();
 
                                     \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
-                                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
+                                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('ignore_times' => true, 'msg' => & $msg, 'chat' => & $this->chat));
 
-                                    erLhcoreClassChat::getSession()->save($msg);
+                                    $msg->saveThis();
 
                                     $this->chat->last_msg_id = $msg->id;
                                     $this->chat->updateThis(array('update' => array('last_msg_id')));
@@ -170,6 +170,7 @@ class erLhAbstractModelAutoResponderChat
 
                 // Do not reset auto responder if visitor was redirected to survey
                 if (
+                    PHP_SAPI != 'cli' && // We do not that to be executed in the background
                     !(isset($botConfiguration['dreset_survey']) && $botConfiguration['dreset_survey'] == 1 && $this->chat->status_sub == erLhcoreClassModelChat::STATUS_SUB_SURVEY_SHOW) &&
                     (isset($botConfiguration['mint_reset']) && $botConfiguration['mint_reset'] > 0) &&
                     (isset($botConfiguration['maxt_reset']) && $botConfiguration['maxt_reset'] > 0))
@@ -202,9 +203,9 @@ class erLhAbstractModelAutoResponderChat
                         $msg->time = time();
 
                         \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
-                        erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
+                        erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('ignore_times' => true,'msg' => & $msg, 'chat' => & $this->chat));
 
-                        erLhcoreClassChat::getSession()->save($msg);
+                        $msg->saveThis();
 
                         $this->chat->last_msg_id = $msg->id;
                         $this->chat->updateThis(array('update' => array('last_msg_id','status_sub','last_user_msg_time','last_op_msg_time','lsync','last_user_msg_time')));
@@ -212,10 +213,11 @@ class erLhAbstractModelAutoResponderChat
                 }
 
                 if ($this->chat->status_sub != erLhcoreClassModelChat::STATUS_SUB_ON_HOLD) {
+                    // We give 1 second buffer for op messages just in case
                     if (
-                        ($this->chat->last_op_msg_time > $this->chat->last_user_msg_time && $this->chat->last_user_msg_time > 0 && $this->chat->last_op_msg_time > ($this->chat->pnd_time + $this->chat->wait_time))
+                        (($this->chat->last_op_msg_time - 1) > $this->chat->last_user_msg_time && $this->chat->last_user_msg_time > 0 && $this->chat->last_op_msg_time > ($this->chat->pnd_time + $this->chat->wait_time))
                         ||
-                        ($this->chat->last_op_msg_time > $this->chat->time && $this->chat->last_user_msg_time == 0 && $this->chat->last_op_msg_time > ($this->chat->pnd_time + $this->chat->wait_time))
+                        ($this->chat->last_op_msg_time > $this->chat->time && $this->chat->last_user_msg_time == 0 && ($this->chat->last_op_msg_time - 1) > ($this->chat->pnd_time + $this->chat->wait_time))
                     )
                     {
                         if ($this->chat->status_sub != erLhcoreClassModelChat::STATUS_SUB_SURVEY_SHOW && $this->auto_responder->survey_timeout > 0 && (time() - $this->chat->last_op_msg_time > $this->auto_responder->survey_timeout)) {
@@ -226,9 +228,9 @@ class erLhAbstractModelAutoResponderChat
                             $msg->time = time();
 
                             \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
-                            erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
+                            erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('ignore_times' => true,'msg' => & $msg, 'chat' => & $this->chat));
 
-                            erLhcoreClassChat::getSession()->save($msg);
+                            $msg->saveThis();
 
                             $this->chat->last_msg_id = $msg->id;
                             $this->chat->cls_us = $this->chat->user_status_front + 1;
@@ -263,9 +265,9 @@ class erLhAbstractModelAutoResponderChat
                                     $msg->time = time();
 
                                     \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
-                                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
+                                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('ignore_times' => true,'msg' => & $msg, 'chat' => & $this->chat));
 
-                                    erLhcoreClassChat::getSession()->save($msg);
+                                    $msg->saveThis();
 
                                     $this->chat->last_msg_id = $msg->id;
                                     $this->chat->updateThis(array('update' => array('last_msg_id')));
@@ -276,7 +278,7 @@ class erLhAbstractModelAutoResponderChat
                             }
                         }
 
-                    } elseif ($this->chat->last_op_msg_time < $this->chat->last_user_msg_time && $this->chat->last_user_msg_time > 0 && $this->chat->last_op_msg_time >= $this->chat->pnd_time && $this->chat->status_sub != erLhcoreClassModelChat::STATUS_SUB_SURVEY_SHOW) {
+                    } elseif (($this->chat->last_op_msg_time + 1) < $this->chat->last_user_msg_time && $this->chat->last_user_msg_time > 0 && $this->chat->last_op_msg_time - 1 > ($this->chat->pnd_time + $this->chat->wait_time) && $this->chat->status_sub != erLhcoreClassModelChat::STATUS_SUB_SURVEY_SHOW) {
 
                         $lastMessageTime = self::getLastVisitorMessageTime($this->chat);
 
@@ -301,9 +303,9 @@ class erLhAbstractModelAutoResponderChat
                                     $msg->time = time();
 
                                     \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
-                                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
+                                    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('ignore_times' => true,'msg' => & $msg, 'chat' => & $this->chat));
 
-                                    erLhcoreClassChat::getSession()->save($msg);
+                                    $msg->saveThis();
 
                                     $this->chat->last_msg_id = $msg->id;
                                     $this->chat->updateThis(array('update' => array('last_msg_id')));
@@ -345,9 +347,9 @@ class erLhAbstractModelAutoResponderChat
                                 $msg->time = time();
 
                                 \LiveHelperChat\Models\Departments\UserDepAlias::getAlias(array('scope' => 'msg', 'msg' => & $msg, 'chat' => & $this->chat));
-                                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('msg' => & $msg, 'chat' => & $this->chat));
+                                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('chat.before_auto_responder_msg_saved', array('ignore_times' => true,'msg' => & $msg, 'chat' => & $this->chat));
 
-                                erLhcoreClassChat::getSession()->save($msg);
+                                $msg->saveThis();
 
                                 $this->chat->last_msg_id = $msg->id;
                                 $this->chat->updateThis(array('update' => array('last_msg_id')));
@@ -375,6 +377,10 @@ class erLhAbstractModelAutoResponderChat
                 continue;
             }
 
+            if ($msg->user_id == 0 && $msg->time < ($chat->pnd_time + $chat->wait_time)) {
+                return $prevMessage->time;
+            }
+
             if ($msg->user_id > 0 && $msg->time <= $chat->last_op_msg_time) {
                 return $prevMessage->time;
             }
@@ -395,8 +401,10 @@ class erLhAbstractModelAutoResponderChat
     {
         switch ($var) {
             case 'auto_responder':
-                $this->auto_responder = erLhAbstractModelAutoResponder::fetch($this->auto_responder_id);
-                $this->auto_responder->translateByChat($this->chat->chat_locale, array('user_id' => $this->chat->user_id, 'dep_id' => $this->chat->dep_id));
+                $this->auto_responder = erLhAbstractModelAutoResponder::fetch($this->auto_responder_id, false);
+                if (is_object($this->auto_responder)) {
+                    $this->auto_responder->translateByChat($this->chat->chat_locale, array('user_id' => $this->chat->user_id, 'dep_id' => $this->chat->dep_id));
+                }
                 return $this->auto_responder;
                 break;
 

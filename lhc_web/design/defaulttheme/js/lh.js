@@ -513,9 +513,16 @@ function lh(){
         }
     };
 
+    this.logOpenTrace = [];
+
+    this.addOpenTrace = function(log) {
+        this.logOpenTrace.push(log);
+    }
+
     this.addTab = function(tabs, url, name, chat_id, focusTab, position) {
     	// If tab already exits return
     	if (tabs.find('#chat-tab-link-'+chat_id).length > 0) {
+            lhinst.logOpenTrace = [];
     		return ;
     	}
 
@@ -561,7 +568,14 @@ function lh(){
 
     	var inst = this;
 
-    	$.get(url, function(data) {
+        var logOpen = '';
+
+        if (lhinst.logOpenTrace.length > 0) {
+            logOpen = '/(ol)/' + lhinst.logOpenTrace.join('/');
+            lhinst.logOpenTrace = [];
+        }
+
+    	$.get(url + logOpen, function(data) {
 
     	    if (data == '') {
                 inst.removeDialogTab(chat_id,tabs,true);
@@ -1081,7 +1095,7 @@ function lh(){
     {
     	if ($('#chat-main-column-'+chat_id+' .collapse-right').text() == 'chevron_right'){
 	    	$('#chat-right-column-'+chat_id).hide();
-	    	$('#chat-main-column-'+chat_id).removeClass('col-xl-8').addClass('col-xl-12');
+	    	$('#chat-main-column-'+chat_id).removeClass('col-md-8').addClass('col-md-12');
 	    	$('#chat-main-column-'+chat_id+' .collapse-right').text('chevron_left');
 	    	try {
 		    	if (localStorage) {
@@ -1090,7 +1104,7 @@ function lh(){
 	    	} catch(e) {}
     	} else {
     		$('#chat-right-column-'+chat_id).show();
-	    	$('#chat-main-column-'+chat_id).removeClass('col-xl-12').addClass('col-xl-8');
+	    	$('#chat-main-column-'+chat_id).removeClass('col-md-12').addClass('col-md-8');
 	    	$('#chat-main-column-'+chat_id+' .collapse-right').text('chevron_right');
 	    	
 	    	try {
@@ -1425,9 +1439,11 @@ function lh(){
 
 	    	if ($('#tabs').length > 0) {
 	    	    if (typeof background !== 'undefined' && background === true) {
+                    inst.addOpenTrace('transfer_open_background');
                     inst.startChatBackground(data.chat_id, $('#tabs'), nt);
                 } else {
                     window.focus();
+                    inst.addOpenTrace('transfer_open');
                     inst.startChat(data.chat_id, $('#tabs'), nt);
                 }
     		} else {
@@ -2191,6 +2207,7 @@ function lh(){
     	    	if (identifier == 'subject_chats' || identifier == 'active_chats' || identifier == 'pending_chat' || identifier == 'unread_chat' || identifier == 'pending_transfered' || identifier == 'bot_chats') {
     	    		if ($('#tabs').length > 0) {
     	    			window.focus();
+                        inst.addOpenTrace('click_notification');
     	    			inst.startChat(chat_id, $('#tabs'), nt);
     	    		} else {
     	    			inst.startChatNewWindow(chat_id,'ChatRequest');
@@ -2223,6 +2240,7 @@ function lh(){
     			if (identifier == 'pending_chat' || identifier == 'unread_chat' || identifier == 'pending_transfered' || identifier == 'bot_chats') {
     	    		if ($('#tabs').length > 0) {
     	    			window.focus();
+                        inst.addOpenTrace('alert_open');
     	    			inst.startChat(chat_id, $('#tabs'), nt);
     	    		} else {
     	    			inst.startChatNewWindow(chat_id,'ChatRequest');
@@ -3051,7 +3069,11 @@ function lh(){
     };
 
     this.zoomImage = function(e) {
-        lhc.revealModal({'url':e.src + '?modal=true'})
+        if (!e.classList.contains('img-remote')) {
+            lhc.revealModal({'url':e.src + '?modal=true'})
+        } else {
+            lhc.revealModal({'url': WWW_DIR_JAVASCRIPT + 'file/downloadfile/0/0' + '?modal=external&src='+e.src})
+        }
     }
 }
 

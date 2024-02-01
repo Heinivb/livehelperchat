@@ -34,7 +34,7 @@ class erLhcoreClassGenericBotActionAttribute {
             }
 
             if ($hasEvent && $softEvent === false) {
-                $action['content']['intro_message'] = 'Please complete previous process!';
+                $action['content']['intro_message'] = erTranslationClassLhTranslation::getInstance()->getTranslation('chat/startchat','Please complete previous process!');
             } else {
 
                 $actionEvent = $action['content'];
@@ -72,7 +72,12 @@ class erLhcoreClassGenericBotActionAttribute {
                 $msg->name_support = erLhcoreClassGenericBotWorkflow::getDefaultNick($chat);
             }
             $msg->user_id = isset($params['override_user_id']) && $params['override_user_id'] > 0 ? (int)$params['override_user_id'] : -2;
-            $msg->time = time() + 1;
+
+            $msg->time = time();
+
+            if (erLhcoreClassGenericBotWorkflow::$setBotFlow === false) {
+                $msg->time += 1;
+            }
 
             if (!isset($params['do_not_save']) || $params['do_not_save'] == false) {
                 erLhcoreClassChat::getSession()->save($msg);
